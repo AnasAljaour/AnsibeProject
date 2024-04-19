@@ -2,7 +2,7 @@
 
 namespace AnsibeProject.Controllers
 {
-    public class ProfesorController : Controller
+    public class ProfessorController : Controller
     {
         public IActionResult Index()
         {

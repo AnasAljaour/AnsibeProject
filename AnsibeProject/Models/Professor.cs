@@ -2,7 +2,7 @@
 
 namespace AnsibeProject.Models
 {
-    public class Profesor
+    public class Professor
     {
         [Required(ErrorMessage = "File Number is required")]
         [Key]
