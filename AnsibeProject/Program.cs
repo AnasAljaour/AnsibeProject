@@ -1,5 +1,5 @@
 var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+
 /*builder.Services.AddDbContext<SchoolContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQLserver"));
@@ -7,7 +7,7 @@ var app = builder.Build();
 */
 builder.Services.AddControllersWithViews();
 
-
+var app = builder.Build();
 app.UseRouting();
 app.UseStaticFiles();
 app.MapControllerRoute(
