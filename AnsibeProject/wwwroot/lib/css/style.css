@@ -347,6 +347,7 @@ section {
 		background-color: var(--white);
 		border-radius: .5rem;
 		padding: 2rem;
+		border: 3px solid var(--main-color);
 	}
 
 		.home-grid .box-container .box .title {
@@ -1384,3 +1385,4 @@ section {
 		height: 25rem;
 	}
 }
+
