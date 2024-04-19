@@ -7,6 +7,8 @@ namespace AnsibeProject.Models
     public class Course
     {
         [Required]
+        [Key]
+        [MaxLength(10)]
         public string CourseCode { get; set; }
 
 
@@ -15,32 +17,30 @@ namespace AnsibeProject.Models
 
 
         [Required]
+        [MaxLength(255)]
         public  string CourseDescription { get; set; }
        
         
         [Required]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "number of hours must be a positive integer !")]
-        public required int NumberOfCredits { get; set; }
+        public  int NumberOfCredits { get; set; }
         [Required]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "number of hours must be a positive integer !")]
-        public required int TotalNumberOfHours { get; set; }
+        public  int TotalNumberOfHours { get; set; }
 
 
         [Required]
         [RegularExpression(@"^[0-9]+$", ErrorMessage= "number of hours must be a positive integer !")]
-        [TotalNumberOfHoursNotExceed("TotalNumberOfHours")]
-        public required int NumberOfHours { get; set; }
+        public  int NumberOfHours { get; set; }
 
         
         [Required]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "number of hours must be a positive integer !")]
-        [TotalNumberOfHoursNotExceed("TotalNumberOfHours")]
         public int TP { get; set; }
 
 
         [Required]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "number of hours must be a positive integer !")]
-        [TotalNumberOfHoursNotExceed("TotalNumberOfHours")]
         public int TD { get; set; }
 
         [Required]
@@ -59,7 +59,7 @@ namespace AnsibeProject.Models
 
 
     }
-
+    /*[TotalNumberOfHoursNotExceed("TotalNumberOfHours")]
     class TotalNumberOfHoursNotExceed: ValidationAttribute
     {
         private readonly string _totalHoursPropertyName;
@@ -87,7 +87,7 @@ namespace AnsibeProject.Models
             }
             return new ValidationResult(ErrorMessage ?? $"The sum of course, TD and TB must be less than or equal to {totalHoureValue}.");
         }
-    }
+    }*/
 
     
 }
