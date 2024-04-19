@@ -1,3 +1,6 @@
+using AnsibeProject.Models;
+using System.ComponentModel.DataAnnotations;
+
 var builder = WebApplication.CreateBuilder(args);
 
 /*builder.Services.AddDbContext<SchoolContext>(options =>
@@ -16,3 +19,5 @@ app.MapControllerRoute(
     );
 
 app.Run();
+
+
