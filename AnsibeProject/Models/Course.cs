@@ -8,8 +8,8 @@ namespace AnsibeProject.Models
     {
         [Required]
         [Key]
-        [MaxLength(10)]
-        public string CourseCode { get; set; }
+        [MaxLength(50)]
+        public string CourseCode { get; set; } = string.Empty;
 
 
 
@@ -18,7 +18,7 @@ namespace AnsibeProject.Models
 
         [Required]
         [MaxLength(255)]
-        public  string CourseDescription { get; set; }
+        public string CourseDescription { get; set; } = string.Empty;
        
         
         [Required]
