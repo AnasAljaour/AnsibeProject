@@ -10,7 +10,7 @@
 
 
     <form asp-controller="ProfessorController" asp-action="@action" method="post" enctype="multipart/form-data">
-        @if (action??.Tolower() == "edit")
+        @if (action == "Edit")
         {
             <input type="text" asp-for="FileNumber" disabled />
             <h3>Edit Professor</h3>
@@ -25,7 +25,7 @@
         <label asp-for="LastName"><span>*</span></label>
         <input type="text" asp-for="LastName" name="lastName" placeholder="enter last name" maxlength="20" class="box">
         <span asp-validation-for="LastName"></span>
-        @if (action??.Tolower() == "add"){
+        @if (action == "Add"){
             <label asp-for="FileNumber"><span>*</span></label>
             <input type="number" asp-for="FileNumber" name="filenumber" placeholder="enter file number" maxlength="20" class="box">
             <span asp-validation-for="FileNumber"></span>
