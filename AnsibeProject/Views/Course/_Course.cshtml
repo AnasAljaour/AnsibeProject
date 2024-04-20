@@ -1,0 +1,62 @@
+@model Course
+   @{
+   string action = ViewBag.Action ?? string.Empty;
+   }
+   <div class="form-container">
+
+      <form method="post" asp-controller="Course" asp-action="@action">
+         <h3>@action</h3>
+         <label asp-for="CourseCode"></label>
+         @if(action?.ToLower() == "edit"){
+         <input type="text" asp-for="CourseCode" placeholder="Course Code" class="box" disabled>
+         }
+         @else{
+         <input type="text" asp-for="CourseCode" placeholder="Course Code" class="box">
+         }
+
+         <span class="text-danger" asp-validation-for="CourseCode"></span>
+         <label asp-for="CourseDescription"> </label>
+         <input type="text" asp-for="CourseDescription" placeholder="Course Description" class="box">
+         <span class="text-danger" asp-validation-for="CourseDescription"></span>
+         <label asp-for="Semester"> </label>
+         <input type="text" asp-for="Semester" placeholder="Semester" class="box">
+         <span class="text-danger" asp-validation-for="Semester"></span>
+         <div class="special">
+            <label asp-for="NumberOfCredits"> </label>
+            <input type="number" asp-for="NumberOfCredits" placeholder="Number Of Credits" class="specialbox">
+            <span class="text-danger" asp-validation-for="NumberOfCredits"></span>
+            <label asp-for="NumberOfHours"> </label>
+            <input type="number" asp-for="NumberOfHours" placeholder="Number Of Hours" class="specialbox">
+            <span class="text-danger" asp-validation-for="NumberOfHours"></span>
+            <label asp-for="TP"> </label>
+            <input type="number" asp-for="TP" placeholder="TP" class="specialbox">
+            <span class="text-danger" asp-validation-for="TP"></span>
+            <label asp-for="TD"> </label>
+            <input type="number" asp-for="TD" placeholder="TD" class="specialbox">
+            <span class="text-danger" asp-validation-for="TD"></span>
+            <label asp-for="TotalNumberOfHours"> </label>
+            <input type="number" asp-for="TotalNumberOfHours" placeholder="Total hours" class="specialbox">
+            <span class="text-danger" asp-validation-for="TotalNumberOfHours"></span>
+            <label asp-for="Major"> </label>
+            <select asp-for="Major" class="specialbox">
+               <option value="" asp-for="Major">
+            </select>
+         
+            <span class="text-danger" asp-validation-for="Major"></span>
+         
+            <label asp-for="CourseState"> </label>
+            <select asp-for="CourseState" class="specialbox">
+               <option value="" asp-for="CourseState">
+            </select>
+         
+            <span class="text-danger" asp-validation-for="CourseState"></span>
+            <label asp-for="Obligatory"> </label>
+            <select asp-for="CourseState" class="specialbox">
+               <option value="" asp-for="Obligatory">
+            </select>
+         
+            <span class="text-danger" asp-validation-for="Obligatory"></span>
+         </div>
+         <input type="submit" value="Save"  class="btn">
+         </form>
+   </div>
