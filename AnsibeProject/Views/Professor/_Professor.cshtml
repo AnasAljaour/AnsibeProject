@@ -10,6 +10,10 @@
 
 
     <form asp-controller="Professor" asp-action="@action" method="post">
+        <div asp-validation-summary="All">
+
+        </div>
+        
         @if (action == "Edit")
         {
             <input type="text" asp-for="FileNumber" disabled />
@@ -40,9 +44,10 @@
         <label asp-for="Email"><span>*</span></label>
         <input type="email" asp-for="Email" name="email" placeholder="enter email" maxlength="20" class="box">
         <span asp-validation-for="Email"></span>
-        <label asp-for="ContractType"><span>*</span></label>
-        <input type="text" asp-for="ContractType" name="conrtract" placeholder="enter contract type" maxlength="20" class="box">
-        <span asp-validation-for="ContractType"></span>
+        <select asp-for="ContractType" asp-items="Html.GetEnumSelectList<AnsibeProject.Models.ContractType>()"
+                class="specialbox">
+            <option value=""></option>
+        </select>
         <label asp-for="Speciality"><span>*</span></label>
         <input type="text" asp-for="Speciality" name="speciality" placeholder="enter speciality" maxlength="20" class="box">
         <span asp-validation-for="Speciality"></span>
