@@ -4,12 +4,12 @@
 
 <div class="box-container">
     <div class="box" style="border: dashed;">
-    <input type="button" asp-controller="Professor" asp-action="add" name="button0" value="+" />
+        <input type="button" asp-controller="Professor" asp-action="add" name="button0" value="+" />
     </div>
-@if (Model != null && Model.Count() > 0)
-{
-   @foreach (var professor in Model)
-   {
+    @if (Model != null && Model.Count() > 0)
+    {
+        @foreach (var professor in Model)
+        {
             <div class="box-container">
                 <div class="box">
                     <div class="info">
@@ -38,13 +38,38 @@
                                 Contract Type : @professor.ContractType
                             </td>
                         </tr>
-                        
+
                     </table>
-                    <a href="teacher_profile.html" class="inline-btn"><input type="button" name="button1" value="edit" asp-controller="teachers" asp-action="edit" asp-route-FileNumber="@professor.FileNumber" /></a>
+                    <a asp-route-FileNumber="@professor.FileNumber" class="btn btn-primary"
+                       asp-controller="ProfessorController" asp-action="Edit">Edit</a>
+                    <a asp-route-FileNumber="@professor.FileNumber" class="btn btn-danger"
+                       asp-controller="ProfessorController" asp-action="Delete">Delete</a>
+
+
                 </div>
             </div>
-        
+
+        }
     }
-}
 
 </div>
+@section Scripts {
+    <script>
+        function showAlert() {
+            Swal.fire({
+                title: "Do you want to save the changes?",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                denyButtonText: Don't save
+                        }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        Swal.fire("Saved!", "", "success");
+                    } else if (result.isDenied) {
+                        Swal.fire("Changes are not saved", "", "info");
+                    }
+                });
+        }
+    </script>
+}
