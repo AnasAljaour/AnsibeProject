@@ -43,7 +43,7 @@
                     <a asp-route-FileNumber="@professor.FileNumber" class="btn btn-primary"
                        asp-controller="ProfessorController" asp-action="Edit">Edit</a>
                     <a asp-route-FileNumber="@professor.FileNumber" class="btn btn-danger"
-                       asp-controller="ProfessorController" asp-action="Delete">Delete</a>
+                   asp-controller="ProfessorController" asp-action="deleteProfessor(@professor.FileNumber)">Delete</a>
 
 
                 </div>
