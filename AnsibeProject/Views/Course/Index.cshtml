@@ -1,7 +1,8 @@
-﻿@model 
+﻿@using AnsibeProject.Models;
+@model Course;
 
 @if(Model!=null){
-    @foreach(var Course in Model){
+    @foreach(var course in Model){
         <div class="box-container">
             <div class="box">
                 <div class="info">
@@ -22,7 +23,7 @@
                             credits: 6
                         </td>
                         <td>
-                            Course hours: 36
+                            course hours: 36
                         </td>
                     </tr>
                     <tr>

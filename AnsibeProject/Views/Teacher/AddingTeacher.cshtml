@@ -1,33 +1,48 @@
 ﻿@using AnsibeProject.Models;
 @model Professor;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-<section class="form-container">
-    
 
-   <form asp-action="Func" method="post" enctype="multipart/form-data">
+<partial name="_Teacher" model="@Model" />
+
+@* <section class="form-container">
+ *@    
+
+   @* <form asp-controller = "ProfessorController" asp-action = "Add" method="post" enctype="multipart/form-data">
       <h3>Add a new Teacher</h3>
-      <p>first name <span>*</span></p>
-      <input type="text" asp-validation-for="@Model.FirstName" name="name" placeholder="enter first name" required maxlength="50" class="box">
-      <p>middle name <span>*</span></p>
-        <input type="text" asp-validation-for="@Model.MiddleName" name="middle name" placeholder="enter middle name" required maxlength="50" class="box">
-      <p>last name <span>*</span></p>
-        <input type="text" asp-validation-for="@Model.LastName" name="lastName" placeholder="enter last name" required maxlength="20" class="box">
-      <p>file number <span>*</span></p>
-        <input type="number" asp-validation-for="@Model.FileNumber" name="filenumber" placeholder="enter file number" required maxlength="20" class="box">
-      <p>date of birth <span>*</span></p>
-        <input type="date" asp-validation-for="@Model.DateOfBirth" name="dateBirth" required class="box">
-      <p>phone number <span>*</span></p>
-        <input type="number" asp-validation-for="@Model.PhoneNumber" name="phone" placeholder="enter phone number" required maxlength="20" class="box">
-      <p>email <span>*</span></p>
-        <input type="email" asp-validation-for="@Model.Email" name="email" placeholder="enter email" required maxlength="20" class="box">
-      <p>contract type <span>*</span></p>
-        <input type="text" asp-validation-for="@Model.ContractType" name="conrtract" placeholder="enter contract type" required maxlength="20" class="box">
-      <p>Speciality <span>*</span></p>
-        <input type="number" asp-validation-for="@Model.Speciality" name="speciality" placeholder="enter speciality" required maxlength="20" class="box">
-      <p>full Name in Arabic ! <span>*</span></p>
-        <input type="text" asp-validation-for="@Model.FullNameInArabic" name="fullname" placeholder="enter full name" required maxlength="20" class="box">
+      <label asp-for = "FirstName"><span>*</span></label>
+      <input type="text" asp-for="FirstName" name="name" placeholder="enter first name"  maxlength="50" class="box">
+        <span asp-validation-for="FirstName"></span>
+      <label asp-for = "MiddleName"><span>*</span></label>
+        <input type="text" asp-for="MiddleName" name="middle name" placeholder="enter middle name"  maxlength="50" class="box">
+        <span asp-validation-for="MiddleName"></span>
+      <label asp-for = "LastName"><span>*</span></label>
+        <input type="text" asp-for="LastName" name="lastName" placeholder="enter last name"  maxlength="20" class="box">
+        <span asp-validation-for="LastName"></span>
+      <label asp-for = "FileNumber"><span>*</span></label>
+        <input type="number" asp-for="FileNumber" name="filenumber" placeholder="enter file number"  maxlength="20" class="box">
+        <span asp-validation-for="FileNumber"></span>
+      <label asp-for = "DateOfBirth"><span>*</span></label>
+        <input type="date" asp-for="DateOfBirth" name="dateBirth"  class="box">
+        <span asp-validation-for="DateOfBirth"></span>
+      <label asp-for = "PhoneNumber"><span>*</span></label>
+        <input type="number" asp-for="PhoneNumber" name="phone" placeholder="enter phone number"  maxlength="20" class="box">
+        <span asp-validation-for="PhoneNumber"></span>
+      <label asp-for = "Email"><span>*</span></label>
+        <input type="email" asp-for="Email" name="email" placeholder="enter email"  maxlength="20" class="box">
+        <span asp-validation-for="Email"></span>
+      <label asp-for = "ContractType"><span>*</span></label>
+        <input type="text" asp-for="ContractType" name="conrtract" placeholder="enter contract type"  maxlength="20" class="box">
+        <span asp-validation-for="ContractType"></span>
+      <label asp-for = "Speciality"><span>*</span></label>
+        <input type="number" asp-for="Speciality" name="speciality" placeholder="enter speciality"  maxlength="20" class="box">
+        <span asp-validation-for="Speciality"></span>
+      <label asp-for = "FullNameInArabic"><span>*</span></label>
+        <input type="text" asp-for="FullNameInArabic" name="fullname" placeholder="enter full name"  maxlength="20" class="box">
+        <span asp-validation-for="FullNameInArabic"></span>
 
-        <input type="submit" asp-action="" value="register new" name="submit" class="btn">
+
+        <input type="submit"  value="Register !" name="submit" class="btn">
    </form>
 
 </section>
+ *@

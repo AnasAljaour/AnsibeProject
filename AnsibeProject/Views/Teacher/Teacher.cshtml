@@ -2,15 +2,15 @@
 @model List<Professor>;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-
-<div class="box" style="border: dashed">
-    <input type="button" asp-action="Professor" asp-action="add" name="button0" value="+" />
-</div>
+<div class="box-container">
+    <div class="box" style="border: dashed;">
+    <input type="button" asp-controller="Professor" asp-action="add" name="button0" value="+" />
+    </div>
 @if (Model != null && Model.Count() > 0)
 {
    @foreach (var professor in Model)
    {
-        <div class="box">
+        @* <div class="box">
             <div class="tutor">
                 <img src="images/pic-2.jpg" alt="">
                 <div>
@@ -23,7 +23,43 @@
             <p>Tel Number : <span>@professor.PhoneNumber</span></p>
             <p>Contract : <span>@professor.ContractType</span></p>
             <a href="teacher_profile.html" class="inline-btn"><input type="button" name="button1" value="edit" asp-controller="teachers" asp-action="edit" asp-route-id="@professor.FileNumber" /></a>
-        </div>
+        </div> *@
+
+            <div class="box-container">
+                <div class="box">
+                    <div class="info">
+                        <h3>@professor.FullNameInArabic</h3>
+                        <span>@professor.Speciality</span>
+                    </div>
+                    <table class="table table-striped">
+                        <tr>
+                            <td>
+                                @professor.DateOfBirth
+                            </td>
+                            <td>
+                                File Number : @professor.FileNumber
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @professor.Email
+                            </td>
+                            <td>
+                                @professor.PhoneNumber
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Contract Type : @professor.ContractType
+                            </td>
+                        </tr>
+                        
+                    </table>
+                    <a href="teacher_profile.html" class="inline-btn"><input type="button" name="button1" value="edit" asp-controller="teachers" asp-action="edit" asp-route-FileNumber="@professor.FileNumber" /></a>
+                </div>
+            </div>
         
     }
 }
+
+</div>
