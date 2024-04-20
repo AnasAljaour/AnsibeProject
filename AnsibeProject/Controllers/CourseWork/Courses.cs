@@ -13,7 +13,12 @@ namespace AnsibeProject.Controllers.CourseWork
 
         public Course getCourseByCode(string CourseCode) 
         {
-            return universityContext.Courses.Find(CourseCode);  
+            Course courseToreturn= universityContext.Courses.Find(CourseCode);  
+            if (courseToreturn == null)
+            {
+                throw new Exception("Counrs not found !");
+            }
+            return courseToreturn;
         }
         public List<Course> getAllCourses() 
         {
@@ -32,7 +37,7 @@ namespace AnsibeProject.Controllers.CourseWork
         public void DeleteCourse(String CourseCode)
         {
 
-            universityContext.Courses.Remove(universityContext.Courses.Find(CourseCode));
+            universityContext.Courses.Remove(getCourseByCode(CourseCode));
             universityContext.SaveChanges();
         }
         /*

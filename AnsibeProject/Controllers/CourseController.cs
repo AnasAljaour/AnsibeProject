@@ -19,12 +19,19 @@ namespace AnsibeProject.Controllers
         }
         public IActionResult Edit(string CourseCode)
         {
+            
+            //check if the code is not empty
             if (! CourseCode.IsNullOrEmpty()) 
             {
                 Course courseToUpdate;
+                /*check if there is error while taking the course by its Code
+                *Error => keep the user in the Index View and show the error
+                *fine => get the course to be updated and fill the Edit view with it
+                */
                 try
                 {
                     courseToUpdate = courses.getCourseByCode(CourseCode);
+                    ViewBag.Action = "edit";
                     return View("Edit",courseToUpdate);
                 }catch(Exception ex)
                 {
@@ -40,10 +47,16 @@ namespace AnsibeProject.Controllers
         [HttpPost]
         public IActionResult Edit(Course courseToEdit)
         {
+            //check the recived Object 
             if (courseToEdit != null)
             {
+                //check for the annotations validity
                 if (ModelState.IsValid)
                 {
+                    /*check if there is error while Updating the course 
+                    *Error => keep the user in the Edit View and show the error
+                    *fine => return the user to the Index View
+                    */
                     try
                     {
                         courses.UpdateCourse(courseToEdit);
@@ -51,12 +64,13 @@ namespace AnsibeProject.Controllers
                     }
                     catch (Exception ex)
                     {
-                        ModelState.AddModelError("", "failed to add Course");
+                        ModelState.AddModelError("", "failed to Edit Course");
                         ModelState.AddModelError("", ex.Message);
                     }
                 }
                 else
                 {
+                    ViewBag.Action = "edit";
                     return View("Edit", courseToEdit);
                 }
             }
@@ -64,7 +78,8 @@ namespace AnsibeProject.Controllers
             {
                 ModelState.AddModelError("", "failed to get course instance null issue");
             }
-            return View("Add", courseToEdit);
+            ViewBag.Action = "edit";
+            return View("Edit", courseToEdit);
         }
         public IActionResult AddCourse()
         {
@@ -73,10 +88,15 @@ namespace AnsibeProject.Controllers
         [HttpPost]
         public IActionResult AddCourse(Course courseToAdd) 
         {
-            if (courseToAdd != null) 
-            {
-                if(ModelState.IsValid)
+            //check for the Object
+            if (courseToAdd != null)
+            {   //check for the 
+                if (ModelState.IsValid)
                 {
+                    /*check if there is error while adding the course
+                *Error => keep the user in the Add View and show the error
+                *fine => insert the new Course then return the user to the Index View
+                */
                     try
                     {
                         courses.AddCourse(courseToAdd);
@@ -89,18 +109,25 @@ namespace AnsibeProject.Controllers
                 }
                 else
                 {
+                    ViewBag.Action = "add";
                     return View("Add", courseToAdd);
                 }
             }else
             {
                 ModelState.AddModelError("", "failed to get course instance null issue");
             }
+            ViewBag.Action = "add";
             return View("Add", courseToAdd);
         }
         public IActionResult Delete(string CourseCode) 
         {
+            //check if not null 
             if(! CourseCode.IsNullOrEmpty())
             {
+                /*check if there is error while taking the course by its Code or while deleting it
+                *Error => keep the user in the Index View and show the error
+                *fine => refresh the Index view with the new data
+                */
                 try
                 {
                     courses.DeleteCourse(CourseCode);
