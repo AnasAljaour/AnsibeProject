@@ -12,7 +12,9 @@
 
     <!-- custom css file link  -->
     <link rel="stylesheet" href="~/lib/css/style.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <!--<script src="~/lib/js/script.js"></script>-->
 </head>
 <body>
     <header class="header">
@@ -73,6 +75,7 @@
     <div>
         @RenderBody()
     </div>
+    @await RenderSectionAsync("Scripts",required: false)
 </body>
-<!--<script src="~/lib/js/script.js"></script>-->
+
 </html>
