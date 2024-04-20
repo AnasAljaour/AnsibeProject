@@ -8,7 +8,7 @@
     <form method="post" asp-controller="Course" asp-action="@action">
         <h3>@action</h3>
         <label asp-for="CourseCode"></label>
-        @if (action?.ToLower() == "edit")
+        @if (action?.ToLower() == "Edit")
         {
             <input type="text" asp-for="CourseCode" placeholder="Course Code" class="box" disabled>
         }

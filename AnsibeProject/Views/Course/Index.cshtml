@@ -60,7 +60,7 @@
                         </td>
                     </tr>
                 </table>
-                <a asp-controller="CourseController" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit course</a>
+                <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit course</a>
                 <a class="inline-btn" onclick="confirmDelete('@course.CourseCode')">delete course</a>
                 <a class="inline-btn">Active course</a>
             </div>
@@ -85,7 +85,7 @@ else{
             }).then((result) => {
                 if (result.isConfirmed) {
                     // If user confirms, perform the delete action
-                    window.location.href = "~/CourseController/Delete?CourseCode=" + courseCode;
+                    window.location.href = "Course/Delete?CourseCode=" + courseCode;
                 } else {
                     // If user cancels, show an informational message
                     Swal.fire("Deletion cancelled", "", "info");
