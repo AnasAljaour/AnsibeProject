@@ -5,15 +5,15 @@ namespace AnsibeProject.Controllers.CourseWork
 {
     public class Courses
     {
-        private readonly UniversityContext  universityContext;
+        private readonly UniversityContext  _universityContext;
         public Courses(UniversityContext universityContext)
         {
-            universityContext = universityContext;
+            _universityContext = universityContext;
         }
 
         public Course getCourseByCode(string CourseCode) 
         {
-            Course courseToreturn= universityContext.Courses.Find(CourseCode);  
+            Course courseToreturn= _universityContext.Courses.Find(CourseCode);  
             if (courseToreturn == null)
             {
                 throw new Exception("Counrs not found !");
@@ -22,35 +22,35 @@ namespace AnsibeProject.Controllers.CourseWork
         }
         public List<Course> getAllCourses() 
         {
-            return universityContext.Courses.ToList();
+            return _universityContext.Courses.ToList();
         }
         public void AddCourse(Course course) 
         {
-            universityContext.Courses.Add(course);
-            universityContext.SaveChanges();
+            _universityContext.Courses.Add(course);
+            _universityContext.SaveChanges();
         }
         public void UpdateCourse(Course course)
         {
-            universityContext.Courses.Update(course);
-            universityContext.SaveChanges();
+            _universityContext.Courses.Update(course);
+            _universityContext.SaveChanges();
         }
         public void DeleteCourse(String CourseCode)
         {
 
-            universityContext.Courses.Remove(getCourseByCode(CourseCode));
-            universityContext.SaveChanges();
+            _universityContext.Courses.Remove(getCourseByCode(CourseCode));
+            _universityContext.SaveChanges();
         }
         /*
          * use this methods when we want to show the courses that are ready to bind with teacher
          */
         public List<Course> getActiveCourses()
         {
-            return universityContext.Courses.Where(x => x.CourseState == ActiveState.Active).ToList();
+            return _universityContext.Courses.Where(x => x.CourseState == ActiveState.Active).ToList();
         }
         
         public List<Course> getCoursesOfMajor(CourseMajor major)
         {
-            return universityContext.Courses.Where(x => x.Major == major).ToList();
+            return _universityContext.Courses.Where(x => x.Major == major).ToList();
         }
     }
 }
