@@ -31,7 +31,7 @@ namespace AnsibeProject.Controllers
                 try
                 {
                     courseToUpdate = courses.getCourseByCode(CourseCode);
-                    ViewBag.Action = "edit";
+                    ViewBag.Action = "Edit";
                     return View("Edit",courseToUpdate);
                 }catch(Exception ex)
                 {
@@ -70,7 +70,7 @@ namespace AnsibeProject.Controllers
                 }
                 else
                 {
-                    ViewBag.Action = "edit";
+                    ViewBag.Action = "Edit";
                     return View("Edit", courseToEdit);
                 }
             }
@@ -78,7 +78,7 @@ namespace AnsibeProject.Controllers
             {
                 ModelState.AddModelError("", "failed to get course instance null issue");
             }
-            ViewBag.Action = "edit";
+            ViewBag.Action = "Edit";
             return View("Edit", courseToEdit);
         }
         public IActionResult AddCourse()
@@ -109,14 +109,14 @@ namespace AnsibeProject.Controllers
                 }
                 else
                 {
-                    ViewBag.Action = "add";
+                    ViewBag.Action = "Add";
                     return View("Add", courseToAdd);
                 }
             }else
             {
                 ModelState.AddModelError("", "failed to get course instance null issue");
             }
-            ViewBag.Action = "add";
+            ViewBag.Action = "Add";
             return View("Add", courseToAdd);
         }
         public IActionResult Delete(string CourseCode) 

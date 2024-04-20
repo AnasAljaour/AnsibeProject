@@ -1,5 +1,6 @@
 ﻿using AnsibeProject.Data;
 using AnsibeProject.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnsibeProject.Controllers.CourseWork
 {
@@ -31,7 +32,20 @@ namespace AnsibeProject.Controllers.CourseWork
         }
         public void UpdateCourse(Course course)
         {
-            _universityContext.Courses.Update(course);
+            Console.WriteLine("Courses.UpdateCourse");
+            /*Course original = getCourseByCode(course.CourseCode);
+            original.CourseDescription= course.CourseDescription;
+            original.NumberOfCredits= course.NumberOfCredits;
+            original.TotalNumberOfHours= course.TotalNumberOfHours;
+            original.NumberOfHours= course.NumberOfHours;
+            original.TP= course.TP;
+            original.TD= course.TD;
+            original.Semester= course.Semester;
+            original.CourseState= course.CourseState;
+            original.Major= course.Major;
+            original.Obligatory= course.Obligatory;*/
+            //_universityContext.Courses.Update(original);
+            _universityContext.Entry(course).State = EntityState.Modified;
             _universityContext.SaveChanges();
         }
         public void DeleteCourse(String CourseCode)
