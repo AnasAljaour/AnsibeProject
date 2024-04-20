@@ -8,7 +8,7 @@
 	--light-bg: #eee;
 	--black: #2c3e50;
 	--white: #fff;
-	--border: .1rem solid rgba(0,0,0,.2);
+	--border: .1rem solid rgba(0, 0, 0, .2);
 }
 
 * {
@@ -54,7 +54,7 @@ body {
 		--light-bg: #333;
 		--black: #fff;
 		--white: #222;
-		--border: .1rem solid rgba(255,255,255,.2);
+		--border: .1rem solid rgba(255, 255, 255, .2);
 	}
 
 	body.active {
@@ -569,7 +569,7 @@ section {
 				left: 1rem;
 				border-radius: .5rem;
 				padding: .5rem 1.5rem;
-				background-color: rgba(0,0,0,.3);
+				background-color: rgba(0, 0, 0, .3);
 				color: #fff;
 				font-size: 1.5rem;
 			}
@@ -647,7 +647,7 @@ section {
 			.playlist-details .row .column .thumb span {
 				font-size: 1.8rem;
 				color: #fff;
-				background-color: rgba(0,0,0,.3);
+				background-color: rgba(0, 0, 0, .3);
 				border-radius: .5rem;
 				position: absolute;
 				top: 1rem;
@@ -722,7 +722,7 @@ section {
 			right: 2rem;
 			height: 20rem;
 			border-radius: .5rem;
-			background-color: rgba(0,0,0,.3);
+			background-color: rgba(0, 0, 0, .3);
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -1264,13 +1264,13 @@ section {
 			text-align: center;
 		}
 
-		.form-container form p {
+		.form-container form label {
 			font-size: 1.7rem;
 			color: var(--light-color);
 			padding-top: 1rem;
 		}
 
-			.form-container form p span {
+			.form-container form label span {
 				color: var(--red);
 			}
 
@@ -1284,7 +1284,19 @@ section {
 			margin: 1rem 0;
 		}
 
+		.form-container form .specialbox {
+			font-size: 1.8rem;
+			color: var(--black);
+			border-radius: .5rem;
+			padding: 1.4rem;
+			background-color: var(--light-bg);
+			width: 40%;
+			margin: 1rem;
+		}
 
+	.form-container .special {
+		text-align: center;
+	}
 
 
 
@@ -1328,7 +1340,7 @@ section {
 
 		.side-bar.active {
 			left: 0;
-			box-shadow: 0 0 0 100vw rgba(0,0,0,.8);
+			box-shadow: 0 0 0 100vw rgba(0, 0, 0, .8);
 			border-right: 0;
 		}
 }
@@ -1385,4 +1397,3 @@ section {
 		height: 25rem;
 	}
 }
-
