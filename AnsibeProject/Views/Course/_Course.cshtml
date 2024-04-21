@@ -7,8 +7,9 @@
 
     <form method="post" asp-controller="Course" asp-action="@action">
         <h3>@action</h3>
+        <div class="text-danger" asp-validation-summary="All"></div>
         <label asp-for="CourseCode"></label>
-        @if (action?.ToLower() == "Edit")
+        @if (action == "Edit")
         {
             <input type="text" asp-for="CourseCode" placeholder="Course Code" class="box" disabled>
         }
