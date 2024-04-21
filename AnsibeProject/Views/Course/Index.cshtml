@@ -1,72 +1,81 @@
 ﻿@using AnsibeProject.Models;
 @model List<Course>;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
-
-@if (Model != null && Model.Count() > 0)
-{       <section class="courses">
+<section class="courses">
 
     <h1 class="heading">our courses</h1>
-<div class="box-container">
-    @foreach(var course in Model){
+    <div class="box-container">
+        <div class="box" id="add">
+            <div class="tutor">
+                <h3>Add New Course</h3>
+            </div>
+
+            <a asp-controller="Course" asp-action="AddCourse" class="inline-btn">add</a>
+
+        </div>
+        @if (Model != null && Model.Count() > 0)
+        {
+
+            foreach (var course in Model)
+            {
                 if (course.CourseState.Equals(ActiveState.Active))
                 {
-                <div class="box" id="@course.CourseCode">
-                    <div class="tutor">
-                        <h3>@course.CourseDescription</h3>
-                    </div>
-                    <table class="table table-striped">
-                        <tr>
-                            <td>
-                                Course Code : @course.CourseCode
+                    <div class="box" id="@course.CourseCode">
+                        <div class="tutor">
+                            <h3>@course.CourseDescription</h3>
+                        </div>
+                        <table class="table table-striped">
+                            <tr>
+                                <td>
+                                    Course Code : @course.CourseCode
 
-                            </td>
-                            <td>
-                                Course Major : @course.Major
+                                </td>
+                                <td>
+                                    Course Major : @course.Major
 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Numbero Of Credits : @course.NumberOfCredits
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Numbero Of Credits : @course.NumberOfCredits
 
-                            </td>
-                            <td>
-                                Number Of Hours : @course.NumberOfHours
+                                </td>
+                                <td>
+                                    Number Of Hours : @course.NumberOfHours
 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                TP : @course.TP
-                            </td>
-                            <td>
-                                TD : @course.TD
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Total hours : @course.TotalNumberOfHours
-                            </td>
-                            <td>
-                                Semester : @course.Semester
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Course State : @course.CourseState
-                            </td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    TP : @course.TP
+                                </td>
+                                <td>
+                                    TD : @course.TD
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Total hours : @course.TotalNumberOfHours
+                                </td>
+                                <td>
+                                    Semester : @course.Semester
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Course State : @course.CourseState
+                                </td>
 
-                            <td>
-                                Obligatory : @course.Obligatory
-                            </td>
-                        </tr>
-                    </table>
-                    <div class="flex-btn">
-                        <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
+                                <td>
+                                    Obligatory : @course.Obligatory
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="flex-btn">
+                            <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
                             <a class="inline-btn" id="toggle-btn" asp-controller="Course" asp-action="ChangeState" asp-route-CourseCode="@course.CourseCode" asp-route-CourseState=@ActiveState.NotActive onclick="toggleState('@course.CourseCode')">disabled</a>
-                        <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
-                    </div>
+                            <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
+                        </div>
                     </div>
                 }
                 else
@@ -130,15 +139,16 @@
                     </div>
                 }
             }
-    
-            </div>
-            </section>
-    
-}
-else{
-    <h1>No course</h1>
-}
 
+
+
+        }
+        else
+        {
+            <h1>No course</h1>
+        }
+    </div>
+</section>
 @section Scripts {
     <script>
         function toggleState(courseCode) {
