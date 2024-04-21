@@ -46,7 +46,7 @@ html {
 
 body {
 	background-color: var(--light-bg);
-	padding-left: 30rem;
+	padding-left: 25rem;
 }
 
 	body.dark {
@@ -61,14 +61,14 @@ body {
 		padding-left: 0;
 	}
 .unactive {
-	--white: #c0c2c4;
+	--white: #cfcfcf;
 	--light-color: #aaa;
 	--light-bg: #333;
 	--main-color: #2c3e50;
 }
 
 section {
-	padding: 2rem;
+	padding: 0.5rem;
 	margin: 0 auto;
 	max-width: 1200px;
 }
@@ -170,9 +170,9 @@ section {
 			color: var(--black);
 			background-color: var(--light-bg);
 			border-radius: .5rem;
-			height: 4.5rem;
-			width: 4.5rem;
-			line-height: 4.5rem;
+			height: 3.5rem;
+			width: 3.5rem;
+			line-height: 3.5rem;
 			cursor: pointer;
 			text-align: center;
 			margin-left: .7rem;
@@ -228,7 +228,7 @@ section {
 	position: fixed;
 	top: 0;
 	left: 0;
-	width: 30rem;
+	width: 25rem;
 	background-color: var(--white);
 	height: 100vh;
 	border-right: var(--border);
@@ -314,10 +314,10 @@ section {
 
 .courses .box-container {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(38rem, 1fr));
 	gap: 1.5rem;
 	justify-content: center;
-	align-items: flex-start;
+	align-items: center;
 }
 
 	.courses .box-container .box {
@@ -397,7 +397,7 @@ section {
 		background-color: var(--white);
 		border-radius: .5rem;
 		padding: 2rem;
-		width: 50rem;
+		width: 80rem;
 	}
 
 		.form-container form h3 {
@@ -433,7 +433,7 @@ section {
 			border-radius: .5rem;
 			padding: 1.4rem;
 			background-color: var(--light-bg);
-			width: 40%;
+			width: 70%;
 			margin: 1rem;
 		}
 
@@ -517,10 +517,11 @@ section {
 
 	.table th,
 	.table td {
-		padding: 0.75rem;
-		vertical-align: top;
-		border-top: 1px solid #dee2e6;
-		font-size:1.3rem;
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+    font-size: 1.6rem;
+   
 	}
 
 	.table thead th {
