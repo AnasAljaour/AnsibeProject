@@ -8,10 +8,11 @@
     <form method="post" asp-controller="Course" asp-action="@action">
         <h3>@action</h3>
         <div class="text-danger" asp-validation-summary="All"></div>
-        <label asp-for="CourseCode"></label>
+
+        <label asp-for="CourseCode">Course Code</label>
         @if (action == "Edit")
         {
-            <input type="text" asp-for="CourseCode" placeholder="Course Code" class="box" disabled>
+            <input type="text" asp-for="CourseCode" placeholder="Course Code" class="box" readonly>
         }
         else
         {
@@ -19,46 +20,46 @@
         }
 
         <p class="text-danger" asp-validation-for="CourseCode"></p>
-        <label asp-for="CourseDescription"> </label>
+        <label asp-for="CourseDescription">Course Description</label>
         <input type="text" asp-for="CourseDescription" placeholder="Course Description" class="box">
         <p class="text-danger" asp-validation-for="CourseDescription"></p>
-        <label asp-for="Semester"> </label>
+        <label asp-for="Semester">Semester</label>
         <input type="text" asp-for="Semester" placeholder="Semester" class="box">
         <p class="text-danger" asp-validation-for="Semester"></p>
         <div class="special">
             <table class="table">
     <tr>
                     <td>
-                        <label asp-for="NumberOfCredits"> </label><br />
+                        <label asp-for="NumberOfCredits">Number Of Credits</label><br />
                         <input type="number" asp-for="NumberOfCredits" placeholder="Number Of Credits" class="specialbox">
                         <p class="text-danger" asp-validation-for="NumberOfCredits"></p>
                     </td>
                     <td>
-                        <label asp-for="NumberOfHours"> </label><br />
+                        <label asp-for="NumberOfHours">Course Hours</label><br />
                         <input type="number" asp-for="NumberOfHours" placeholder="Number Of Hours" class="specialbox">
                         <p class="text-danger" asp-validation-for="NumberOfHours"></p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label asp-for="TP"> </label><br />
+                        <label asp-for="TP">TP Hours</label><br />
                         <input type="number" asp-for="TP" placeholder="TP" class="specialbox">
                         <p class="text-danger" asp-validation-for="TP"></p>
                     </td>
                     <td>
-                        <label asp-for="TD"> </label><br />
+                        <label asp-for="TD">TD Hours</label><br />
                         <input type="number" asp-for="TD" placeholder="TD" class="specialbox">
                         <p class="text-danger" asp-validation-for="TD"></p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <label asp-for="TotalNumberOfHours"> </label><br />
+                        <label asp-for="TotalNumberOfHours">Total Number Of Hours</label><br />
                         <input type="number" asp-for="TotalNumberOfHours" placeholder="Total hours" class="specialbox">
                         <p class="text-danger" asp-validation-for="TotalNumberOfHours"></p>
                     </td>
                     <td>
-                        <label asp-for="Major"> </label><br />
+                        <label asp-for="Major">Course Major</label><br />
                         <select asp-for="Major" asp-items="Html.GetEnumSelectList<AnsibeProject.Models.CourseMajor>()"
                                 class="specialbox">
                             <option value="">Course Major</option>
@@ -68,7 +69,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label asp-for="CourseState"> </label><br />
+                        <label asp-for="CourseState">Course State</label><br />
                         <select asp-for="CourseState" asp-items="Html.GetEnumSelectList<AnsibeProject.Models.ActiveState>()"
                                 class="specialbox">
                             <option value="">CourseState</option>
@@ -77,7 +78,7 @@
                         <p class="text-danger" asp-validation-for="CourseState"></p>
                     </td>
                     <td>
-                        <label asp-for="Obligatory"> </label><br />
+                        <label asp-for="Obligatory">Obligatory</label><br />
                         <select asp-for="Obligatory" asp-items="Html.GetEnumSelectList<AnsibeProject.Models.CourseObligatory>()"
                                 class="specialbox">
                             <option value="">Obligatory</option>
@@ -88,14 +89,6 @@
                 </tr>
 
             </table>
-            
-            
-            
-           
-           
-
-            
-
            
           
         </div>
