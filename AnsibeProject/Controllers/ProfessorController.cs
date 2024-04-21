@@ -115,6 +115,7 @@ namespace AnsibeProject.Controllers
         public IActionResult Add()
         {
             ViewBag.Action = "Add";
+            ViewBag.ContractTypes = getContractTypes();
             return View();
         }
 
