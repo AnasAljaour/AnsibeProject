@@ -33,7 +33,7 @@
         @if (action == "Add")
         {
             <label asp-for="FileNumber"><span>*</span></label>
-            <input type="number" asp-for="FileNumber" placeholder="enter file number" class="box">
+            <input type="text" asp-for="FileNumber" placeholder="enter file number" class="box">
             <span asp-validation-for="FileNumber"></span>
         }
 
@@ -41,10 +41,10 @@
         <input type="date" asp-for="DateOfBirth" class="box">
         <span asp-validation-for="DateOfBirth"></span>
         <label asp-for="PhoneNumber"><span>*</span></label>
-        <input type="number" asp-for="PhoneNumber" placeholder="enter phone number" class="box">
+        <input type="text" asp-for="PhoneNumber" placeholder="enter phone number" class="box">
         <span asp-validation-for="PhoneNumber"></span>
         <label asp-for="Email"><span>*</span></label>
-        <input type="email" asp-for="Email" placeholder="enter email" class="box">
+        <input type="text" asp-for="Email" placeholder="enter email" class="box">
         <span asp-validation-for="Email"></span>
         
         <select title="ContractType" asp-for="Contract.ContractType"
@@ -55,12 +55,12 @@
                 <option value="@contract">@contract</option>
             }
         </select>
-        <label asp-for="Contract.MaxHours"><span>*</span></label>
-        <input type="number" asp-for="Contract.MaxHours" placeholder="max hours" class="box">
+        @* <label asp-for="Contract.MaxHours"><span>*</span></label>
+        <input type="text" asp-for="Contract.MaxHours" placeholder="max hours" class="box">
         <span asp-validation-for="Contract.MaxHours"></span>
         <label asp-for="Contract.MinHours"><span>*</span></label>
-        <input type="number" asp-for="Contract.MinHours" placeholder="min hours" class="box">
-        <span asp-validation-for="Contract.MinHours"></span>
+        <input type="text" asp-for="Contract.MinHours" placeholder="min hours" class="box">
+        <span asp-validation-for="Contract.MinHours"></span> *@
         <select title="Rank" asp-for="Rank" asp-items="Html.GetEnumSelectList<AnsibeProject.Models.Rank>()"
         class="specialbox">
         <option value=""></option>

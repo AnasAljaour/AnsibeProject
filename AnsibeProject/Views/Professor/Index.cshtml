@@ -1,10 +1,11 @@
 ﻿@using AnsibeProject.Models;
 @model List<Professor>;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
+<section class="courses">
+    <h1 class="heading">Professors !</h1>
 <div class="box-container">
-    <div class="box">
-        <a asp-controller="Professor" asp-action="Add" name="button" class="inline-btn">add</a>
+    <div class="box" style="height:70%;justify-content:center;align-content:center;">
+            <a asp-controller="Professor" asp-action="Add" name="button" class="inline-btn" style="border:dashed;width:30%;height:20%;font-size:20px;position:relative">Add +</a>
     </div>
     
 
@@ -15,67 +16,84 @@
             @if (professor.ActiveState.Equals(ActiveState.Active))
             {
                 <div class="box">
-                    <div class="info">
-                    <h3>@professor.FullNameInArabic</h3>
-                    <span>@professor.Speciality</span>
+                    <div class="tutor">
+                            <h1 class="h1-class">@professor.FirstName</h1>
+                            <h1 class="h1-class">@professor.MiddleName</h1>
+                            <h1 class="h1-class">@professor.LastName</h1>
+                    
                 </div>
+                        <span>@professor.Speciality</span>
                 <table class="table table-striped">
-                    <tr>
-                        <td>
-                            @professor.DateOfBirth
-                        </td>
-                        <td>
-                            File Number : @professor.FileNumber
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @professor.Email
-                        </td>
-                        <td>
-                            @professor.PhoneNumber
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Contract Type : @professor.Contract.ContractType
-                        </td>
-                        <td>
-                            Maximum Hours : @professor.Contract.MaxHours
-                        </td>
-                        <td>
-                            Minimum Hours : @professor.Contract.MinHours
-                        </td>
-                        <tr>
-                            Rank : @professor.Rank
-                        </tr>
-                    </tr>
+                            <tr>
+                                <td>
+                                    File Number : @professor.FileNumber
+                                </td>
+                                <td>
+                                    @professor.Rank
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @professor.Email
+                                </td>
+                                <td>
+                                    Tel: @professor.PhoneNumber
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @professor.DateOfBirth
+                                </td>
+                                <td>
+                                    Contract: @professor.Contract.ContractType
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Maximum Hours : @professor.Contract.MaxHours
+                                </td>
+                                <td>
+                                    Minimum Hours : @professor.Contract.MinHours
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    @professor.FullNameInArabic
+                                </td>
+
+                            </tr>
+
 
                 </table>
+                        <div class="flex-btn">
                 <a asp-route-FileNumber="@professor.FileNumber" class="inline-btn"
                    asp-controller="Professor" asp-action="Edit">Edit</a>
                 <a class="inline-btn" id="toggle-btn" asp-controller="Professor" asp-action="ChangeState" asp-route-FileNumber="@professor.FileNumber" 
-                asp-route-CourseState=@ActiveState.NotActive onclick="toggleState('@professor.FileNumber')">disabled</a>
-                <a class="inline-btn"
+                asp-route-CourseState=@ActiveState.NotActive onclick="toggleState('@professor.FileNumber')">Active</a>
+                <a class="inline-delete-btn"
                    onclick="showAlert('@professor.FileNumber')">Delete</a>
 
-
+                   </div>
                 </div>
             }
             else
             {
                 <div class="box unactive">
-                    <div class="info">
-                    <h3>@professor.FullNameInArabic</h3>
-                    <span>@professor.Speciality</span>
+                    <div class="tutor">
+                    <h1 class="h1-class">@professor.FirstName</h1>
+                            <h1 class="h1-class">@professor.MiddleName</h1>
+                            <h1 class="h1-class">@professor.LastName</h1>
+                   
                 </div>
+                        <span>@professor.Speciality</span>
                 <table class="table table-striped">
                     <tr>
                         <td>
-                            @professor.DateOfBirth
+                                    File Number : @professor.FileNumber
                         </td>
                         <td>
-                            File Number : @professor.FileNumber
+                            @professor.Rank
                         </td>
                     </tr>
                     <tr>
@@ -83,34 +101,44 @@
                             @professor.Email
                         </td>
                         <td>
-                            @professor.PhoneNumber
+                            Tel: @professor.PhoneNumber
                         </td>
                     </tr>
+                            <tr>
+                                <td>
+                                    @professor.DateOfBirth
+                                </td>
+                                <td>
+                                    Contract: @professor.Contract.ContractType
+                                </td>
+                            </tr>
                     <tr>
-                        <td>
-                            Contract Type : @professor.Contract.ContractType
-                        </td>
                         <td>
                             Maximum Hours : @professor.Contract.MaxHours
                         </td>
                         <td>
                             Minimum Hours : @professor.Contract.MinHours
                         </td>
-                        <tr>
-                            Rank : @professor.Rank
-                        </tr>
+                        
                     </tr>
+                            <tr>
+                                <td colspan="2">
+                                    @professor.FullNameInArabic
+                                </td>
+                            
+                            </tr>
 
                 </table>
+                <div class="flex-btn">
                 <a asp-route-FileNumber="@professor.FileNumber" class="inline-btn"
                    asp-controller="Professor" asp-action="Edit">Edit</a>
                     <a class="inline-btn" id="toggle-btn" asp-controller="Professor" asp-action="ChangeState"
                     asp-route-FileNumber="@professor.FileNumber" asp-route-FileNumber=@ActiveState.Active 
-                    onclick="toggleState('@professor.FileNumber')">abled</a>
-                <a class="inline-btn"
+                    onclick="toggleState('@professor.FileNumber')">Passive</a>
+                <a class="inline-delete-btn"
                    onclick="showAlert('@professor.FileNumber')">Delete</a>
 
-
+                </div>
                 </div>
             }
 
@@ -118,6 +146,7 @@
     }
 
 </div>
+</section>
 @section Scripts {
     <script>
         function toggleState(FileNumber) {
