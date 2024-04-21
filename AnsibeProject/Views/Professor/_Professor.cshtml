@@ -49,7 +49,7 @@
         
         <select title="ContractType" asp-for="Contract.ContractType"
                 class="specialbox">
-            <option value=""></option>
+            <option value="">Contract type</option>
             @foreach (var contract in ViewBag.ContractTypes)
             {
                 <option value="@contract">@contract</option>
@@ -63,7 +63,7 @@
         <span asp-validation-for="Contract.MinHours"></span> *@
         <select title="Rank" asp-for="Rank" asp-items="Html.GetEnumSelectList<AnsibeProject.Models.Rank>()"
         class="specialbox">
-        <option value=""></option>
+        <option value="">Rank</option>
         </select>
         <label asp-for="Speciality"><span>*</span></label>
         <input type="text" asp-for="Speciality" placeholder="enter speciality" class="box">
