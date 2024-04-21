@@ -150,7 +150,7 @@ namespace AnsibeProject.Controllers
         }
         public IActionResult ChangeState(string courseCode,ActiveState newState)
         {
-            if(!(courseCode.IsNullOrEmpty) && newState!=null)
+            if(!(courseCode.IsNullOrEmpty()) && newState!=null)
             {
                 try
                 {
