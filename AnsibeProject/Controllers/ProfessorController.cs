@@ -198,7 +198,7 @@ namespace AnsibeProject.Controllers
         public List<Professor> GetProfessors()
         {
             List<Professor> temp = new List<Professor>();
-            foreach(var p in _db.Professors.ToList())
+            foreach(var p in _db.Professors.Include(p => p.Contract).ToList())
             {
                 Professor tempProfessor = new Professor();
                 tempProfessor.FileNumber = p.FileNumber;
