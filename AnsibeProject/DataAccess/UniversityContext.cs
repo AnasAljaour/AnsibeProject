@@ -8,5 +8,6 @@ namespace AnsibeProject.Data
         public UniversityContext(DbContextOptions options) : base(options) { }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Professor> Professors { get; set;}
+        public DbSet<Contract> Contracts { get; set; }
     }
 }

@@ -55,16 +55,15 @@ namespace AnsibeProject.Models
         [RegularExpression(@"^[\u0600-\u06FF\s]+$", ErrorMessage = "يرجى إدخال أحرف عربية فقط.")]
         public string FullNameInArabic {  get; set; } = string.Empty;
 
-
-
-
-
         [Required(ErrorMessage ="Rank is required")]
         public Rank Rank { get; set; }
 
         [Required(ErrorMessage = "Active State is required")]
         [Display(Name ="Active state")]
         public ActiveState ActiveState { get; set; }
+
+        [Required]
+        public Contract Contract { get; set; }
 
 
 

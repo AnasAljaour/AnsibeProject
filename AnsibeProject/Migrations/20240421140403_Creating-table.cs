@@ -6,11 +6,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AnsibeProject.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Creatingtable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Contract",
+                columns: table => new
+                {
+                    ContractType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    MaxHours = table.Column<int>(type: "int", nullable: true),
+                    MinHours = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contract", x => x.ContractType);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Courses",
                 columns: table => new
@@ -46,12 +59,25 @@ namespace AnsibeProject.Migrations
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Speciality = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     FullNameInArabic = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    ContractType = table.Column<int>(type: "int", nullable: false)
+                    Rank = table.Column<int>(type: "int", nullable: false),
+                    ActiveState = table.Column<int>(type: "int", nullable: false),
+                    ContractType = table.Column<string>(type: "nvarchar(100)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Professors", x => x.FileNumber);
+                    table.ForeignKey(
+                        name: "FK_Professors_Contract_ContractType",
+                        column: x => x.ContractType,
+                        principalTable: "Contract",
+                        principalColumn: "ContractType",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Professors_ContractType",
+                table: "Professors",
+                column: "ContractType");
         }
 
         /// <inheritdoc />
@@ -62,6 +88,9 @@ namespace AnsibeProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "Professors");
+
+            migrationBuilder.DropTable(
+                name: "Contract");
         }
     }
 }

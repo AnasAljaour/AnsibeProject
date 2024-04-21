@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AnsibeProject.Migrations
 {
     [DbContext(typeof(UniversityContext))]
-    [Migration("20240419211810_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240421140403_Creating-table")]
+    partial class Creatingtable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,23 @@ namespace AnsibeProject.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AnsibeProject.Models.Contract", b =>
+                {
+                    b.Property<string>("ContractType")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("MaxHours")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinHours")
+                        .HasColumnType("int");
+
+                    b.HasKey("ContractType");
+
+                    b.ToTable("Contract");
+                });
 
             modelBuilder.Entity("AnsibeProject.Models.Course", b =>
                 {
@@ -76,8 +93,12 @@ namespace AnsibeProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FileNumber"));
 
-                    b.Property<int>("ContractType")
+                    b.Property<int>("ActiveState")
                         .HasColumnType("int");
+
+                    b.Property<string>("ContractType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date");
@@ -112,6 +133,9 @@ namespace AnsibeProject.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int>("Rank")
+                        .HasColumnType("int");
+
                     b.Property<string>("Speciality")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -119,7 +143,20 @@ namespace AnsibeProject.Migrations
 
                     b.HasKey("FileNumber");
 
+                    b.HasIndex("ContractType");
+
                     b.ToTable("Professors");
+                });
+
+            modelBuilder.Entity("AnsibeProject.Models.Professor", b =>
+                {
+                    b.HasOne("AnsibeProject.Models.Contract", "Contract")
+                        .WithMany()
+                        .HasForeignKey("ContractType")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contract");
                 });
 #pragma warning restore 612, 618
         }
