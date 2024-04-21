@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AnsibeProject.Models
 {
@@ -7,6 +8,7 @@ namespace AnsibeProject.Models
         [Required(ErrorMessage = "File Number is required")]
         [Key]
         [Display(Name ="File Number")]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int FileNumber { get; set; }
 
         [Required(ErrorMessage = "First name is required.")]

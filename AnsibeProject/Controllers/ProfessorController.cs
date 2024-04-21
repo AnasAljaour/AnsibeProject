@@ -139,7 +139,7 @@ namespace AnsibeProject.Controllers
                     }
                     catch (Exception ex)
                     {
-                        ModelState.AddModelError("", "failed to add Professor");
+                        ModelState.AddModelError("", "failed to add professor");
                         ModelState.AddModelError("", ex.Message);
 
                     }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AnsibeProject.Migrations
 {
     [DbContext(typeof(UniversityContext))]
-    [Migration("20240421140403_Creating-table")]
-    partial class Creatingtable
+    [Migration("20240421161928_Initial-Migration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,7 +39,7 @@ namespace AnsibeProject.Migrations
 
                     b.HasKey("ContractType");
 
-                    b.ToTable("Contract");
+                    b.ToTable("Contracts");
                 });
 
             modelBuilder.Entity("AnsibeProject.Models.Course", b =>
@@ -88,10 +88,7 @@ namespace AnsibeProject.Migrations
             modelBuilder.Entity("AnsibeProject.Models.Professor", b =>
                 {
                     b.Property<int>("FileNumber")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FileNumber"));
 
                     b.Property<int>("ActiveState")
                         .HasColumnType("int");
@@ -151,12 +148,17 @@ namespace AnsibeProject.Migrations
             modelBuilder.Entity("AnsibeProject.Models.Professor", b =>
                 {
                     b.HasOne("AnsibeProject.Models.Contract", "Contract")
-                        .WithMany()
+                        .WithMany("Professors")
                         .HasForeignKey("ContractType")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Contract");
+                });
+
+            modelBuilder.Entity("AnsibeProject.Models.Contract", b =>
+                {
+                    b.Navigation("Professors");
                 });
 #pragma warning restore 612, 618
         }

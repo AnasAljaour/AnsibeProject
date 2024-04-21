@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AnsibeProject.Migrations
 {
     /// <inheritdoc />
-    public partial class Creatingtable : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Contract",
+                name: "Contracts",
                 columns: table => new
                 {
                     ContractType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -21,7 +21,7 @@ namespace AnsibeProject.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Contract", x => x.ContractType);
+                    table.PrimaryKey("PK_Contracts", x => x.ContractType);
                 });
 
             migrationBuilder.CreateTable(
@@ -49,8 +49,7 @@ namespace AnsibeProject.Migrations
                 name: "Professors",
                 columns: table => new
                 {
-                    FileNumber = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FileNumber = table.Column<int>(type: "int", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     MiddleName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
@@ -67,9 +66,9 @@ namespace AnsibeProject.Migrations
                 {
                     table.PrimaryKey("PK_Professors", x => x.FileNumber);
                     table.ForeignKey(
-                        name: "FK_Professors_Contract_ContractType",
+                        name: "FK_Professors_Contracts_ContractType",
                         column: x => x.ContractType,
-                        principalTable: "Contract",
+                        principalTable: "Contracts",
                         principalColumn: "ContractType",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -90,7 +89,7 @@ namespace AnsibeProject.Migrations
                 name: "Professors");
 
             migrationBuilder.DropTable(
-                name: "Contract");
+                name: "Contracts");
         }
     }
 }
