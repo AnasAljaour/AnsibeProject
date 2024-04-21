@@ -9,7 +9,11 @@
 <section class="form-container">
 
 
-    <form asp-controller="ProfessorController" asp-action="@action" method="post" enctype="multipart/form-data">
+    <form asp-controller="Professor" asp-action="@action" method="post">
+        <div asp-validation-summary="All">
+
+        </div>
+        
         @if (action == "Edit")
         {
             <input type="text" asp-for="FileNumber" disabled />
@@ -40,11 +44,11 @@
         <label asp-for="Email"><span>*</span></label>
         <input type="email" asp-for="Email" name="email" placeholder="enter email" maxlength="20" class="box">
         <span asp-validation-for="Email"></span>
-        <label asp-for="Contract"><span>*</span></label>
-        <input type="text" asp-for="Contract" name="conrtract" placeholder="enter contract type" maxlength="20" class="box">
-        <span asp-validation-for="Contract"></span>
+        <label asp-for="ContractType"><span>*</span></label>
+        <input type="text" asp-for="ContractType" name="conrtract" placeholder="enter contract type" maxlength="20" class="box">
+        <span asp-validation-for="ContractType"></span>
         <label asp-for="Speciality"><span>*</span></label>
-        <input type="number" asp-for="Speciality" name="speciality" placeholder="enter speciality" maxlength="20" class="box">
+        <input type="text" asp-for="Speciality" name="speciality" placeholder="enter speciality" maxlength="20" class="box">
         <span asp-validation-for="Speciality"></span>
         <label asp-for="FullNameInArabic"><span>*</span></label>
         <input type="text" asp-for="FullNameInArabic" name="fullname" placeholder="enter full name" maxlength="20" class="box">
