@@ -51,7 +51,7 @@ namespace AnsibeProject.Models
         [MaxLength(255)]
         public string Speciality {  get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Name in Arabic is required.")]
+        [Required(ErrorMessage = "الأسم باللغة العربية مطلوب")]
         [Display(Name = "Full Name In Arabic")]
         [MaxLength(255)]
         [RegularExpression(@"^[\u0600-\u06FF\s]+$", ErrorMessage = "يرجى إدخال أحرف عربية فقط.")]

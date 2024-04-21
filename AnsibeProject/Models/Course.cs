@@ -42,6 +42,7 @@ namespace AnsibeProject.Models
 
         [Required]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "number of hours must be a positive integer !")]
+
         public int TD { get; set; }
 
         [Required]
