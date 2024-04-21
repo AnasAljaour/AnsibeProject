@@ -1,38 +1,45 @@
 ﻿using AnsibeProject.Data;
 using AnsibeProject.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 namespace AnsibeProject.Controllers.CourseWork
 {
     public class Courses
     {
-        private readonly UniversityContext  _universityContext;
+        private readonly UniversityContext _universityContext;
         public Courses(UniversityContext universityContext)
         {
             _universityContext = universityContext;
         }
 
-        public Course getCourseByCode(string CourseCode) 
+        public Course getCourseByCode(string CourseCode)
         {
-            Course courseToreturn= _universityContext.Courses.Find(CourseCode);  
+            Course courseToreturn = _universityContext.Courses.Find(CourseCode);
             if (courseToreturn == null)
             {
                 throw new Exception("Counrs not found !");
             }
             return courseToreturn;
         }
-        public List<Course> getAllCourses() 
+        public List<Course> getAllCourses()
         {
             return _universityContext.Courses.ToList();
         }
-        public void AddCourse(Course course) 
+        public void AddCourse(Course course)
         {
             _universityContext.Courses.Add(course);
             _universityContext.SaveChanges();
         }
+        public void UpdateCourseState(string courseCode, ActiveState newstate)
+            {
+            Course courseToUpdate = getCourseByCode(courseCode);
+            courseToUpdate.CourseState = newstate;
+            UpdateCourse(courseToUpdate);
+        }
         public void UpdateCourse(Course course)
         {
-            Console.WriteLine("Courses.UpdateCourse");
+            //Console.WriteLine("Courses.UpdateCourse");
             /*Course original = getCourseByCode(course.CourseCode);
             original.CourseDescription= course.CourseDescription;
             original.NumberOfCredits= course.NumberOfCredits;

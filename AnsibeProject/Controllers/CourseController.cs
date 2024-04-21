@@ -121,6 +121,7 @@ namespace AnsibeProject.Controllers
         }
         public IActionResult Delete(string CourseCode) 
         {
+            
             //check if not null 
             if(! CourseCode.IsNullOrEmpty())
             {
@@ -143,9 +144,27 @@ namespace AnsibeProject.Controllers
             {
                 ModelState.AddModelError("", "failed to get course instance null or empty issue");
             }
-
+            
             return RedirectToAction(nameof(Index));
 
+        }
+        public IActionResult ChangeState(string courseCode,ActiveState newState)
+        {
+            if(!(courseCode.IsNullOrEmpty) && newState!=null)
+            {
+                try
+                {
+                    courses.UpdateCourseState(courseCode, newState);
+                }catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "changing course state failed !");
+                    ModelState.AddModelError("", ex.Message);
+                }
+            }else
+            {
+                ModelState.AddModelError("", "course Code/course state failed with null or empty issue");
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
