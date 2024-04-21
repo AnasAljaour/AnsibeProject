@@ -148,13 +148,13 @@ namespace AnsibeProject.Controllers
             return RedirectToAction(nameof(Index));
 
         }
-        public IActionResult ChangeState(string courseCode,ActiveState newState)
+        public IActionResult ChangeState(Course course)
         {
-            if(!(courseCode.IsNullOrEmpty()) && newState!=null)
+            if(course!=null)
             {
                 try
                 {
-                    courses.UpdateCourseState(courseCode, newState);
+                    courses.UpdateCourseState(course.CourseCode,course.CourseState);
                 }catch (Exception ex)
                 {
                     ModelState.AddModelError("", "changing course state failed !");
