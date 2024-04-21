@@ -60,6 +60,12 @@ body {
 	body.active {
 		padding-left: 0;
 	}
+.unactive {
+	--white: #c0c2c4;
+	--light-color: #aaa;
+	--light-bg: #333;
+	--main-color: #2c3e50;
+}
 
 section {
 	padding: 2rem;
@@ -85,6 +91,7 @@ section {
 	border-radius: .5rem;
 	color: #fff;
 	font-size: 1.3rem;
+	font-weight: bold;
 	cursor: pointer;
 	text-transform: capitalize;
 	padding: 1rem 3rem;
@@ -318,6 +325,7 @@ section {
 		background-color: var(--white);
 		padding: 2rem;
 		border: 1px solid var(--main-color);
+		text-align: center;
 	}
 
 		.courses .box-container .box .tutor {
@@ -325,7 +333,9 @@ section {
 			align-items: center;
 			gap: 1.5rem;
 			margin-bottom: 2.5rem;
+			justify-content: center;
 		}
+		
 
 
 
@@ -521,4 +531,9 @@ section {
 
 .table-striped tr:nth-of-type(odd) {
 	background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+.info h3{
+	text-align:center;
+
 }

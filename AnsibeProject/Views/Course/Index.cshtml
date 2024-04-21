@@ -9,8 +9,10 @@
     <h1 class="heading">our courses</h1>
 <div class="box-container">
     @foreach(var course in Model){
-                <div class="box">
-                    <div class="info">
+                if (course.CourseState.Equals(ActiveState.Active))
+                {
+                <div class="box" id="@course.CourseCode">
+                    <div class="tutor">
                         <h3>@course.CourseDescription</h3>
                     </div>
                     <table class="table table-striped">
@@ -61,12 +63,73 @@
                         </tr>
                     </table>
                     <div class="flex-btn">
-                        <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-option-btn">edit</a>
+                        <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
+                            <a class="inline-btn" id="toggle-btn" asp-controller="Course" asp-action="ChangeState" asp-route-CourseCode="@course.CourseCode" asp-route-CourseState=@ActiveState.NotActive onclick="toggleState('@course.CourseCode')">disabled</a>
                         <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
-                        <a class="inline-btn">Active</a>
                     </div>
-                </div>
-}
+                    </div>
+                }
+                else
+                {
+                    <div class="box unactive" id="@course.CourseCode">
+                        <div class="tutor">
+                            <h3>@course.CourseDescription</h3>
+                        </div>
+                        <table class="table table-striped">
+                            <tr>
+                                <td>
+                                    Course Code : @course.CourseCode
+
+                                </td>
+                                <td>
+                                    Course Major : @course.Major
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Numbero Of Credits : @course.NumberOfCredits
+
+                                </td>
+                                <td>
+                                    Number Of Hours : @course.NumberOfHours
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    TP : @course.TP
+                                </td>
+                                <td>
+                                    TD : @course.TD
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Total hours : @course.TotalNumberOfHours
+                                </td>
+                                <td>
+                                    Semester : @course.Semester
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Course State : @course.CourseState
+                                </td>
+
+                                <td>
+                                    Obligatory : @course.Obligatory
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="flex-btn">
+                            <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
+                            <a class="inline-btn" id="toggle-btn" asp-controller="Course" asp-action="ChangeState" asp-route-CourseCode="@course.CourseCode" asp-route-CourseState=@ActiveState.Active onclick="toggleState('@course.CourseCode')">abled</a>
+                            <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
+                        </div>
+                    </div>
+                }
+            }
     
             </div>
             </section>
@@ -78,6 +141,10 @@ else{
 
 @section Scripts {
     <script>
+        function toggleState(courseCode) {
+            let body = document.getElementById(courseCode);
+            body.classList.toggle('unactive');
+        }
         function confirmDelete(courseCode) {
             Swal.fire({
                 title: "Are you sure you want to delete this course?",
