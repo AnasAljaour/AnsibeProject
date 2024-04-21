@@ -52,13 +52,20 @@ namespace AnsibeProject.Models
         [Required(ErrorMessage = "Name in Arabic is required.")]
         [Display(Name = "Full Name In Arabic")]
         [MaxLength(255)]
+        [RegularExpression(@"^[\u0600-\u06FF\s]+$", ErrorMessage = "يرجى إدخال أحرف عربية فقط.")]
         public string FullNameInArabic {  get; set; } = string.Empty;
 
 
 
-        [Required(ErrorMessage ="Contract Type is required.")]
-        [Display(Name = "Contract Type")]
-        public ContractType ContractType { get; set; }
+
+
+        [Required(ErrorMessage ="Rank is required")]
+        public Rank Rank { get; set; }
+
+        [Required(ErrorMessage = "Active State is required")]
+        [Display(Name ="Active state")]
+        public ActiveState ActiveState { get; set; }
+
 
 
 

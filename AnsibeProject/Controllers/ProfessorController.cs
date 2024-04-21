@@ -187,10 +187,12 @@ namespace AnsibeProject.Controllers
                 tempProfessor.MiddleName = p.MiddleName;
                 tempProfessor.PhoneNumber = p.PhoneNumber;
                 tempProfessor.DateOfBirth = p.DateOfBirth;
-                tempProfessor.ContractType = p.ContractType;
+       
                 tempProfessor.Speciality = p.Speciality;
                 tempProfessor.FullNameInArabic = p.FullNameInArabic;
                 tempProfessor.Email = p.Email;
+                tempProfessor.ActiveState = p.ActiveState;
+                tempProfessor.Rank = p.Rank;
 
                 temp.Add(tempProfessor);
             }

@@ -4,7 +4,7 @@
 
 <div class="box-container">
     <div class="box">
-        <a asp-controller="Professor" asp-action="Add" name="button0" >add</a>
+        <a asp-controller="Professor" asp-action="Add" name="button0" class="inline-btn">add</a>
     </div>
     @if (Model != null && Model.Count() > 0)
     {
@@ -35,7 +35,7 @@
                         </tr>
                         <tr>
                             <td>
-                                Contract Type : @professor.ContractType
+                                Contract Type : @professor.Contract
                             </td>
                         </tr>
 
