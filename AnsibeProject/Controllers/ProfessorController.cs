@@ -1,6 +1,8 @@
 ﻿using AnsibeProject.Data;
 using AnsibeProject.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AnsibeProject.Controllers
 {
@@ -37,6 +39,7 @@ namespace AnsibeProject.Controllers
                     else
                     {
                         ViewBag.Action = "Edit";
+                        ViewBag.ContractTypes = getContractTypes();
                         return View(professorToUpdate);
                     }
                 }
@@ -60,9 +63,16 @@ namespace AnsibeProject.Controllers
         //after submition the form from edit page
         [HttpPost]
         public IActionResult Edit(Professor professor)
+
         {
             if (professor != null) // instance of profeesor is null
             {
+                if (!professor.Contract.ContractType.IsNullOrEmpty())
+               {
+                Contract? contract = getContract(professor.Contract.ContractType);
+                    professor.Contract = contract;
+               }
+            
                 if (ModelState.IsValid)
                 {
                     try
@@ -81,6 +91,7 @@ namespace AnsibeProject.Controllers
                 else // Model not valid stay on the same page
                 {
                     ViewBag.Action = "Edit";
+                    ViewBag.ContractTypes = getContractTypes();
                     return View(professor);
                 }
             }
@@ -90,6 +101,7 @@ namespace AnsibeProject.Controllers
             }
             // stay on the same Page
             ViewBag.Action = "Edit";
+            ViewBag.ContractTypes = getContractTypes();
             return View(professor);
 
         }
@@ -111,6 +123,11 @@ namespace AnsibeProject.Controllers
         {
             if (professor != null) // professor is not null
             {
+                if (!professor.Contract.ContractType.IsNullOrEmpty())
+                {
+                    Contract? contract = getContract(professor.Contract.ContractType);
+                    professor.Contract = contract;
+                }
                 if (ModelState.IsValid) // unvalide attributes were entered
                 {
                     try
@@ -129,6 +146,7 @@ namespace AnsibeProject.Controllers
                 else // Model is not valid
                 {
                     ViewBag.Action = "Add";
+                    ViewBag.ContractTypes = getContractTypes();
                     return View(professor);
                 }
             }
@@ -138,6 +156,7 @@ namespace AnsibeProject.Controllers
             }
             // go to form 
             ViewBag.Action = "Add";
+            ViewBag.ContractTypes = getContractTypes();
             return View("Add", professor);
         }
 
@@ -187,7 +206,7 @@ namespace AnsibeProject.Controllers
                 tempProfessor.MiddleName = p.MiddleName;
                 tempProfessor.PhoneNumber = p.PhoneNumber;
                 tempProfessor.DateOfBirth = p.DateOfBirth;
-       
+                tempProfessor.Contract = p.Contract;
                 tempProfessor.Speciality = p.Speciality;
                 tempProfessor.FullNameInArabic = p.FullNameInArabic;
                 tempProfessor.Email = p.Email;
@@ -202,7 +221,9 @@ namespace AnsibeProject.Controllers
         public Professor? getProfessorByFileNumber(int? fileNumber)
         {
             if (fileNumber == null) return null;
-            Professor? professor = _db.Professors.SingleOrDefault(p => p.FileNumber == fileNumber);
+            Professor? professor = _db.Professors.Include(p => p.Contract) 
+                       .FirstOrDefault(p => p.FileNumber == fileNumber);
+                
             return professor;
 
         }
@@ -218,6 +239,16 @@ namespace AnsibeProject.Controllers
 
 
 
+        }
+
+        public List<string> getContractTypes()
+        {
+            return _db.Contracts.Select(c => c.ContractType).ToList();
+        }
+
+        public Contract? getContract(string ContractType)
+        {
+            return _db.Contracts.SingleOrDefault(c => c.ContractType == ContractType);
         }
     }
 }
