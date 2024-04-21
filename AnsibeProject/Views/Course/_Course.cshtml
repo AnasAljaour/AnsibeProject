@@ -11,7 +11,7 @@
         <label asp-for="CourseCode"></label>
         @if (action == "Edit")
         {
-            <input type="text" asp-for="CourseCode" placeholder="Course Code" class="box" disabled>
+            <input type="text" asp-for="CourseCode" placeholder="Course Code" class="box" readonly>
         }
         else
         {
@@ -19,47 +19,40 @@
         }
 
         <p class="text-danger" asp-validation-for="CourseCode"></p>
-        <label asp-for="CourseDescription"> </label>
         <input type="text" asp-for="CourseDescription" placeholder="Course Description" class="box">
         <p class="text-danger" asp-validation-for="CourseDescription"></p>
-        <label asp-for="Semester"> </label>
+
         <input type="text" asp-for="Semester" placeholder="Semester" class="box">
         <p class="text-danger" asp-validation-for="Semester"></p>
         <div class="special">
-            <label asp-for="NumberOfCredits"> </label>
-            <input type="number" asp-for="NumberOfCredits" placeholder="Number Of Credits" class="specialbox">
+            <input type="text" asp-for="NumberOfCredits" placeholder="Number Of Credits" class="specialbox">
             <p class="text-danger" asp-validation-for="NumberOfCredits"></p>
-            <label asp-for="NumberOfHours"> </label>
-            <input type="number" asp-for="NumberOfHours" placeholder="Number Of Hours" class="specialbox">
+            <input type="text" asp-for="NumberOfHours" placeholder="Number Of Hours" class="specialbox">
             <p class="text-danger" asp-validation-for="NumberOfHours"></p>
-            <label asp-for="TP"> </label>
-            <input type="number" asp-for="TP" placeholder="TP" class="specialbox">
+            <input type="text" asp-for="TP" placeholder="TP" class="specialbox">
             <p class="text-danger" asp-validation-for="TP"></p>
-            <label asp-for="TD"> </label>
-            <input type="number" asp-for="TD" placeholder="TD" class="specialbox">
+            <input type="text" asp-for="TD" placeholder="TD" class="specialbox">
             <p class="text-danger" asp-validation-for="TD"></p>
-            <label asp-for="TotalNumberOfHours"> </label>
-            <input type="number" asp-for="TotalNumberOfHours" placeholder="Total hours" class="specialbox">
+            <input type="text" asp-for="TotalNumberOfHours" placeholder="Total hours" class="specialbox">
             <p class="text-danger" asp-validation-for="TotalNumberOfHours"></p>
-            <label asp-for="Major"> </label>
             <select asp-for="Major" asp-items="Html.GetEnumSelectList<AnsibeProject.Models.CourseMajor>()"
                     class="specialbox">
-                <option value=""></option>
+                <option value="">Course Major</option>
             </select>
 
             <p class="text-danger" asp-validation-for="Major"></p>
 
-            <label asp-for="CourseState"> </label>
+          
             <select asp-for="CourseState" asp-items="Html.GetEnumSelectList<AnsibeProject.Models.ActiveState>()"
                     class="specialbox">
-                <option value=""></option>
+                <option value="">Course State</option>
             </select>
 
             <p class="text-danger" asp-validation-for="CourseState"></p>
-            <label asp-for="Obligatory"> </label>
-            <select asp-for="CourseState" asp-items="Html.GetEnumSelectList<AnsibeProject.Models.CourseObligatory>()"
+           
+            <select asp-for="Obligatory" asp-items="Html.GetEnumSelectList<AnsibeProject.Models.CourseObligatory>()"
                     class="specialbox">
-                <option value=""></option>
+                <option value="">Obligatory</option>
             </select>
 
             <p class="text-danger" asp-validation-for="Obligatory"></p>
