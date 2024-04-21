@@ -81,12 +81,13 @@ namespace AnsibeProject.Controllers
             ViewBag.Action = "Edit";
             return View("Edit", courseToEdit);
         }
-        public IActionResult AddCourse()
+        public IActionResult Add()
         {
+            ViewBag.Action = "Add";
             return View("Add");
         }
         [HttpPost]
-        public IActionResult AddCourse(Course courseToAdd) 
+        public IActionResult Add(Course courseToAdd) 
         {
             //check for the Object
             if (courseToAdd != null)

@@ -26,6 +26,7 @@ namespace AnsibeProject.Models
         public  int NumberOfCredits { get; set; }
         [Required]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "number of hours must be a positive integer !")]
+        [TotalNumberOfHoursNotExceed("TotalNumberOfHours")]
         public  int TotalNumberOfHours { get; set; }
 
 
@@ -41,6 +42,7 @@ namespace AnsibeProject.Models
 
         [Required]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "number of hours must be a positive integer !")]
+
         public int TD { get; set; }
 
         [Required]
@@ -59,8 +61,8 @@ namespace AnsibeProject.Models
 
 
     }
-    /*[TotalNumberOfHoursNotExceed("TotalNumberOfHours")]
-    class TotalNumberOfHoursNotExceed: ValidationAttribute
+    
+    class TotalNumberOfHoursNotExceed : ValidationAttribute
     {
         private readonly string _totalHoursPropertyName;
         public TotalNumberOfHoursNotExceed(string totalHoursPropertyName)
@@ -71,24 +73,24 @@ namespace AnsibeProject.Models
         {
             var propertyInfo = validationContext.ObjectType.GetProperty(_totalHoursPropertyName);
             var tdProperty = validationContext.ObjectType.GetProperty("TD");
-            var tpProperty = validationContext.ObjectType.GetProperty("TB");
+            var tpProperty = validationContext.ObjectType.GetProperty("TP");
             var courseProperty = validationContext.ObjectType.GetProperty("NumberOfHours");
             if (propertyInfo == null)
             {
                 return new ValidationResult($"Unkown property : {_totalHoursPropertyName}");
             }
-            var totalHoureValue = (int) propertyInfo.GetValue(validationContext.ObjectInstance);
+            var totalHoureValue = (int)propertyInfo.GetValue(validationContext.ObjectInstance);
             var tdValue = (int)tdProperty.GetValue(validationContext.ObjectInstance);
-            var tpValue = (int) tpProperty.GetValue(validationContext.ObjectInstance);
+            var tpValue = (int)tpProperty.GetValue(validationContext.ObjectInstance);
             var courseValue = (int)courseProperty.GetValue(validationContext.ObjectInstance);
-            if ((tdValue+tpValue+courseValue)<=totalHoureValue)
+            if ((tdValue + tpValue + courseValue) <= totalHoureValue)
             {
                 return ValidationResult.Success;
             }
             return new ValidationResult(ErrorMessage ?? $"The sum of course, TD and TB must be less than or equal to {totalHoureValue}.");
         }
-    }*/
+    }
 
-    
+
 }
 

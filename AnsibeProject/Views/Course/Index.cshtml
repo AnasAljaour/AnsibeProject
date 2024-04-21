@@ -10,7 +10,7 @@
                 <h3>Add New Course</h3>
             </div>
 
-            <a asp-controller="Course" asp-action="AddCourse" class="inline-btn">add</a>
+            <a asp-controller="Course" asp-action="Add" class="inline-btn">add</a>
 
         </div>
         @if (Model != null && Model.Count() > 0)
@@ -73,7 +73,7 @@
                         </table>
                         <div class="flex-btn">
                             <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
-                            <a class="inline-btn" id="toggle-btn" asp-controller="Course" asp-action="ChangeState" asp-route-CourseCode="@course.CourseCode" asp-route-CourseState=@ActiveState.NotActive onclick="toggleState('@course.CourseCode')">disabled</a>
+                            <a class="inline-btn" id="toggle-btn" asp-controller="Course" asp-action="ChangeState" asp-route-CourseCode="@course.CourseCode" asp-route-CourseState=@ActiveState.NotActive onclick="toggleState('@course.CourseCode')">Deactivate</a>
                             <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
                         </div>
                     </div>
@@ -133,7 +133,7 @@
                         </table>
                         <div class="flex-btn">
                             <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
-                            <a class="inline-btn" id="toggle-btn" asp-controller="Course" asp-action="ChangeState" asp-route-CourseCode="@course.CourseCode" asp-route-CourseState=@ActiveState.Active onclick="toggleState('@course.CourseCode')">abled</a>
+                            <a class="inline-btn" id="toggle-btn" asp-controller="Course" asp-action="ChangeState" asp-route-CourseCode="@course.CourseCode" asp-route-CourseState=@ActiveState.Active onclick="toggleState('@course.CourseCode')">Activate</a>
                             <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
                         </div>
                     </div>
