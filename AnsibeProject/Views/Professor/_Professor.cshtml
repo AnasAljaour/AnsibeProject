@@ -1,59 +1,79 @@
 ﻿@using AnsibeProject.Models;
 @model Professor
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
 @{
     string action = ViewBag.Action ?? string.Empty;
 }
 
-<section class="form-container">
+<div class="form-container">
 
 
-    <form asp-controller="Professor" asp-action="@action" method="post">
+    <form method="post" asp-controller="Professor" asp-action="@action">
         <div asp-validation-summary="All">
-
         </div>
-        
+
         @if (action == "Edit")
         {
             <input type="text" asp-for="FileNumber" disabled />
             <h3>Edit Professor</h3>
         }
-        <h3>Add a new Professor</h3>
+        else
+        {
+            <h3>Add a new Professor</h3>
+        }
+
         <label asp-for="FirstName"><span>*</span></label>
-        <input type="text" asp-for="FirstName" name="name" placeholder="enter first name" maxlength="50" class="box">
+        <input type="text" asp-for="FirstName" placeholder="enter first name" class="box">
         <span asp-validation-for="FirstName"></span>
         <label asp-for="MiddleName"><span>*</span></label>
-        <input type="text" asp-for="MiddleName" name="middle name" placeholder="enter middle name" maxlength="50" class="box">
+        <input type="text" asp-for="MiddleName" placeholder="enter middle name" class="box">
         <span asp-validation-for="MiddleName"></span>
         <label asp-for="LastName"><span>*</span></label>
-        <input type="text" asp-for="LastName" name="lastName" placeholder="enter last name" maxlength="20" class="box">
+        <input type="text" asp-for="LastName" placeholder="enter last name" class="box">
         <span asp-validation-for="LastName"></span>
-        @if (action == "Add"){
+        @if (action == "Add")
+        {
             <label asp-for="FileNumber"><span>*</span></label>
-            <input type="number" asp-for="FileNumber" name="filenumber" placeholder="enter file number" maxlength="20" class="box">
+            <input type="number" asp-for="FileNumber" placeholder="enter file number" class="box">
             <span asp-validation-for="FileNumber"></span>
         }
-        
+
         <label asp-for="DateOfBirth"><span>*</span></label>
-        <input type="date" asp-for="DateOfBirth" name="dateBirth" class="box">
+        <input type="date" asp-for="DateOfBirth" class="box">
         <span asp-validation-for="DateOfBirth"></span>
         <label asp-for="PhoneNumber"><span>*</span></label>
-        <input type="number" asp-for="PhoneNumber" name="phone" placeholder="enter phone number" maxlength="20" class="box">
+        <input type="number" asp-for="PhoneNumber" placeholder="enter phone number" class="box">
         <span asp-validation-for="PhoneNumber"></span>
         <label asp-for="Email"><span>*</span></label>
-        <input type="email" asp-for="Email" name="email" placeholder="enter email" maxlength="20" class="box">
+        <input type="email" asp-for="Email" placeholder="enter email" class="box">
         <span asp-validation-for="Email"></span>
         
+        <select title="ContractType" asp-for="Contract.ContractType"
+                class="specialbox">
+            <option value=""></option>
+            @foreach (var contract in ViewBag.ContractTypes)
+            {
+                <option value="@contract">@contract</option>
+            }
+        </select>
+        <label asp-for="Contract.MaxHours"><span>*</span></label>
+        <input type="number" asp-for="Contract.MaxHours" placeholder="max hours" class="box">
+        <span asp-validation-for="Contract.MaxHours"></span>
+        <label asp-for="Contract.MinHours"><span>*</span></label>
+        <input type="number" asp-for="Contract.MinHours" placeholder="min hours" class="box">
+        <span asp-validation-for="Contract.MinHours"></span>
+        <select title="Rank" asp-for="Rank" asp-items="Html.GetEnumSelectList<AnsibeProject.Models.Rank>()"
+        class="specialbox">
+        <option value=""></option>
+        </select>
         <label asp-for="Speciality"><span>*</span></label>
-        <input type="text" asp-for="Speciality" name="speciality" placeholder="enter speciality" maxlength="20" class="box">
+        <input type="text" asp-for="Speciality" placeholder="enter speciality" class="box">
         <span asp-validation-for="Speciality"></span>
         <label asp-for="FullNameInArabic"><span>*</span></label>
-        <input type="text" asp-for="FullNameInArabic" name="fullname" placeholder="enter full name" maxlength="20" class="box">
+        <input type="text" asp-for="FullNameInArabic" placeholder="enter full name" class="box">
         <span asp-validation-for="FullNameInArabic"></span>
 
 
-        <input type="submit" value="Register !" name="submit" class="btn">
+        <input type="submit" value="Register !" class="btn">
     </form>
 
-</section>
+</div>
