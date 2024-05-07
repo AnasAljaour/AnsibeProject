@@ -411,6 +411,7 @@ section {
 
 			.form-container form label span {
 				color: var(--red);
+				font-size: 1rem;
 			}
 
 		.form-container form .box {
