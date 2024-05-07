@@ -13,19 +13,19 @@ namespace AnsibeProject.Models
 
         [Required(ErrorMessage = "First name is required.")]
         [MaxLength(100)]
-        [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "First name must contain only alphabetic characters.")]
+        [RegularExpression(@"^[A-Z a-z]+$", ErrorMessage = "First name must contain only alphabetic characters.")]
         [Display(Name ="First Name")]
         public string FirstName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Middle name is required.")]
         [MaxLength (100)]
-        [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "Middle name must contain only alphabetic characters.")]
+        [RegularExpression(@"^[A-Z a-z]+$", ErrorMessage = "Middle name must contain only alphabetic characters.")]
         [Display(Name ="Middle Name")]
         public string MiddleName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Last name is required.")]
         [MaxLength(100)]
-        [RegularExpression(@"^[A-Za-z]+$", ErrorMessage = "Last name must contain only alphabetic characters.")]
+        [RegularExpression(@"^[A-Z a-z]+$", ErrorMessage = "Last name must contain only alphabetic characters.")]
         [Display(Name = "Last Name")]
         public string LastName { get; set; } = string.Empty;
 
@@ -35,7 +35,7 @@ namespace AnsibeProject.Models
 
        
         [Required(ErrorMessage = "Phone number is required.")]
-        [RegularExpression(@"^\d+$", ErrorMessage = "Phone number must contain only digits.")]
+        [RegularExpression(@"^[\d\+\-\(\)]+$", ErrorMessage = "Invalid phone Number.")]
         [Display(Name ="Phone Number")]
         [MaxLength(100)]
         public string PhoneNumber { get; set; } = string.Empty;
@@ -52,7 +52,7 @@ namespace AnsibeProject.Models
         public string Speciality {  get; set; } = string.Empty;
 
         [Required(ErrorMessage = "الأسم باللغة العربية مطلوب")]
-        [Display(Name = "Full Name In Arabic")]
+        [Display(Name = "الأسم باللغة العربية")]
         [MaxLength(255)]
         [RegularExpression(@"^[\u0600-\u06FF\s]+$", ErrorMessage = "يرجى إدخال أحرف عربية فقط.")]
         public string FullNameInArabic {  get; set; } = string.Empty;

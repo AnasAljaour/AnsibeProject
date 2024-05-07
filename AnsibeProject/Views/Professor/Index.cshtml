@@ -18,7 +18,7 @@
         {
             @if (professor.ActiveState.Equals(ActiveState.Active))
             {
-                <div class="box">
+                <div class="box" id="@professor.FileNumber">
                     <div class="tutor">
                             <h1 class="h1-class">@professor.FirstName @professor.MiddleName @professor.LastName</h1>
                             @* <h1 class="h1-class">@professor.MiddleName</h1>
@@ -73,8 +73,8 @@
                         <div class="flex-btn">
                 <a asp-route-FileNumber="@professor.FileNumber" class="inline-btn"
                    asp-controller="Professor" asp-action="Edit">Edit</a>
-                <a class="inline-btn" id="toggle-btn" asp-controller="Professor" asp-action="ChangeState" asp-route-FileNumber="@professor.FileNumber" 
-                asp-route-CourseState=@ActiveState.NotActive onclick="toggleState('@professor.FileNumber')">Active</a>
+
+                <a class="inline-btn" id="toggle-btn"  onclick="toggleState(@professor.FileNumber, this)">Active</a>
                 <a class="inline-delete-btn"
                    onclick="showAlert('@professor.FileNumber')">Delete</a>
 
@@ -83,7 +83,7 @@
             }
             else
             {
-                <div class="box unactive">
+                    <div class="box unactive" id="@professor.FileNumber">
                     <div class="tutor">
                     <h1 class="h1-class">@professor.FirstName</h1>
                             <h1 class="h1-class">@professor.MiddleName</h1>
@@ -136,9 +136,10 @@
                 <div class="flex-btn">
                 <a asp-route-FileNumber="@professor.FileNumber" class="inline-btn"
                    asp-controller="Professor" asp-action="Edit">Edit</a>
-                    <a class="inline-btn" id="toggle-btn" asp-controller="Professor" asp-action="ChangeState"
-                    asp-route-FileNumber="@professor.FileNumber" asp-route-FileNumber=@ActiveState.Active 
-                    onclick="toggleState('@professor.FileNumber')">Passive</a>
+
+
+                    <a class="inline-btn" id="toggle-btn" onclick="toggleState(@professor.FileNumber,this)">Passive</a>
+
                 <a class="inline-delete-btn"
                    onclick="showAlert('@professor.FileNumber')">Delete</a>
 
@@ -153,9 +154,31 @@
 </section>
 @section Scripts {
     <script>
-        function toggleState(FileNumber) {
-            let body = document.getElementById(FileNumber);
-            body.classList.toggle('unactive');
+        function toggleState(FileNumber, button) {
+            console.log(FileNumber);
+            var requestParameter = {
+                fileNumber : FileNumber
+            }
+            $.ajax({
+                url: '@Url.Action("ChangeProfessorState", "Professor")',
+                type: 'POST',
+                data: requestParameter,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.success) {
+                        let body = document.getElementById(FileNumber.toString())
+                        body.classList.toggle('unactive');
+                        button.textContent = (button.textContent == "Active") ? "Passive" : "Active";
+                        
+                    }
+                    else {
+                        console.error(data.errorMessage);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    cosole.error(xhr.responseJSON.errorMessage);
+                        }
+            })
         }
         function showAlert(FileNumber) {
             Swal.fire({
@@ -171,6 +194,7 @@
                     // If user confirms, perform the delete action
 
                     window.location.href = "Professor/Delete?FileNumber=" + FileNumber;
+                    
                 } else {
                     // If user cancels, show an informational message
                     Swal.fire("Deletion cancelled", "", "info");

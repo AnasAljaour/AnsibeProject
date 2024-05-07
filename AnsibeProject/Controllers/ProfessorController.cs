@@ -192,6 +192,24 @@ namespace AnsibeProject.Controllers
 
             return View("Index", GetProfessors());
         }
+        [HttpPost]
+        public async Task<JsonResult> ChangeProfessorState(int FileNumber)
+        {
+            try
+            {
+                Professor professor = await _db.Professors.SingleOrDefaultAsync(c => c.FileNumber == FileNumber);
+                if (professor == null) throw new Exception();
+                professor.ActiveState = (professor.ActiveState == ActiveState.Active) ? ActiveState.NotActive : ActiveState.Active;
+                _db.Professors.Update(professor);
+                await _db.SaveChangesAsync();
+                return Json(new { success = true });
+            }
+            catch
+            {
+                return Json(new { success = false, errorMessage = "Error occurred while changing state" });
+            }
+
+        } 
 
 
         // get a copy from all professor from database
