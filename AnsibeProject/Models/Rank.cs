@@ -4,7 +4,6 @@ namespace AnsibeProject.Models
 {
     public enum Rank
     {
-        Instractor,
 
         [Display(Name ="Assistant Professor")]
         AssistantProfessor,
