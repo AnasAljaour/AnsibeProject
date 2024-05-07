@@ -8,7 +8,7 @@
 
 
     <form method="post" asp-controller="Professor" asp-action="@action">
-        <div asp-validation-summary="All">
+        <div @* asp-validation-summary="All" *@>
         </div>
 
         @if (action == "Edit")
@@ -20,33 +20,50 @@
         {
             <h3>Add a new Professor</h3>
         }
-
-        <label asp-for="FirstName"><span>*</span></label>
-        <input type="text" asp-for="FirstName" placeholder="enter first name" class="box">
-        <span asp-validation-for="FirstName"></span>
-        <label asp-for="MiddleName"><span>*</span></label>
-        <input type="text" asp-for="MiddleName" placeholder="enter middle name" class="box">
-        <span asp-validation-for="MiddleName"></span>
-        <label asp-for="LastName"><span>*</span></label>
-        <input type="text" asp-for="LastName" placeholder="enter last name" class="box">
-        <span asp-validation-for="LastName"></span>
         @if (action == "Add")
         {
-            <label asp-for="FileNumber"><span>*</span></label>
+            <label asp-for="FileNumber">File Number</label>
             <input type="text" asp-for="FileNumber" placeholder="enter file number" class="box">
-            <span asp-validation-for="FileNumber"></span>
+            <label><span asp-validation-for="FileNumber"></span></label>
         }
-
-        <label asp-for="DateOfBirth"><span>*</span></label>
+        <table class="table">
+            <tr>
+                <td>
+        <label asp-for="FirstName">First Name</label>
+        <input type="text" asp-for="FirstName" placeholder="enter first name" class="box">
+        <label><span asp-validation-for="FirstName"></span></label></td>
+        <td>
+        <label asp-for="MiddleName">Middle Name</label>
+        <input type="text" asp-for="MiddleName" placeholder="enter middle name" class="box">
+        <label><span asp-validation-for="MiddleName"></span></label>
+                </td>
+        <td>
+        <label asp-for="LastName">Last Name</label>
+        <input type="text" asp-for="LastName" placeholder="enter last name" class="box">
+        <label><span asp-validation-for="LastName"></span></label>
+        </td>
+        </tr>
+        </table>
+        <div>
+        <label asp-for="DateOfBirth">Date Of Birth</label>
         <input type="date" asp-for="DateOfBirth" class="box">
-        <span asp-validation-for="DateOfBirth"></span>
-        <label asp-for="PhoneNumber"><span>*</span></label>
+        <label><span asp-validation-for="DateOfBirth"></span></label></div>
+        <div>
+        <label asp-for="PhoneNumber">Phone Number</label>
         <input type="text" asp-for="PhoneNumber" placeholder="enter phone number" class="box">
-        <span asp-validation-for="PhoneNumber"></span>
-        <label asp-for="Email"><span>*</span></label>
+        <label><span asp-validation-for="PhoneNumber"></span></label></div>
+        <div>
+        <label asp-for="Email">Email</label>
         <input type="text" asp-for="Email" placeholder="enter email" class="box">
-        <span asp-validation-for="Email"></span>
-        
+        <label><span asp-validation-for="Email"></span></label>
+        </div>
+        <table class="table">
+            <tr>
+                <td>
+                    <label asp-for="Contract.ContractType">Contract Type</label>
+                    <div>
+                        <label><span asp-validation-for="Contract.ContractType"></span></label>
+                    </div>
         <select title="ContractType" asp-for="Contract.ContractType"
                 class="specialbox">
             <option value="">Contract type</option>
@@ -55,23 +72,33 @@
                 <option value="@contract">@contract</option>
             }
         </select>
+                </td>
         @* <label asp-for="Contract.MaxHours"><span>*</span></label>
         <input type="text" asp-for="Contract.MaxHours" placeholder="max hours" class="box">
         <span asp-validation-for="Contract.MaxHours"></span>
         <label asp-for="Contract.MinHours"><span>*</span></label>
         <input type="text" asp-for="Contract.MinHours" placeholder="min hours" class="box">
         <span asp-validation-for="Contract.MinHours"></span> *@
+        <td>
+                    <label asp-for="Rank">Rank</label><div>
+                    <label><span asp-validation-for="Rank"></span></label></div>
         <select title="Rank" asp-for="Rank" asp-items="Html.GetEnumSelectList<AnsibeProject.Models.Rank>()"
-        class="specialbox">
+        class="box">
         <option value="">Rank</option>
+                        
         </select>
-        <label asp-for="Speciality"><span>*</span></label>
+                </td>
+            </tr>
+        </table>
+        <div>
+        <label asp-for="Speciality">Speciality</label>
         <input type="text" asp-for="Speciality" placeholder="enter speciality" class="box">
-        <span asp-validation-for="Speciality"></span>
-        <label asp-for="FullNameInArabic"><span>*</span></label>
+        <label><span asp-validation-for="Speciality"></span></label></div>
+        <div>
+        <label asp-for="FullNameInArabic">Full Name In Arabic</label>
         <input type="text" asp-for="FullNameInArabic" placeholder="enter full name" class="box">
-        <span asp-validation-for="FullNameInArabic"></span>
-
+        <label><span asp-validation-for="FullNameInArabic"></span></label>
+        </div>
 
         <input type="submit" value="Register !" class="btn">
     </form>
