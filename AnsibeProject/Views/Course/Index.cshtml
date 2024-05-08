@@ -2,84 +2,100 @@
 @model List<Course>;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <section class="courses">
-
     <h1 class="heading">our courses</h1>
     <div class="box-container">
+     <div class="box">
+    
   
-        <div class="box" >
-            <div class="tutor">
-                <h1>Add New Course</h1>
-            </div>
-
+   
             <a asp-controller="Course" asp-action="Add" class="inline-btn">add</a>
 
-        </div>
         @if (Model != null && Model.Count() > 0)
         {
 
-            foreach (var course in Model)
+                <table class="table datatable" id="myTable">
+            <thead>
+                <tr>
+                            <th data-searchable="true">Course Code</th>
+                            <th data-searchable="true">Course Description</th>
+                            <th data-searchable="true">Course Major</th>
+                            <th data-searchable="true">Numbero Of Credits </th>
+                            <th data-searchable="true">Number Of Hours</th>
+                            <th data-searchable="true">TP</th>
+                            <th data-searchable="true">TD</th>
+                            <th data-searchable="true">Total hours</th>
+                            <th data-searchable="true">Semester</th>
+                            <th data-searchable="true">Course State</th>
+                            <th data-searchable="true">Obligatory </th>
+                            <th data-searchable="true">Edit</th>
+                            <th data-searchable="true">Deactivate</th>
+                            <th data-searchable="true">Delete</th>
+                </tr>
+                    </thead>
+                    <tbody>
+           @foreach (var course in Model)
             {
                 if (course.CourseState.Equals(ActiveState.Active))
                 {
-                    <div class="box" id="@course.CourseCode">
-                        <div class="tutor">
-                            <h1 class="h1-class">@course.CourseCode</h1>
-                            <h3>@course.CourseDescription</h3>
-                        </div>
-                        <table class="table table-striped">
+                
+                        
+                            
                             <tr>
-                                <td>
-                                    Course Major : @course.Major
-
+                            <td>
+                                @course.CourseCode
                                 </td>
+                            <td>@course.CourseDescription</td>
                                 <td>
-                                    Numbero Of Credits : @course.NumberOfCredits
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                     Number Of Hours : @course.NumberOfHours
-
+                                    @course.Major
                                 </td>
                                 <td>
-                                    TP : @course.TP
-
+                                   @course.NumberOfCredits
                                 </td>
-                            </tr>
-                            <tr>
+                            
+                         
                                 <td>
-                                    TD : @course.TD
-                                </td>
-                                <td>
-                                    Total hours : @course.TotalNumberOfHours
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Semester : @course.Semester
+                                      @course.NumberOfHours
                                 </td>
                                 <td>
-                                    Course State : @course.CourseState
+                                     @course.TP
                                 </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    Obligatory : @course.Obligatory
+                            
+                                <td>
+                                  @course.TD
                                 </td>
-
-                             
-                            </tr>
-                        </table>
-                        <div class="flex-btn">
+                                <td>
+                                     @course.TotalNumberOfHours
+                                </td>
+                            
+                                <td>
+                                    @course.Semester
+                                </td>
+                                <td>
+                                     @course.CourseState
+                                </td>
+                            
+                                <td>
+                                     @course.Obligatory
+                                </td>
+                        <td>
                             <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
-
+                        </td>
+                        <td>
                             <a class="inline-btn" id="toggle-btn" asp-controller="Course" asp-action="ChangeState" asp-route-CourseCode="@course.CourseCode" asp-route-CourseState=@ActiveState.NotActive>Deactivate</a>
-
-                          
+                        </td>
+                        <td>
                             <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
-                        </div>
-                    </div>
+                        </td>
+
+
+
+                            </tr>
+                    
+                        
+                      
+                            
+                        
+                   
                 }
                 else
                 {
@@ -145,15 +161,17 @@
 
 
 
-        }
-        else
-        {
-            <h1>No course</h1>
-        }
-    </div>
+
+                    </tbody>
+        </table>
+    }</div>
+        </div>
 </section>
 @section Scripts {
     <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
         function toggleState(courseCode) {
             let body = document.getElementById(courseCode);
             body.classList.toggle('unactive');
