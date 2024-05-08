@@ -13,7 +13,7 @@
         @if (Model != null && Model.Count() > 0)
         {
 
-                <table class="table datatable" id="myTable">
+                <table class="table table-striped" id="myTable">
             <thead>
                 <tr>
                             <th data-searchable="true">Course Code</th>
@@ -99,63 +99,54 @@
                 }
                 else
                 {
-                    <div class="box unactive" id="@course.CourseCode">
-                        <div class="tutor">
-                            <h1>@course.CourseCode</h1><br />
-                            <h3>@course.CourseDescription</h3>
-                        </div>
-                        <table class="table table-striped">
-                            <tr>
+                     <tr>
+                            <td>
+                                @course.CourseCode
+                                </td>
+                            <td>@course.CourseDescription</td>
                                 <td>
-                                    Course Major : @course.Major
-
+                                    @course.Major
                                 </td>
                                 <td>
-                                    Numbero Of Credits : @course.NumberOfCredits
-
+                                   @course.NumberOfCredits
                                 </td>
-                            </tr>
-                            <tr>
+                            
+                         
                                 <td>
-                                    Number Of Hours : @course.NumberOfHours
-
+                                      @course.NumberOfHours
                                 </td>
                                 <td>
-                                    TP : @course.TP
-
+                                     @course.TP
                                 </td>
-                            </tr>
-                            <tr>
+                            
                                 <td>
-                                    TD : @course.TD
+                                  @course.TD
                                 </td>
                                 <td>
-                                    Total hours : @course.TotalNumberOfHours
+                                     @course.TotalNumberOfHours
                                 </td>
-                            </tr>
-                            <tr>
+                            
                                 <td>
-                                    Semester : @course.Semester
+                                    @course.Semester
                                 </td>
                                 <td>
-                                    Course State : @course.CourseState
+                                     @course.CourseState
                                 </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    Obligatory : @course.Obligatory
+                            
+                                <td>
+                                     @course.Obligatory
                                 </td>
-
-
-                            </tr>
-                        </table>
-                        <div class="flex-btn">
+                        <td>
                             <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
-
+                        </td>
+                        <td>
                             <a class="inline-btn" id="toggle-btn" asp-controller="Course" asp-action="ChangeState" asp-route-CourseCode="@course.CourseCode" asp-route-CourseState=@ActiveState.Active>Activate</a>
+                        </td>
+                        <td>
                             <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
-                        </div>
-                    </div>
+                        </td>
+
+                     </tr>
                 }
             }
 
@@ -164,8 +155,9 @@
 
                     </tbody>
         </table>
-    }</div>
-        </div>
+    }
+    </div>
+    </div>
 </section>
 @section Scripts {
     <script>
