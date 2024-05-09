@@ -2,192 +2,192 @@
 @model List<Professor>;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <section class="courses">
-    <h1 class="heading">Professors !</h1>
-<div class="box-container">
+    <h1 class="heading">Professors</h1>
+    <div class="box-container">
         <div class="box">
-            <div class="tutor">
-                <h1>Add New Professor</h1>
-            </div>
+            <h3>Active Professors</h3>
+            <a asp-controller="Professor" asp-action="Add" class="inline-btn">add Professor</a>
 
-            <a asp-controller="Professor" asp-action="Add" class="inline-btn">add</a>
-            </div>
-
-    @if (Model != null && Model.Count() > 0)
-    {
-        @foreach (var professor in Model)
-        {
-            @if (professor.ActiveState.Equals(ActiveState.Active))
-            {
-                <div class="box" id="@professor.FileNumber">
-                    <div class="tutor">
-                            <h1 class="h1-class">@professor.FirstName @professor.MiddleName @professor.LastName</h1>
-                            @* <h1 class="h1-class">@professor.MiddleName</h1>
-                            <h1 class="h1-class">@professor.LastName</h1> *@
-                            <h3>@professor.Speciality</h3>
-                    
-                </div>
-                        
-                <table class="table table-striped">
-                            <tr>
-                                <td>
-                                    File Number : @professor.FileNumber
-                                </td>
-                                <td>
-                                    @professor.Rank
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    @professor.Email
-                                </td>
-                                <td>
-                                    Tel: @professor.PhoneNumber
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    @professor.DateOfBirth
-                                </td>
-                                <td>
-                                    Contract: @professor.Contract.ContractType
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Maximum Hours : @professor.Contract.MaxHours
-                                </td>
-                                <td>
-                                    Minimum Hours : @professor.Contract.MinHours
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    @professor.FullNameInArabic
-                                </td>
-
-                            </tr>
-
-
-                </table>
-                        <div class="flex-btn">
-                <a asp-route-FileNumber="@professor.FileNumber" class="inline-btn"
-                   asp-controller="Professor" asp-action="Edit">Edit</a>
-
-                <a class="inline-btn" id="toggle-btn"  onclick="toggleState(@professor.FileNumber, this)">Active</a>
-                <a class="inline-delete-btn"
-                   onclick="showAlert('@professor.FileNumber')">Delete</a>
-
-                   </div>
-                </div>
-            }
-            else
-            {
-                    <div class="box unactive" id="@professor.FileNumber">
-                    <div class="tutor">
-                    <h1 class="h1-class">@professor.FirstName</h1>
-                            <h1 class="h1-class">@professor.MiddleName</h1>
-                            <h1 class="h1-class">@professor.LastName</h1>
-                   
-                </div>
-                        <span>@professor.Speciality</span>
-                <table class="table table-striped">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>
-                                    File Number : @professor.FileNumber
-                        </td>
-                        <td>
-                            @professor.Rank
-                        </td>
+                        <th data-searchable="true">File Number</th>
+                        <th data-searchable="true">Full Name In Arabic</th>
+                        <th data-searchable="true">Speciality</th>
+                        <th data-searchable="true">Rank</th>
+                        <th data-searchable="true">Email</th>
+                        <th data-searchable="true">Phone Number</th>
+                        <th data-searchable="true">Contract Type</th>
+                        @* <th data-searchable="true">Max Hours</th>
+                        <th data-searchable="true">Min Hours</th> *@
+                        <th data-searchable="true">Full Name</th>
+                        <th data-searchable="true">Date Of Birth</th>
+                        <th data-searchable="true">Edit</th>
+                        <th data-searchable="true">Deactivate</th>
+                        <th data-searchable="true">Delete</th>
                     </tr>
-                    <tr>
-                        <td>
-                            @professor.Email
-                        </td>
-                        <td>
-                            Tel: @professor.PhoneNumber
-                        </td>
-                    </tr>
-                            <tr>
-                                <td>
-                                    @professor.DateOfBirth
-                                </td>
-                                <td>
-                                    Contract: @professor.Contract.ContractType
-                                </td>
-                            </tr>
-                    <tr>
-                        <td>
-                            Maximum Hours : @professor.Contract.MaxHours
-                        </td>
-                        <td>
-                            Minimum Hours : @professor.Contract.MinHours
-                        </td>
-                        
-                    </tr>
-                            <tr>
-                                <td colspan="2">
-                                    @professor.FullNameInArabic
-                                </td>
-                            
-                            </tr>
-
-                </table>
-                <div class="flex-btn">
-                <a asp-route-FileNumber="@professor.FileNumber" class="inline-btn"
-                   asp-controller="Professor" asp-action="Edit">Edit</a>
+                </thead>
+                <tbody>
+                @if (Model != null && Model.Count() > 0)
+                    {
+   
+      
+                        @foreach (var professor in Model)
+                        {
+                            if (professor.ActiveState.Equals(ActiveState.Active))
+                            {
 
 
-                    <a class="inline-btn" id="toggle-btn" onclick="toggleState(@professor.FileNumber,this)">Passive</a>
 
-                <a class="inline-delete-btn"
-                   onclick="showAlert('@professor.FileNumber')">Delete</a>
+                                <tr>
+                                    <td>
+                                        @professor.FileNumber
+                                    </td>
+                                    <td>@professor.FullNameInArabic</td>
+                                    <td>
+                                        @professor.Speciality
+                                    </td>
+                                    <td>
+                                        @professor.Rank
+                                    </td>
+                                    <td>
+                                        @professor.Email
+                                    </td>
+                                    <td>
+                                        @professor.PhoneNumber
+                                    </td>
+                                    <td>
+                                        @professor.Contract.ContractType
+                                    </td>
 
-                </div>
-                </div>
-            }
+                                    @* <td>
+                                        @professor.Contract.MaxHours
+                                    </td>
+                                    <td>
+                                        @professor.Contract.MinHours
+                                    </td> *@
+                                    <td>
+                                        @professor.FirstName @professor.MiddleName @professor.LastName
+                                    </td>
+                                    <td>
+                                        @professor.DateOfBirth
+                                    </td>
+                                    
+                                    <td>
+                                        <a asp-controller="Professor" asp-action="Edit" asp-route-FileNumber="@professor.FileNumber" class="inline-btn">edit</a>
+                                    </td>
+                                    <td>
+                                        <a class="inline-btn" id="toggle-btn" asp-controller="Professor" asp-action="ChangeState" asp-route-FileNumber="@professor.FileNumber" asp-route-ActiveState=@ActiveState.NotActive>Deactivate</a>
+                                    </td>
+                                    <td>
+                                        <a class="inline-delete-btn" onclick="confirmDelete('@professor.FileNumber')">delete</a>
+                                    </td>
+                                </tr>
 
-            }
-        }
-        else
-        {
-            <h1>No Professors</h1>
-        }
+                            }
 
-</div>
-</section>
-@section Scripts {
-    <script>
-        function toggleState(FileNumber, button) {
-            console.log(FileNumber);
-            var requestParameter = {
-                fileNumber : FileNumber
-            }
-            $.ajax({
-                url: '@Url.Action("ChangeProfessorState", "Professor")',
-                type: 'POST',
-                data: requestParameter,
-                dataType: 'json',
-                success: function (data) {
-                    if (data.success) {
-                        let body = document.getElementById(FileNumber.toString())
-                        body.classList.toggle('unactive');
-                        button.textContent = (button.textContent == "Active") ? "Passive" : "Active";
-                        
-                    }
-                    else {
-                        console.error(data.errorMessage);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    cosole.error(xhr.responseJSON.errorMessage);
                         }
-            })
+
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="box unactive">
+                <h3>Inactive Professors</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th data-searchable="true">File Number</th>
+                            <th data-searchable="true">Full Name In Arabic</th>
+                            <th data-searchable="true">Speciality</th>
+                            <th data-searchable="true">Rank</th>
+                            <th data-searchable="true">Email</th>
+                            <th data-searchable="true">Phone Number</th>
+                        <th data-searchable="true">Contract Type</th>
+                        @* <th data-searchable="true">Max Hours</th>
+                        <th data-searchable="true">Min Hours</th> *@
+                        <th data-searchable="true">Full Name</th>
+                            <th data-searchable="true">Date Of Birth</th>
+                            <th data-searchable="true">Edit</th>
+                            <th data-searchable="true">Deactivate</th>
+                            <th data-searchable="true">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var professor in Model)
+                        {
+                            if (professor.ActiveState.Equals(ActiveState.NotActive))
+                            {
+
+
+
+                                <tr>
+                                    <td>
+                                        @professor.FileNumber
+                                    </td>
+                                    <td>@professor.FullNameInArabic</td>
+                                    <td>
+                                        @professor.Speciality
+                                    </td>
+                                    <td>
+                                        @professor.Rank
+                                    </td>
+                                    <td>
+                                        @professor.Email
+                                    </td>
+                                    <td>
+                                        @professor.PhoneNumber
+                                    </td>
+                                <td>
+                                    @professor.Contract.ContractType
+                                </td>
+
+                                @* <td>
+                                    @professor.Contract.MaxHours
+                                </td>
+                                <td>
+                                    @professor.Contract.MinHours
+                                </td> *@
+                                <td>
+                                    @professor.FirstName @professor.MiddleName @professor.LastName
+                                </td>
+                                    <td>
+                                        @professor.DateOfBirth
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Professor" asp-action="Edit" asp-route-FileNumber="@professor.FileNumber" class="inline-btn">edit</a>
+                                    </td>
+                                    <td>
+                                        <a class="inline-btn" id="toggle-btn" asp-controller="Professor" asp-action="ChangeState" asp-route-FileNumber="@professor.FileNumber" asp-route-ActiveState=@ActiveState.NotActive>Deactivate</a>
+                                    </td>
+                                    <td>
+                                        <a class="inline-delete-btn" onclick="confirmDelete('@professor.FileNumber')">delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+   
+    @section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+        function toggleState(fileNumber) {
+            let body = document.getElementById(fileNumber);
+            body.classList.toggle('unactive');
         }
-        function showAlert(FileNumber) {
+        function confirmDelete(fileNumber) {
             Swal.fire({
-                title: "Are you sure you want to delete this course?",
-                text: "This action cannot be undone.",
+                title: "Are you sure you want to delete this professor?",
+                text: "This action cannot be undone. you can Deactivate",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#d33",
@@ -196,9 +196,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     // If user confirms, perform the delete action
-
-                    window.location.href = "Professor/Delete?FileNumber=" + FileNumber;
-                    
+                    window.location.href = "Professor/Delete?FileNumber=" + fileNumber;
                 } else {
                     // If user cancels, show an informational message
                     Swal.fire("Deletion cancelled", "", "info");
@@ -206,4 +204,6 @@
             });
         }
     </script>
-}
+    }
+    
+</section>

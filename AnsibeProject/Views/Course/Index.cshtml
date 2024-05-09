@@ -2,35 +2,37 @@
 @model List<Course>;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+
+<section class="courses">
+    <h1 class="heading">our courses</h1>
+    <div class="box-container">
+        <div class="box">
+            <h3>Active Coursers</h3>
+            <a asp-controller="Course" asp-action="Add" class="inline-btn">add Course</a>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th data-searchable="true">Course Code</th>
+                        <th data-searchable="true">Course Description</th>
+                        <th data-searchable="true">Course Major</th>
+                        <th data-searchable="true">Numbero Of Credits </th>
+                        <th data-searchable="true">Number Of Hours</th>
+                        <th data-searchable="true">TP</th>
+                        <th data-searchable="true">TD</th>
+                        <th data-searchable="true">Total hours</th>
+                        <th data-searchable="true">Semester</th>
+                        <th data-searchable="true">Course State</th>
+                        <th data-searchable="true">Obligatory </th>
+                        <th data-searchable="true">Edit</th>
+                        <th data-searchable="true">Deactivate</th>
+                        <th data-searchable="true">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
 @if (Model != null && Model.Count() > 0)
 {
-    <section class="courses">
-        <h1 class="heading">our courses</h1>
-        <div class="box-container">
-            <div class="box">
-                <h3>Active Coursers</h3>
-                <a asp-controller="Course" asp-action="Add" class="inline-btn">add Course</a>
-
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th data-searchable="true">Course Code</th>
-                            <th data-searchable="true">Course Description</th>
-                            <th data-searchable="true">Course Major</th>
-                            <th data-searchable="true">Numbero Of Credits </th>
-                            <th data-searchable="true">Number Of Hours</th>
-                            <th data-searchable="true">TP</th>
-                            <th data-searchable="true">TD</th>
-                            <th data-searchable="true">Total hours</th>
-                            <th data-searchable="true">Semester</th>
-                            <th data-searchable="true">Course State</th>
-                            <th data-searchable="true">Obligatory </th>
-                            <th data-searchable="true">Edit</th>
-                            <th data-searchable="true">Deactivate</th>
-                            <th data-searchable="true">Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+    
                         @foreach (var course in Model)
                         {
                             if (course.CourseState.Equals(ActiveState.Active))
@@ -86,7 +88,7 @@
 
                         }
 
-
+                        }
 
 
                     </tbody>
