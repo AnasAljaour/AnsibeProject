@@ -18,5 +18,10 @@ namespace AnsibeProject.Models
         public int? MinHours { get; set; }
 
         public ICollection<Professor> Professors { get; set; } = new List<Professor>();
+
+        internal static Contract Parse(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

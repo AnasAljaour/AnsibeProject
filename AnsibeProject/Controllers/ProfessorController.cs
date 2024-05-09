@@ -3,6 +3,9 @@ using AnsibeProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
+using System.ComponentModel.DataAnnotations;
 
 namespace AnsibeProject.Controllers
 {
@@ -16,6 +19,45 @@ namespace AnsibeProject.Controllers
         public IActionResult Index()
         {
             return View(GetProfessors());
+        }
+
+        public IActionResult Import(IFormFile file)
+        {
+            var list = new List<Professor>();
+            using (var stream = new MemoryStream())
+            {
+                file.CopyTo(stream);
+                //await file.CopyToAsync(stream);
+                using (var package = new ExcelPackage(stream))
+                {
+
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                    var rowcount = worksheet.Dimension.Rows;
+                    var rank=Enum.GetValues(typeof(Models.Rank));
+                    for (int row = 1; row <= rowcount; row++)
+                    {
+                        //Console.WriteLine(int.Parse(worksheet.Cells[row, 1].Value.ToString().Trim()));
+                        list.Add(new Professor
+                        {
+                            
+                            FullNameInArabic = worksheet.Cells[row, 1].Value.ToString().Trim(),
+                            FirstName = worksheet.Cells[row, 2].Value.ToString().Trim(),
+                            MiddleName = worksheet.Cells[row, 3].Value.ToString().Trim(),
+                            LastName = worksheet.Cells[row, 4].Value.ToString().Trim(),
+                            /*DateOfBirth = DateOnly.Parse(worksheet.Cells[row, 5].Value.ToString().Trim()),*/
+                            Email = worksheet.Cells[row, 6].Value.ToString().Trim(),
+                            PhoneNumber = worksheet.Cells[row, 7].Value.ToString().Trim(),
+                            Speciality = worksheet.Cells[row, 8].Value.ToString().Trim(),
+                            Rank = Enum.Parse<Models.Rank>(worksheet.Cells[row, 9].Value.ToString().Trim()),
+                            Contract = _db.Contracts.Find(worksheet.Cells[row, 10].Value.ToString().Trim()),
+                            FileNumber = int.Parse(worksheet.Cells[row, 11].Value.ToString().Trim())
+
+                        });
+                    }
+                }
+            }
+           // _db.Professors.AddRange(list);
+            return RedirectToAction(nameof(Index));
         }
 
 
