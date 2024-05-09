@@ -337,6 +337,7 @@ section {
 		border: 1px solid var(--main-color);
 		overflow: hidden;
 		text-align: center;
+		font-size:1.3rem
 	}
 
 		.courses .box-container .box h3 {
