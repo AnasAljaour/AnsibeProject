@@ -35,8 +35,8 @@ namespace AnsibeProject.Controllers
                     return View("Edit",courseToUpdate);
                 }catch(Exception ex)
                 {
-                    ModelState.AddModelError("", "an error accourse while getting corse by code");
-                    ModelState.AddModelError("",ex.Message);
+                    ModelState.AddModelError("Edit-Request", "an error accourse while getting corse by code");
+                    ModelState.AddModelError("Edit-Request", ex.Message);
                 }
             }else
             {
@@ -64,8 +64,8 @@ namespace AnsibeProject.Controllers
                     }
                     catch (Exception ex)
                     {
-                        ModelState.AddModelError("", "failed to Edit Course");
-                        ModelState.AddModelError("", ex.Message);
+                        ModelState.AddModelError("Edit", "failed to Edit Course");
+                        ModelState.AddModelError("Edit", ex.Message);
                     }
                 }
                 else
@@ -104,8 +104,8 @@ namespace AnsibeProject.Controllers
                         return RedirectToAction(nameof(Index));
                     }catch (Exception ex)
                     {
-                        ModelState.AddModelError("", "failed to add Course");
-                        ModelState.AddModelError("", ex.Message);
+                        ModelState.AddModelError("Add", "failed to add Course");
+                        ModelState.AddModelError("Add", ex.Message);
                     }
                 }
                 else
@@ -115,7 +115,8 @@ namespace AnsibeProject.Controllers
                 }
             }else
             {
-                ModelState.AddModelError("", "failed to get course instance null issue");
+                //if the course recived is some how null
+                ModelState.AddModelError("Add", "failed to get course instance null issue");
             }
             ViewBag.Action = "Add";
             return View("Add", courseToAdd);
@@ -137,13 +138,14 @@ namespace AnsibeProject.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "An error accoures while deleting the Course");
-                    ModelState.AddModelError("", ex.Message);
+                    ModelState.AddModelError("Delete-Request", "An error accoures while deleting the Course");
+                    ModelState.AddModelError("Delete-Request", ex.Message);
                 }
             }
             else
             {
-                ModelState.AddModelError("", "failed to get course instance null or empty issue");
+                //if some how the code to be deleted is null or emty
+                ModelState.AddModelError("Delete-Request", "failed to get course instance null or empty issue");
             }
             
             return RedirectToAction(nameof(Index));
@@ -158,12 +160,12 @@ namespace AnsibeProject.Controllers
                     courses.UpdateCourseState(course.CourseCode,course.CourseState);
                 }catch (Exception ex)
                 {
-                    ModelState.AddModelError("", "changing course state failed !");
-                    ModelState.AddModelError("", ex.Message);
+                    ModelState.AddModelError("ChangeState-Request", "changing course state failed !");
+                    ModelState.AddModelError("ChangeState-Request", ex.Message);
                 }
             }else
             {
-                ModelState.AddModelError("", "course Code/course state failed with null or empty issue");
+                ModelState.AddModelError("ChangeState-Request", "course Code/course state failed with null or empty issue");
             }
             return RedirectToAction(nameof(Index));
         }
