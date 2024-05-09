@@ -1,159 +1,185 @@
 ﻿@using AnsibeProject.Models;
 @model List<Course>;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-<section class="courses">
 
-    <h1 class="heading">our courses</h1>
-    <div class="box-container">
-  
-        <div class="box" >
-            <div class="tutor">
-                <h1>Add New Course</h1>
+@if (Model != null && Model.Count() > 0)
+{
+    <section class="courses">
+        <h1 class="heading">our courses</h1>
+        <div class="box-container">
+            <div class="box">
+                <h3>Active Coursers</h3>
+                <a asp-controller="Course" asp-action="Add" class="inline-btn">add Course</a>
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th data-searchable="true">Course Code</th>
+                            <th data-searchable="true">Course Description</th>
+                            <th data-searchable="true">Course Major</th>
+                            <th data-searchable="true">Numbero Of Credits </th>
+                            <th data-searchable="true">Number Of Hours</th>
+                            <th data-searchable="true">TP</th>
+                            <th data-searchable="true">TD</th>
+                            <th data-searchable="true">Total hours</th>
+                            <th data-searchable="true">Semester</th>
+                            <th data-searchable="true">Course State</th>
+                            <th data-searchable="true">Obligatory </th>
+                            <th data-searchable="true">Edit</th>
+                            <th data-searchable="true">Deactivate</th>
+                            <th data-searchable="true">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var course in Model)
+                        {
+                            if (course.CourseState.Equals(ActiveState.Active))
+                            {
+
+
+
+                                <tr>
+                                    <td>
+                                        @course.CourseCode
+                                    </td>
+                                    <td>@course.CourseDescription</td>
+                                    <td>
+                                        @course.Major
+                                    </td>
+                                    <td>
+                                        @course.NumberOfCredits
+                                    </td>
+                                    <td>
+                                        @course.NumberOfHours
+                                    </td>
+                                    <td>
+                                        @course.TP
+                                    </td>
+                                    <td>
+                                        @course.TD
+                                    </td>
+                                    <td>
+                                        @course.TotalNumberOfHours
+                                    </td>
+
+                                    <td>
+                                        @course.Semester
+                                    </td>
+                                    <td>
+                                        @course.CourseState
+                                    </td>
+                                    <td>
+                                        @course.Obligatory
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
+                                    </td>
+                                    <td>
+                                        <a class="inline-btn" id="toggle-btn" asp-controller="Course" asp-action="ChangeState" asp-route-CourseCode="@course.CourseCode" asp-route-CourseState=@ActiveState.NotActive>Deactivate</a>
+                                    </td>
+                                    <td>
+                                        <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
+                                    </td>
+                                </tr>
+
+                            }
+
+                        }
+
+
+
+
+                    </tbody>
+                </table>
             </div>
+            <div class="box unactive">
+                <h3>NotActive Coursers</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th data-searchable="true">Course Code</th>
+                            <th data-searchable="true">Course Description</th>
+                            <th data-searchable="true">Course Major</th>
+                            <th data-searchable="true">Numbero Of Credits </th>
+                            <th data-searchable="true">Number Of Hours</th>
+                            <th data-searchable="true">TP</th>
+                            <th data-searchable="true">TD</th>
+                            <th data-searchable="true">Total hours</th>
+                            <th data-searchable="true">Semester</th>
+                            <th data-searchable="true">Course State</th>
+                            <th data-searchable="true">Obligatory </th>
+                            <th data-searchable="true">Edit</th>
+                            <th data-searchable="true">Deactivate</th>
+                            <th data-searchable="true">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var course in Model)
+                        {
+                            if (course.CourseState.Equals(ActiveState.NotActive))
+                            {
+                                <tr>
+                                    <td>
+                                        @course.CourseCode
+                                    </td>
+                                    <td>@course.CourseDescription</td>
+                                    <td>
+                                        @course.Major
+                                    </td>
+                                    <td>
+                                        @course.NumberOfCredits
+                                    </td>
 
-            <a asp-controller="Course" asp-action="Add" class="inline-btn">add</a>
 
+                                    <td>
+                                        @course.NumberOfHours
+                                    </td>
+                                    <td>
+                                        @course.TP
+                                    </td>
+
+                                    <td>
+                                        @course.TD
+                                    </td>
+                                    <td>
+                                        @course.TotalNumberOfHours
+                                    </td>
+
+                                    <td>
+                                        @course.Semester
+                                    </td>
+                                    <td>
+                                        @course.CourseState
+                                    </td>
+
+                                    <td>
+                                        @course.Obligatory
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
+                                    </td>
+                                    <td>
+                                        <a class="inline-btn" id="toggle-btn" asp-controller="Course" asp-action="ChangeState" asp-route-CourseCode="@course.CourseCode" asp-route-CourseState=@ActiveState.Active>Activate</a>
+                                    </td>
+                                    <td>
+                                        <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+
+            </div>
         </div>
-        @if (Model != null && Model.Count() > 0)
-        {
-
-            foreach (var course in Model)
-            {
-                if (course.CourseState.Equals(ActiveState.Active))
-                {
-                    <div class="box" id="@course.CourseCode">
-                        <div class="tutor">
-                            <h1 class="h1-class">@course.CourseCode</h1>
-                            <h3>@course.CourseDescription</h3>
-                        </div>
-                        <table class="table table-striped">
-                            <tr>
-                                <td>
-                                    Course Major : @course.Major
-
-                                </td>
-                                <td>
-                                    Numbero Of Credits : @course.NumberOfCredits
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                     Number Of Hours : @course.NumberOfHours
-
-                                </td>
-                                <td>
-                                    TP : @course.TP
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    TD : @course.TD
-                                </td>
-                                <td>
-                                    Total hours : @course.TotalNumberOfHours
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Semester : @course.Semester
-                                </td>
-                                <td>
-                                    Course State : @course.CourseState
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    Obligatory : @course.Obligatory
-                                </td>
-
-                             
-                            </tr>
-                        </table>
-                        <div class="flex-btn">
-                            <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
-
-                            <a class="inline-btn" id="toggle-btn" asp-controller="Course" asp-action="ChangeState" asp-route-CourseCode="@course.CourseCode" asp-route-CourseState=@ActiveState.NotActive>Deactivate</a>
-
-                          
-                            <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <div class="box unactive" id="@course.CourseCode">
-                        <div class="tutor">
-                            <h1>@course.CourseCode</h1><br />
-                            <h3>@course.CourseDescription</h3>
-                        </div>
-                        <table class="table table-striped">
-                            <tr>
-                                <td>
-                                    Course Major : @course.Major
-
-                                </td>
-                                <td>
-                                    Numbero Of Credits : @course.NumberOfCredits
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Number Of Hours : @course.NumberOfHours
-
-                                </td>
-                                <td>
-                                    TP : @course.TP
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    TD : @course.TD
-                                </td>
-                                <td>
-                                    Total hours : @course.TotalNumberOfHours
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Semester : @course.Semester
-                                </td>
-                                <td>
-                                    Course State : @course.CourseState
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    Obligatory : @course.Obligatory
-                                </td>
-
-
-                            </tr>
-                        </table>
-                        <div class="flex-btn">
-                            <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
-
-                            <a class="inline-btn" id="toggle-btn" asp-controller="Course" asp-action="ChangeState" asp-route-CourseCode="@course.CourseCode" asp-route-CourseState=@ActiveState.Active>Activate</a>
-                            <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
-                        </div>
-                    </div>
-                }
-            }
-
-
-
-        }
-        else
-        {
-            <h1>No course</h1>
-        }
-    </div>
-</section>
-@section Scripts {
+    </section>
+    @section Scripts {
     <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
         function toggleState(courseCode) {
             let body = document.getElementById(courseCode);
             body.classList.toggle('unactive');
@@ -161,7 +187,7 @@
         function confirmDelete(courseCode) {
             Swal.fire({
                 title: "Are you sure you want to delete this course?",
-                text: "This action cannot be undone.",
+                text: "This action cannot be undone. you can Deactivate",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#d33",
@@ -178,4 +204,5 @@
             });
         }
     </script>
+    }
 }
