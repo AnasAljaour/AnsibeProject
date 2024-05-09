@@ -28,8 +28,18 @@ namespace AnsibeProject.Controllers.CourseWork
         }
         public void AddCourse(Course course)
         {
-            _universityContext.Courses.Add(course);
-            _universityContext.SaveChanges();
+            try
+            {
+                getCourseByCode(course.CourseCode);
+               
+            }
+            catch(Exception ex) 
+            {
+                _universityContext.Courses.Add(course);
+                _universityContext.SaveChanges();
+                return;
+            }
+            throw new Exception("Course Code Dublicated");
         }
         public void UpdateCourseState(string courseCode, ActiveState newstate)
             {
