@@ -22,28 +22,8 @@ namespace AnsibeProject.Controllers
 
         public List<Professor> GetActiveProfessors()
         {
-            List<Professor> temp = new List<Professor>();
-            foreach (var p in _db.Professors.Include(p => p.Contract).ToList())
-            {
-                Professor tempProfessor = new Professor();
-                if (tempProfessor.ActiveState == ActiveState.Active)
-                {
-                    tempProfessor.FileNumber = p.FileNumber;
-                    tempProfessor.FirstName = p.FirstName;
-                    tempProfessor.LastName = p.LastName;
-                    tempProfessor.MiddleName = p.MiddleName;
-                    tempProfessor.PhoneNumber = p.PhoneNumber;
-                    tempProfessor.DateOfBirth = p.DateOfBirth;
-                    tempProfessor.Contract = p.Contract;
-                    tempProfessor.Speciality = p.Speciality;
-                    tempProfessor.FullNameInArabic = p.FullNameInArabic;
-                    tempProfessor.Email = p.Email;
-                    tempProfessor.Rank = p.Rank;
-
-                    temp.Add(tempProfessor);
-                } 
-                
-            }
+            List<Professor> temp = _db.Professors.Where(p => p.ActiveState == ActiveState.Active).Include(p => p.Contract).ToList();
+           
             return temp;
         }
     }
