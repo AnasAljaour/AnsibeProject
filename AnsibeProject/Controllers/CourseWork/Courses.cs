@@ -1,7 +1,9 @@
 ﻿using AnsibeProject.Data;
 using AnsibeProject.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using System.Linq.Expressions;
 
 namespace AnsibeProject.Controllers.CourseWork
 {
@@ -72,6 +74,33 @@ namespace AnsibeProject.Controllers.CourseWork
         public List<Course> getCoursesOfMajor(CourseMajor major)
         {
             return _universityContext.Courses.Where(x => x.Major == major).ToList();
+        }
+        [HttpPost]
+        public void ImportExcel(IFormFile file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    var excelReader = new ExcelReader<Course>();
+                    List<Course> dataList = excelReader.ReadDataFromExcel(stream);
+                   foreach (var c in dataList)
+                        {
+                        try{
+                            UpdateCourse(c);
+                        }catch (Exception ex)
+                        {
+                            AddCourse(c);
+                        }
+                    }
+                    
+                }
+            }
+            else
+            {
+                // Handle invalid file
+                throw new Exception("Error while importing excel data...");
+            }
         }
     }
 }
