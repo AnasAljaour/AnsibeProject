@@ -1,0 +1,188 @@
+﻿@using AnsibeProject.Models;
+@model List<Professor>;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<section class="courses">
+    <h1 class="heading">Professors</h1>
+    <div class="box-container">
+        <div class="box">
+            <h3>Active Professors</h3>
+            @* <a asp-controller="Professor" asp-action="Add" class="inline-btn">add Professor</a> *@
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th data-searchable="true">File Number</th>
+                        <th data-searchable="true">Full Name In Arabic</th>
+                        <th data-searchable="true">Speciality</th>
+                        <th data-searchable="true">Rank</th>
+                        <th data-searchable="true">Email</th>
+                        <th data-searchable="true">Phone Number</th>
+                        <th data-searchable="true">Contract Type</th>
+                        @* <th data-searchable="true">Max Hours</th>
+                        <th data-searchable="true">Min Hours</th> *@
+                        <th data-searchable="true">Full Name</th>
+                        <th data-searchable="true">Select</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count() > 0)
+                    {
+
+
+                        @foreach (var professor in Model)
+                        {
+                            if (professor.ActiveState.Equals(ActiveState.Active))
+                            {
+
+
+
+                                <tr>
+                                    <td>
+                                        @professor.FileNumber
+                                    </td>
+                                    <td>@professor.FullNameInArabic</td>
+                                    <td>
+                                        @professor.Speciality
+                                    </td>
+                                    <td>
+                                        @professor.Rank
+                                    </td>
+                                    <td>
+                                        @professor.Email
+                                    </td>
+                                    <td>
+                                        @professor.PhoneNumber
+                                    </td>
+                                    <td>
+                                        @professor.Contract.ContractType
+                                    </td>
+
+                                    @* <td>
+                        @professor.Contract.MaxHours
+                        </td>
+                        <td>
+                        @professor.Contract.MinHours
+                        </td> *@
+                                    <td>
+                                        @professor.FirstName @professor.MiddleName @professor.LastName
+                                    </td>
+                                    <td>
+                                        <button value="Assign" name="Assign" class="inline-btn" onclick="showAssignPopup()">Assign</button>
+                                        <div class="popup" id="popup">
+                                            <!-- Your HTML content for the pop-up screen goes here -->
+                                            <h2>Assign Professor</h2>
+                                            <h1 class="heading">our courses</h1>
+                                            <div class="box-container">
+                                                <div class="box">
+                                                    <h3>Active Coursers</h3>
+                                                    <a asp-controller="Course" asp-action="Add" class="inline-btn">add Course</a>
+
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th data-searchable="true">Course Code</th>
+                                                                <th data-searchable="true">Course Description</th>
+                                                                <th data-searchable="true">Course Major</th>
+                                                                <th data-searchable="true">Numbero Of Credits </th>
+                                                                <th data-searchable="true">Number Of Hours</th>
+                                                                <th data-searchable="true">TP</th>
+                                                                <th data-searchable="true">TD</th>
+                                                                <th data-searchable="true">Total hours</th>
+                                                                <th data-searchable="true">Semester</th>
+                                                                <th data-searchable="true">Obligatory </th>
+                                                                
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @if (Model != null && Model.Count() > 0)
+                                                            {
+
+                                                                @foreach (var course in ViewBag.courses)
+                                                                {
+                                                                    if (course.CourseState.Equals(ActiveState.Active))
+                                                                    {
+
+
+
+                                                                        <tr>
+                                                                            <td>
+                                                                                @course.CourseCode
+                                                                            </td>
+                                                                            <td>@course.CourseDescription</td>
+                                                                            <td>
+                                                                                @course.Major
+                                                                            </td>
+                                                                            <td>
+                                                                                @course.NumberOfCredits
+                                                                            </td>
+                                                                            <td>
+                                                                                @course.NumberOfHours
+                                                                            </td>
+                                                                            <td>
+                                                                                @course.TP
+                                                                            </td>
+                                                                            <td>
+                                                                                @course.TD
+                                                                            </td>
+                                                                            <td>
+                                                                                @course.TotalNumberOfHours
+                                                                            </td>
+
+                                                                            <td>
+                                                                                @course.Semester
+                                                                            </td>
+                                                                            
+                                                                            <td>
+                                                                                @course.Obligatory
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="checkbox" asp-action=""  />
+                                                                            </td>
+                                                                        </tr>
+
+                                                                    }
+
+                                                                }
+
+                                                            }
+
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            <button type="button" onclick="closePopup()">OK</button>
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            }
+
+                        }
+
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    
+
+
+    @section Scripts {
+        <script>
+            let popup = document.getElementById("popup");
+            function showAssignPopup(){
+                popup.classList.add("open-popup");
+            }
+            function closePopup() {
+                popup.classList.remove("open-popup");
+            }
+        </script>
+    }
+
+</section>

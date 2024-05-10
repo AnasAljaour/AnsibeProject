@@ -12,6 +12,6 @@ namespace AnsibeProject.Models
         [Display(Name ="Associate Professore")]
         AssociateProfessore,
 
-        Professor
+        Professor,
     }
 }
