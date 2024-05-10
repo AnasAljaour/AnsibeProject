@@ -6,7 +6,7 @@
     <div class="container">
         <form method="post" asp-controller="Professor" asp-action="Import" enctype="multipart/form-data">
             <input type="file" name="file" />
-            <button type="submit">Import from Excel</button>
+            <button type="submit" asp-controller="Professor" asp-action="Import">Import from Excel</button>
         </form>
     </div>
     <div class="box-container">
