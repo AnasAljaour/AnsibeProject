@@ -2,6 +2,7 @@
 using AnsibeProject.Data;
 using AnsibeProject.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AnsibeProject.Controllers
@@ -9,9 +10,11 @@ namespace AnsibeProject.Controllers
     public class CourseController : Controller
     {
         private readonly Courses courses;
+        private readonly UniversityContext _db;
         public CourseController(UniversityContext universityContext)
         {
             courses = new Courses(universityContext);
+            _db = universityContext;
         }
         public IActionResult Index()
         {
@@ -19,9 +22,9 @@ namespace AnsibeProject.Controllers
         }
         public IActionResult Edit(string CourseCode)
         {
-            
+
             //check if the code is not empty
-            if (! CourseCode.IsNullOrEmpty()) 
+            if (!CourseCode.IsNullOrEmpty())
             {
                 Course courseToUpdate;
                 /*check if there is error while taking the course by its Code
@@ -32,13 +35,15 @@ namespace AnsibeProject.Controllers
                 {
                     courseToUpdate = courses.getCourseByCode(CourseCode);
                     ViewBag.Action = "Edit";
-                    return View("Edit",courseToUpdate);
-                }catch(Exception ex)
+                    return View("Edit", courseToUpdate);
+                }
+                catch (Exception ex)
                 {
                     ModelState.AddModelError("Edit-Request", "an error accourse while getting corse by code");
                     ModelState.AddModelError("Edit-Request", ex.Message);
                 }
-            }else
+            }
+            else
             {
                 ModelState.AddModelError("", "failed to get courseCode String null or empty  issue");
             }
@@ -87,7 +92,7 @@ namespace AnsibeProject.Controllers
             return View("Add");
         }
         [HttpPost]
-        public IActionResult Add(Course courseToAdd) 
+        public IActionResult Add(Course courseToAdd)
         {
             //check for the Object
             if (courseToAdd != null)
@@ -102,7 +107,8 @@ namespace AnsibeProject.Controllers
                     {
                         courses.AddCourse(courseToAdd);
                         return RedirectToAction(nameof(Index));
-                    }catch (Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         ModelState.AddModelError("Add", "failed to add Course");
                         ModelState.AddModelError("Add", ex.Message);
@@ -113,7 +119,8 @@ namespace AnsibeProject.Controllers
                     ViewBag.Action = "Add";
                     return View("Add", courseToAdd);
                 }
-            }else
+            }
+            else
             {
                 //if the course recived is some how null
                 ModelState.AddModelError("Add", "failed to get course instance null issue");
@@ -121,11 +128,11 @@ namespace AnsibeProject.Controllers
             ViewBag.Action = "Add";
             return View("Add", courseToAdd);
         }
-        public IActionResult Delete(string CourseCode) 
+        public IActionResult Delete(string CourseCode)
         {
-            
+
             //check if not null 
-            if(! CourseCode.IsNullOrEmpty())
+            if (!CourseCode.IsNullOrEmpty())
             {
                 /*check if there is error while taking the course by its Code or while deleting it
                 *Error => keep the user in the Index View and show the error
@@ -147,27 +154,38 @@ namespace AnsibeProject.Controllers
                 //if some how the code to be deleted is null or emty
                 ModelState.AddModelError("Delete-Request", "failed to get course instance null or empty issue");
             }
-            
+
             return RedirectToAction(nameof(Index));
 
         }
-        public IActionResult ChangeState(Course course)
+        public async Task<JsonResult> ChangeCourseState(string CourseCode)
         {
-            if(course!=null)
+            try
             {
-                try
+                Course course = await _db.Courses.SingleOrDefaultAsync(c => c.CourseCode == CourseCode);
+                if (course == null) throw new Exception();
+                course.CourseState = (course.CourseState == ActiveState.Active) ? ActiveState.NotActive : ActiveState.Active;
+                _db.Courses.Update(course);
+                await _db.SaveChangesAsync();
+                var additionalData = new
                 {
-                    courses.UpdateCourseState(course.CourseCode,course.CourseState);
-                }catch (Exception ex)
-                {
-                    ModelState.AddModelError("ChangeState-Request", "changing course state failed !");
-                    ModelState.AddModelError("ChangeState-Request", ex.Message);
-                }
-            }else
-            {
-                ModelState.AddModelError("ChangeState-Request", "course Code/course state failed with null or empty issue");
+                    success = true,
+                    target = course.CourseState.ToString()
+                };
+                return Json(additionalData);
+                
             }
-            return RedirectToAction(nameof(Index));
+            catch
+            {
+                var additionalData = new
+                {
+                    success = false
+                };
+                return Json(additionalData);
+
+            }
+            
         }
     }
-}
+
+    }

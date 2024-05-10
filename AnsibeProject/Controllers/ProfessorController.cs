@@ -1,4 +1,5 @@
-﻿using AnsibeProject.Data;
+﻿using AnsibeProject.Controllers.CourseWork;
+using AnsibeProject.Data;
 using AnsibeProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -202,11 +203,22 @@ namespace AnsibeProject.Controllers
                 professor.ActiveState = (professor.ActiveState == ActiveState.Active) ? ActiveState.NotActive : ActiveState.Active;
                 _db.Professors.Update(professor);
                 await _db.SaveChangesAsync();
-                return Json(new { success = true });
+                var additionalData = new
+                {
+                    success = true,
+                    target = professor.ActiveState.ToString()
+                };
+                return Json(additionalData);
+                
             }
             catch
             {
-                return Json(new { success = false, errorMessage = "Error occurred while changing state" });
+                var additionalData = new
+                {
+                    success = false
+                    
+                };
+                return Json(additionalData);
             }
 
         } 
