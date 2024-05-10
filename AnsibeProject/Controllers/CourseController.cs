@@ -4,6 +4,7 @@ using AnsibeProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 
 namespace AnsibeProject.Controllers
 {
@@ -186,6 +187,25 @@ namespace AnsibeProject.Controllers
 
             }
             
+        }
+
+        public IActionResult ImportExcel(IFormFile file) 
+        {
+            List<Course> dataList;
+            if (file != null && file.Length>0)
+            {
+                courses.ImportExcel(file);
+            }
+            else
+            {
+                // Handle invalid file
+                throw new Exception("Error while importing excel data...");
+            }
+            
+               // ViewBag.ExcelData = dataList;
+
+
+            return View("Index", courses.getAllCourses());
         }
     }
 

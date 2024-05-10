@@ -5,6 +5,12 @@
 
 <section class="courses">
     <h1 class="heading">our courses</h1>
+    <div class="container">
+        <form method="post" asp-controller="Course" asp-action="ImportExcel" enctype="multipart/form-data">
+            <input type="file" accept=".xlsx, .xls" name="file" />
+            <button type="submit" >Import from Excel</button>
+        </form>
+    </div>
     <div class="box-container">
         <div class="box">
             <h3>Active Coursers</h3>
@@ -92,7 +98,24 @@
                     </tbody>
                 </table>
             </div>
-            <div class="box unactive">
+            <div>
+               <h1>Hiiiiiiiiiiiiii</h1>
+            @if (ViewBag.ExcelData != null)
+        {
+                @foreach (var course in @ViewBag.ExcelData)
+            {
+                <p>
+                        <h1>Hiiiiiiiiiiiiii</h1>
+                    @course.CourseCode
+                </p>
+                }
+            }else
+            {
+                <h2>hqqqq</h2>
+                <span asp-validation-summary="All"></span>
+            }
+        </div>
+        <div class="box unactive">
                 <h3>NotActive Coursers</h3>
                 <table class="table table-striped" id="Inactive-datatable">
                     <thead>
@@ -242,4 +265,4 @@
             });
         }
     </script>
-    }
+}
