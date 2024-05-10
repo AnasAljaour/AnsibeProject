@@ -28,14 +28,14 @@
                         <th data-searchable="true">TD</th>
                         <th data-searchable="true">Total hours</th>
                         <th data-searchable="true">Semester</th>
-                        <th data-searchable="true">Course State</th>
+                        
                         <th data-searchable="true">Obligatory </th>
                         <th data-searchable="true">Edit</th>
                         <th data-searchable="true">Deactivate</th>
                         <th data-searchable="true">Delete</th>
                     </tr>
                 </thead>
-                <tbody id = "Active">
+                <tbody >
 @if (Model != null && Model.Count() > 0)
 {
     
@@ -73,9 +73,7 @@
                                     <td>
                                         @course.Semester
                                     </td>
-                                    <td>
-                                        @course.CourseState
-                                    </td>
+                                    
                                     <td>
                                         @course.Obligatory
                                     </td>
@@ -83,7 +81,7 @@
                                         <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
                                     </td>
                                     <td>
-                                        <button class="inline-btn" onclick="toggleState('@course.CourseCode',this)" id="toggle-btn">Deactivate</button>
+                                        <button class="inline-btn" onclick="toggleState('@course.CourseCode',this)" >Deactivate</button>
                                     </td>
                                     <td>
                                         <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
@@ -131,14 +129,14 @@
                             <th data-searchable="true">TD</th>
                             <th data-searchable="true">Total hours</th>
                             <th data-searchable="true">Semester</th>
-                            <th data-searchable="true">Course State</th>
+                            
                             <th data-searchable="true">Obligatory </th>
                             <th data-searchable="true">Edit</th>
                             <th data-searchable="true">Deactivate</th>
                             <th data-searchable="true">Delete</th>
                         </tr>
                     </thead>
-                <tbody id="Inactive">
+                <tbody >
                         @foreach (var course in Model)
                         {
                             if (course.CourseState.Equals(ActiveState.NotActive))
@@ -173,9 +171,7 @@
                                     <td>
                                         @course.Semester
                                     </td>
-                                    <td>
-                                        @course.CourseState
-                                    </td>
+                                  
 
                                     <td>
                                         @course.Obligatory
@@ -184,7 +180,7 @@
                                         <a asp-controller="Course" asp-action="Edit" asp-route-CourseCode="@course.CourseCode" class="inline-btn">edit</a>
                                     </td>
                                     <td>
-                                        <button class="inline-btn" id="toggle-btn" onclick="toggleState('@course.CourseCode',this)">Activate</button>
+                                        <button class="inline-btn" onclick="toggleState('@course.CourseCode',this)">Activate</button>
                                     </td>
                                     <td>
                                         <a class="inline-delete-btn" onclick="confirmDelete('@course.CourseCode')">delete</a>
@@ -217,53 +213,31 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data.success) {
-                        var rowToMove = button.parentNode.parentNode;
-
-                        /*var sourceTable = rowToMove.parentNode;
-                        var targetTable = (data.target == "Active") ? document.getElementById("Active") : document.getElementById("Inactive");
-                        sourceTable.removeChild(rowToMove);
-                        targetTable.appendChild(rowToMove);
-                        button.textContent = (data.target == "Active") ? "Deactivate" : "Activate";
-                        */
-
-
-
+               
                         var table1 = $('#Inactive-datatable').DataTable();
                         var table2 = $('#active-datatable').DataTable();
                         var row = $(button).closest('tr');
                         
                         
                         if (data.target == "Active") {
+                           
                             var rowData = table1.row(row).data();
                             table1.row(row).remove().draw();
-                            
+                            rowData[11] = rowData[11].replace("Activate", "Deactivate");
                             table2.row.add(rowData).draw();
                         }
                         else {
-                            var rowData = table2.row(row).data();
-                            table2.row(row).remove().draw();
+                            
 
+                            var rowData = table2.row(row).data();
+                            
+                            table2.row(row).remove().draw();
+                            rowData[11] = rowData[11].replace("Deactivate", "Activate");
                             table1.row.add(rowData).draw();
                         }
-                        
-                        
-                               
-                        
-                       // var sourceTable = (data.target == "Active") ? $('#Inactive-datatable').DataTable() : $('#Active-datatable').DataTable();
-                       // var targetTable = (data.target == "NotActive") ? $('#Inactive-datatable').DataTable() : $('#Active-datatable').DataTable();
-                        
-
-                        
-
-                       
-                        
-                        
-                        
-
-
                     }
                     else {
-                        console.log(data.errorMessage);
+                        console.error(data.errorMessage);
                     }
                 },
                 error: function (xhr, status, error) {
@@ -291,4 +265,4 @@
             });
         }
     </script>
-    }
+}

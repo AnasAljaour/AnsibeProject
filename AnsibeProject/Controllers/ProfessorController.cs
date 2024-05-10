@@ -220,8 +220,9 @@ namespace AnsibeProject.Controllers
             {
                 var additionalData = new
                 {
-                    success = false
-                    
+                    success = false,
+                    errorMessage = "Server Failed to Change the state of Professor"
+
                 };
                 return Json(additionalData);
             }
