@@ -1,0 +1,134 @@
+﻿@using AnsibeProject.Models;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<section class="courses">
+    <div class="box-container">
+       
+        <form class="box" hidden>
+            <h1>Courses</h1>
+            <table class="table table-striped">
+                <thead>
+                <th>Course Code</th>
+                <th>Course Description</th>
+                <th>Course Hour</th>
+                <th>TD</th>
+                <th>TP</th>
+                <th>Language</th>
+                <th>Add</th>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Count() > 0)
+                    {
+                        @foreach (var course in ViewBag.courses)
+                        {
+                            if (course.CourseState.Equals(ActiveState.Active))
+                            {
+                                <tr id="@course.CourseCode">
+                                    <td>
+                                        @course.CourseCode
+                                    </td>
+                                    <td>
+                                        @course.CourseDescription
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="c[]" />
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="c[]" />
+                                    </td>
+                                    <td>
+                                        <input type="checkbox" name="c[]" />
+                                    </td>
+                                    <td>
+                                        <select asp-items="Html.GetEnumSelectList<AnsibeProject.Models.Language>()">
+                                            <option value=""></option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button onclick="SaveList(this," @course.CourseCode","@course.CourseDescription")">+</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                </tr>
+                            }
+
+                        }
+                    }
+                </tbody>
+            </table>
+            <
+        </form>
+    </div>
+
+</section>
+@section Scripts {
+    <script>
+        function SaveList(button, CourseCode, CourseDescription) {
+            // Get the parent row of the button (i.e., the row containing the button)
+            var tr = document.getElementById(CourseCode);
+
+            // Get all checkboxes within the form
+            var checkboxes = tr.querySelectorAll('input[type="checkbox"]');
+            var option = tr.querySelector('select');
+            var selectedText = option.options[option.selectedIndex].textContent;
+            // Filter checked checkboxes
+            var checkedCheckboxes = [];
+            checkboxes.forEach(function (checkbox) {
+                checkedCheckboxes.push(checkbox.checked);
+
+                if (checkbox.checked) {
+                    checkbox.checked = false;
+                }
+            });
+
+
+
+            // Create a new row and cells
+            var newRow = document.createElement("tr");
+            var newCell1 = document.createElement("td");
+            var newCell2 = document.createElement("td");
+            var newCell3 = document.createElement("td");
+            var newCell4 = document.createElement("td");
+            var newCell5 = document.createElement("td");
+            var newCell6 = document.createElement("td");
+            // Add content to the new cells (e.g., text or input elements)
+            newCell1.textContent = CourseCode;
+            newCell2.textContent = CourseDescription;
+            newRow.appendChild(newCell1);
+            newRow.appendChild(newCell2);
+            createCheckboxesWithStates(checkboxStates, newRow);
+
+            newCell6.textContent = selectedText;
+
+            // Append cells to the new row
+
+
+            newRow.appendChild(newCell2);
+
+            // Insert the new row after the parent row
+            parentRow.parentNode.insertBefore(newRow, parentRow.nextSibling);
+
+        }
+        function createCheckboxesWithStates(checkboxStates, newRow) {
+
+
+            // Clear existing checkboxes
+
+
+            // Create new checkboxes based on saved states
+            for (var i = 0; i < checkboxStates.length; i++) {
+                var td = document.createElement('td');
+
+                newRow.appendChild(td);
+                var input = document.createElement('input');
+                input.type = 'checkbox';
+                input.checked = checkboxStates[i];
+                input.disabled;
+                td.appendChild(input);
+
+                // You can set values or labels for the checkboxes as needed
+
+
+            }
+        }
+    </script>
+}

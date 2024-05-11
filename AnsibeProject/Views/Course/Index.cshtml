@@ -98,23 +98,7 @@
                     </tbody>
                 </table>
             </div>
-            <div>
-               <h1>Hiiiiiiiiiiiiii</h1>
-            @if (ViewBag.ExcelData != null)
-        {
-                @foreach (var course in @ViewBag.ExcelData)
-            {
-                <p>
-                        <h1>Hiiiiiiiiiiiiii</h1>
-                    @course.CourseCode
-                </p>
-                }
-            }else
-            {
-                <h2>hqqqq</h2>
-                <span asp-validation-summary="All"></span>
-            }
-        </div>
+            
         <div class="box unactive">
                 <h3>NotActive Coursers</h3>
                 <table class="table table-striped" id="Inactive-datatable">
