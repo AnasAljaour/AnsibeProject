@@ -1,9 +1,13 @@
 ﻿@using AnsibeProject.Models;
+@Model List<Course>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+    @{
+        string v = "hello";
+    }
 <section class="courses">
     <div class="box-container">
        
-        <form class="box" hidden>
+        <form class="box" >
             <h1>Courses</h1>
             <table class="table table-striped">
                 <thead>
@@ -16,7 +20,7 @@
                 <th>Add</th>
                 </thead>
                 <tbody>
-                    @if (Model != null && Model.Count() > 0)
+                    @if (Model != null)
                     {
                         @foreach (var course in ViewBag.courses)
                         {
@@ -44,10 +48,11 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <button onclick="SaveList(this," @course.CourseCode","@course.CourseDescription")">+</button>
+                                        <button onclick="SaveList(this,'@course.CourseCode','@course.CourseDescription')" type="button">+</button>
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>.</td>
                                 </tr>
                             }
 
@@ -55,7 +60,7 @@
                     }
                 </tbody>
             </table>
-            <
+            
         </form>
     </div>
 
@@ -95,17 +100,18 @@
             newCell2.textContent = CourseDescription;
             newRow.appendChild(newCell1);
             newRow.appendChild(newCell2);
-            createCheckboxesWithStates(checkboxStates, newRow);
+                
+
+                createCheckboxesWithStates(checkedCheckboxes, newRow);
 
             newCell6.textContent = selectedText;
 
             // Append cells to the new row
 
-
-            newRow.appendChild(newCell2);
+            newRow.appendChild(newCell6);
 
             // Insert the new row after the parent row
-            parentRow.parentNode.insertBefore(newRow, parentRow.nextSibling);
+            tr.parentNode.insertBefore(newRow, tr.nextSibling);
 
         }
         function createCheckboxesWithStates(checkboxStates, newRow) {
@@ -122,7 +128,7 @@
                 var input = document.createElement('input');
                 input.type = 'checkbox';
                 input.checked = checkboxStates[i];
-                input.disabled;
+                input.disabled = true;
                 td.appendChild(input);
 
                 // You can set values or labels for the checkboxes as needed
