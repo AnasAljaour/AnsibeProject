@@ -9,5 +9,8 @@ namespace AnsibeProject.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<Professor> Professors { get; set;}
         public DbSet<Contract> Contracts { get; set; }
+
+        public DbSet<Section> Sections { get; set; }
+        public DbSet<Ansibe> Ansibes { get; set; }
     }
 }
