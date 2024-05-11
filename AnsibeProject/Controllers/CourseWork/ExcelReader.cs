@@ -25,12 +25,18 @@ public class ExcelReader<T> where T:new()
                     {
                         if(myAttribute.PropertyType.IsEnum)
                         {
+                            try { 
                            object myEnum=Enum.Parse(myAttribute.PropertyType,cell);
                             myAttribute.SetValue(dataObject,myEnum);
+                            }
+                            catch (Exception ex) { }
                         }
                         else
                         {
-                            myAttribute.SetValue(dataObject, Convert.ChangeType(cell, myAttribute.PropertyType));
+                            try
+                            {
+                                myAttribute.SetValue(dataObject, Convert.ChangeType(cell, myAttribute.PropertyType));
+                            }catch(Exception ex) { }
                         }
                         
                         

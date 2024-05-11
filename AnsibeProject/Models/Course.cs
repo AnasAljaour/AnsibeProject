@@ -19,42 +19,42 @@ namespace AnsibeProject.Models
         [Required(ErrorMessage = "Course Discription is required" )]
         [MaxLength(255, ErrorMessage = "Course Discription must be at most 1 line, 255")]
         public string CourseDescription { get; set; } = string.Empty;
-       
-        
+
+
         [Required(ErrorMessage = "Course Credit is required ")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "number of hours must be a positive integer !")]
-        public  int NumberOfCredits { get; set; }
+        public int NumberOfCredits { get; set; } = -1;
         [Required(ErrorMessage = "Course Total hours is required ")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "number of hours must be a positive integer !")]
         [TotalNumberOfHoursNotExceed("TotalNumberOfHours")]
-        public  int TotalNumberOfHours { get; set; }
+        public  int TotalNumberOfHours { get; set; } = -1;
 
 
         [Required(ErrorMessage = "Course hours is required ")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage= "number of hours must be a positive integer !")]
-        public  int NumberOfHours { get; set; }
+        public  int NumberOfHours { get; set; } = -1;
 
-        
+
         [Required(ErrorMessage = "Course TP hours is required ")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "number of hours must be a positive integer !")]
-        public int TP { get; set; }
+        public int TP { get; set; } = -1;
 
 
         [Required(ErrorMessage = "Course TD hours is required ")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "number of hours must be a positive integer !")]
 
-        public int TD { get; set; }
+        public int TD { get; set; } = -1;
 
         [Required(ErrorMessage = "Course semester is required ")]
         [RegularExpression(@"^[1-8]$",ErrorMessage="semester out of range 1-8 !")]
-        public int Semester {  get; set; }
+        public int Semester {  get; set; } = -1;
 
         [Required(ErrorMessage = "Course state is required ")]
         public ActiveState CourseState { get; set; } = ActiveState.Active;
 
 
         [Required(ErrorMessage = "Course Major is required ")]
-        public CourseMajor Major { get; set; }
+        public CourseMajor Major { get; set; } = CourseMajor.Informatics;
 
         [Required(ErrorMessage = "Course Obligatory is required ")]
         public CourseObligatory Obligatory { get; set; } = CourseObligatory.Mandatory;
