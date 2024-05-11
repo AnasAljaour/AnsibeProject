@@ -3,6 +3,7 @@ using AnsibeProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 
 namespace AnsibeProject.Controllers.CourseWork
@@ -86,11 +87,20 @@ namespace AnsibeProject.Controllers.CourseWork
                     List<Course> dataList = excelReader.ReadDataFromExcel(stream);
                    foreach (var c in dataList)
                         {
-                        try{
-                            UpdateCourse(c);
-                        }catch (Exception ex)
+                        // Manual validation
+                        var validationContext = new ValidationContext(c);
+                        var validationResults = new List<ValidationResult>();
+
+                        if (Validator.TryValidateObject(c, validationContext, validationResults, true))
                         {
-                            AddCourse(c);
+                            try
+                            {
+                               UpdateCourse(c);
+                            }
+                            catch (Exception ex)
+                            {
+                                AddCourse(c);
+                            }
                         }
                     }
                     
