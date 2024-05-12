@@ -2,6 +2,7 @@
 
 using AnsibeProject.Data;
 using AnsibeProject.Models;
+using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using System;
 using System.Globalization;
@@ -53,14 +54,19 @@ public class ExcelReader<T> where T:new()
                         }else if(myAttribute.PropertyType == typeof(DateOnly))
                         {
                             string dateFormat = "dd/mm/yyyy"; // Adjust the format according to your Excel file
-                            DateTime date;
-                            try
+                            
+                            //DateOnly dateOnly = DateOnly.ParseExact(cell, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                            //DateTime.FromOADate(Convert.ToDouble(cell));
+                            myAttribute.SetValue(dataObject,DateOnly.FromDateTime(DateTime.FromOADate(Convert.ToDouble(worksheet.Cells[row, col].Value)).Date));
+                            /*try
                             {
-
-                            }catch(Exception e)
-                            {
-
+                                DateOnly dateOnly = DateOnly.ParseExact(cell, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                myAttribute.SetValue(dataObject, dateOnly);
                             }
+                            catch(Exception e)
+                            {
+                                myAttribute.SetValue(dataObject, DateOnly.MaxValue);
+                            }*/
                         }
                         else
                         {
