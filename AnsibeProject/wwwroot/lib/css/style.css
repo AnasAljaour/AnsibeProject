@@ -341,7 +341,7 @@ section {
 	.side-bar.active {
 		left: -30rem;
 	}
-
+	
 .courses .box-container {
 	display: grid;
 	grid-auto-rows: auto auto;
