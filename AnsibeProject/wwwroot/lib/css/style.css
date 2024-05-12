@@ -358,7 +358,8 @@ section {
 		border: 1px solid var(--main-color);
 		overflow: hidden;
 		text-align: center;
-		font-size:1.3rem
+		font-size: 1.3rem;
+		min-width:1000px
 	}
 
 		.courses .box-container .box h3 {
@@ -566,3 +567,4 @@ a {
 	vertical-align: central !important;
 	font-size: 1.3rem !important;
 }
+
