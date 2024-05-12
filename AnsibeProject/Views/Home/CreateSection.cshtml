@@ -47,7 +47,7 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <button class="inline-btn" onclick="SaveList(this,'@course.CourseCode','@course.CourseDescription', @course.NumberOfHours,@course.TP,@course.TD)" type="button">Add</button>
+                                        <button class="inline-btn" onclick="SaveList(this,'@course.CourseCode','@course.CourseDescription', '@course.NumberOfHours','@course.TP','@course.TD')" type="button">Add</button>
                                     </td>
                                     
                                 </tr>
@@ -219,7 +219,7 @@
                 .catch(error => {
                     // Handle error
                 });
-        });
+        
         sections = []
         }
     </script>
