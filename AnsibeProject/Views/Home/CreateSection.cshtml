@@ -1,10 +1,9 @@
 ﻿@using AnsibeProject.Models;
 @model List<Course>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-    @{
-        string v = "hello";
-    }
-<section class="courses">
+    
+    <div id="partial-view"></div>
+<section class="courses" >
     <div class="box-container">
        
         <form class="box" >
@@ -48,7 +47,7 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <button class="inline-btn" onclick="SaveList(this,'@course.CourseCode','@course.CourseDescription')" type="button">Add</button>
+                                        <button class="inline-btn" onclick="SaveList(this,'@course.CourseCode','@course.CourseDescription', @course.NumberOfHours,@course.TP,@course.TD)" type="button">Add</button>
                                     </td>
                                     
                                 </tr>
@@ -59,14 +58,28 @@
                     }
                 </tbody>
             </table>
-            <button type="button" class="inline-btn">save</button>
+            <button type="button" class="inline-btn" onclick="SubmitSection()">save</button>
         </form>
     </div>
 
 </section>
 @section Scripts {
     <script>
-        function SaveList(button, CourseCode, CourseDescription) {
+        var sections = [];
+        function SaveList(button, CourseCode, CourseDescription, CourseHours, TP, TD) {
+            var model = {
+                SectionId: undefined,
+                Course: {
+                    CourseCode:CourseCode
+                },
+                Professor: null,
+                TP: undefined,
+                TD: undefined,
+                CourseHours: undefined,
+                Language: undefined
+            };
+
+
             // Get the parent row of the button (i.e., the row containing the button)
             var tr = document.getElementById(CourseCode);
 
@@ -74,6 +87,10 @@
             var checkboxes = tr.querySelectorAll('input[type="checkbox"]');
             var option = tr.querySelector('select');
             var selectedText = option.options[option.selectedIndex].textContent;
+
+            model.Language = selectedText
+            model.Course.CourseCode = CourseCode
+
             // Filter checked checkboxes
             var checkedCheckboxes = [];
             var i = 0;
@@ -85,6 +102,10 @@
                     checkbox.checked = false;
                 }
             });
+
+            model.CourseHours = (checkedCheckboxes[0]) ? CourseHours : null;
+            model.TD = (checkedCheckboxes[1]) ? TD : null;
+            model.TP = (checkedCheckboxes[2]) ? TP : null;
 
 
             if (i > 0) {
@@ -126,6 +147,7 @@
                 newCell7.appendChild(btn)
                 // Insert the new row after the parent row
                 tr.parentNode.insertBefore(newRow, tr.nextSibling);
+                sections.push(model);
             }
             else {
                 Swal.fire("at least one checkbox should be checked", "", "info");
@@ -179,6 +201,26 @@
                     Swal.fire("Deletion cancelled", "", "info");
                 }
             });
+        }
+        function SubmitSection(){
+            fetch('/Home/AddSection', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(sections)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle response if needed
+                    $('#partial-view').html(data)
+
+                })
+                .catch(error => {
+                    // Handle error
+                });
+        });
+        sections = []
         }
     </script>
 }
