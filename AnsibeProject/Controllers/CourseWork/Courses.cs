@@ -83,7 +83,7 @@ namespace AnsibeProject.Controllers.CourseWork
             {
                 using (var stream = file.OpenReadStream())
                 {
-                    var excelReader = new ExcelReader<Course>();
+                    var excelReader = new ExcelReader<Course>(_universityContext);
                     List<Course> dataList = excelReader.ReadDataFromExcel(stream);
                    foreach (var c in dataList)
                         {
