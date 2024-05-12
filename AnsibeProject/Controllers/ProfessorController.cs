@@ -287,5 +287,46 @@ namespace AnsibeProject.Controllers
         {
             return _db.Contracts.SingleOrDefault(c => c.ContractType == ContractType);
         }
+        public IActionResult ImportExcel(IFormFile file)
+        {
+            List<Professor> dataList;
+            if (file != null && file.Length > 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    var excelReader = new ExcelReader<Professor>(_db);
+                    dataList = excelReader.ReadDataFromExcel(stream);
+                    foreach (var c in dataList)
+                    {
+                        // Manual validation
+                        var validationContext = new ValidationContext(c);
+                        var validationResults = new List<ValidationResult>();
+
+                        if (Validator.TryValidateObject(c, validationContext, validationResults, true))
+                        {
+                            try
+                            {
+                                _db.Professors.Update(c);
+                                _db.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                _db.Professors.Add(c);
+                                _db.SaveChanges();
+                            }
+                        }
+                    }
+
+                }
+            }
+            else
+            {
+                // Handle invalid file
+                throw new Exception("Error while importing excel data...");
+            }
+
+
+            return View("Index", GetProfessors());
+        }
     }
 }

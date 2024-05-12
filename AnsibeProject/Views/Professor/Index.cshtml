@@ -4,9 +4,9 @@
 <section class="courses">
     <h1 class="heading">Professors</h1>
     <div class="container">
-        <form method="post" asp-controller="Professor" asp-action="Import" enctype="multipart/form-data">
-            <input type="file" name="file" />
-            <button type="submit" asp-controller="Professor" asp-action="Import">Import from Excel</button>
+        <form method="post" asp-controller="Professor" asp-action="ImportExcel" enctype="multipart/form-data">
+            <input type="file" accept=".xlsx, .xls" name="file" />
+            <button type="submit" asp-controller="Professor" asp-action="ImportExcel">Import from Excel</button>
         </form>
     </div>
     <div class="box-container">

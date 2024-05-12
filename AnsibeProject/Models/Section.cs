@@ -6,6 +6,7 @@ namespace AnsibeProject.Models
     {
         [Key]
         [Display(Name = "Section ID")]
+        [NonEmptySection]
         public int SectionId { get; set; }
 
         [Required]
@@ -21,5 +22,20 @@ namespace AnsibeProject.Models
 
 
 
+    }
+    class NonEmptySection : ValidationAttribute
+    {
+        public NonEmptySection() { }
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        {
+            var section = (Section)validationContext.ObjectInstance;
+
+            // Check if any of TD, TP, or CourseHours are not null
+            if (section.TD != null || section.TP != null || section.CourseHours != null)
+            {
+                return  ValidationResult.Success;
+            }
+            return new ValidationResult(ErrorMessage ?? $"At least one Type must be selected TP TD or Course");
+        }
     }
 }
