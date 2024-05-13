@@ -68,7 +68,7 @@
                                         @professor.FirstName @professor.MiddleName @professor.LastName
                                     </td>
                                     <td>
-                                        <button value="Assign" name="Assign" class="inline-btn" onclick="showAssignPopup()">Assign</button>
+                                            <button value="Assign" name="Assign" class="inline-btn" onclick="showAssignPopup()" type="button">Assign</button>
                                         <div class="popup" id="popup">
                                             <!-- Your HTML content for the pop-up screen goes here -->
                                             <h2>Assign Professor</h2>
@@ -95,7 +95,7 @@
                                                             @if (Model != null && Model.Count() > 0)
                                                             {
 
-                                                                @foreach (var section in Model)
+                                                                @foreach (var s in Model)
                                                                 {
                                                                     
 
@@ -103,22 +103,22 @@
 
                                                                         <tr>
                                                                             <td>
-                                                                                @section.Course.CourseCode
+                                                                                @s.Course.CourseCode
                                                                             </td>
-                                                                            <td>@section.Course.CourseDescription</td>
+                                                                            <td>@s.Course.CourseDescription</td>
                                                                             <td>
-                                                                                @section.CourseHours
+                                                                                @s.CourseHours
                                                                             </td>
                                                                             <td>
-                                                                                @section.TD
-                                                                            </td>
-                                                                            
-                                                                            <td>
-                                                                                @section.TP
+                                                                                @s.TD
                                                                             </td>
                                                                             
                                                                             <td>
-                                                                                @section.Language
+                                                                                @s.TP
+                                                                            </td>
+                                                                            
+                                                                            <td>
+                                                                                @s.Language
                                                                             </td>
                                                                             <td>
                                                                                 <input type="checkbox" name="c1[]" />
@@ -155,20 +155,5 @@
         </div>
 
     </div>
-
-
-
-    @section Scripts {
-        <script>
-            let popup = document.getElementById("popup");
-            function showAssignPopup() {
-                popup.classList.add("open-popup");
-            }
-            function closePopup() {
-
-                popup.classList.remove("open-popup");
-            }
-        </script>
-    }
 
 </section>

@@ -35,7 +35,7 @@ namespace AnsibeProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ansibes");
+                    b.ToTable("Ansibes", (string)null);
                 });
 
             modelBuilder.Entity("AnsibeProject.Models.Contract", b =>
@@ -52,7 +52,7 @@ namespace AnsibeProject.Migrations
 
                     b.HasKey("ContractType");
 
-                    b.ToTable("Contracts");
+                    b.ToTable("Contracts", (string)null);
                 });
 
             modelBuilder.Entity("AnsibeProject.Models.Course", b =>
@@ -95,7 +95,7 @@ namespace AnsibeProject.Migrations
 
                     b.HasKey("CourseCode");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("AnsibeProject.Models.Professor", b =>
@@ -155,7 +155,7 @@ namespace AnsibeProject.Migrations
 
                     b.HasIndex("ContractType");
 
-                    b.ToTable("Professors");
+                    b.ToTable("Professors", (string)null);
                 });
 
             modelBuilder.Entity("AnsibeProject.Models.Section", b =>
@@ -196,7 +196,7 @@ namespace AnsibeProject.Migrations
 
                     b.HasIndex("ProfessorFileNumber");
 
-                    b.ToTable("Sections");
+                    b.ToTable("Sections", (string)null);
                 });
 
             modelBuilder.Entity("AnsibeProject.Models.Professor", b =>

@@ -1,7 +1,9 @@
 ﻿using AnsibeProject.Data;
 using AnsibeProject.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Nodes;
 
 namespace AnsibeProject.Controllers
 {
@@ -26,24 +28,26 @@ namespace AnsibeProject.Controllers
             ViewBag.courses = courses;
             return View(courses);
         }
-        public IActionResult AddSection(List<Section> mySections)
+        [HttpPost]
+        public IActionResult AddSection([FromBody]List<Section> mySections)
         {
             bool ok = true;
             foreach (Section section in mySections)
             {
+                section.Course = _db.Courses.SingleOrDefault(c => c.CourseCode == section.Course.CourseCode);
                 var validationContext = new ValidationContext(section);
                 var validationResults = new List<ValidationResult>();
 
                 if (!Validator.TryValidateObject(section, validationContext, validationResults, true))
                 {
-                    ok=false;
+                    ok = false;
                     // If validation fails, add errors to the ModelState dictionary
                     foreach (var validationResult in validationResults)
                     {
                         foreach (var memberName in validationResult.MemberNames)
                         {
                             // Add each validation error to the ModelState dictionary
-                            ViewData[section.SectionId.ToString()]= validationResult.ErrorMessage;
+                            ViewData[section.SectionId.ToString()] = validationResult.ErrorMessage;
                         }
                     }
                 }
@@ -54,7 +58,9 @@ namespace AnsibeProject.Controllers
             }
             _db.Sections.AddRange(mySections);
             _db.SaveChanges();
-            return View("CreateAnsibe",mySections);
+            ViewBag.professors = _db.Professors.Where(p => p.ActiveState == ActiveState.Active).Include(p =>p.Contract);
+            return PartialView("AssignP", mySections);
+            
         }
         
 
