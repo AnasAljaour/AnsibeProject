@@ -8,7 +8,7 @@
             <h3>Active Professors</h3>
             @* <a asp-controller="Professor" asp-action="Add" class="inline-btn">add Professor</a> *@
             <form method="post">
-            <table class="table table-striped">
+                <table class="table table-striped Active-datatable">
                 <thead>
                     <tr>
                         <th data-searchable="true">File Number</th>
@@ -37,7 +37,7 @@
 
 
 
-                                <tr>
+                                    <tr id="@professor.FileNumber">
                                     <td>
                                         @professor.FileNumber
                                     </td>
@@ -68,75 +68,7 @@
                                         @professor.FirstName @professor.MiddleName @professor.LastName
                                     </td>
                                     <td>
-                                            <button value="Assign" name="Assign" class="inline-btn" onclick="showAssignPopup()" type="button">Assign</button>
-                                        <div class="popup" id="popup">
-                                            <!-- Your HTML content for the pop-up screen goes here -->
-                                            <h2>Assign Professor</h2>
-                                            <h1 class="heading">Sections</h1>
-                                            <div class="box-container">
-                                                <div class="box">
-
-                                                    <table class="table table-striped">
-                                                        <thead>
-                                                            <tr>
-                                                                <th data-searchable="true">Course Code</th>
-                                                                <th data-searchable="true">Course Description</th>
-                                                                <th data-searchable="true">Course Hours</th>
-                                                                
-                                                                <th data-searchable="true">TD</th>
-                                                                <th data-searchable="true">TP</th>
-
-                                                                <th data-searchable="true">Language</th>
-                                                                
-
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @if (Model != null && Model.Count() > 0)
-                                                            {
-
-                                                                @foreach (var s in Model)
-                                                                {
-                                                                    
-
-
-
-                                                                        <tr>
-                                                                            <td>
-                                                                                @s.Course.CourseCode
-                                                                            </td>
-                                                                            <td>@s.Course.CourseDescription</td>
-                                                                            <td>
-                                                                                @s.CourseHours
-                                                                            </td>
-                                                                            <td>
-                                                                                @s.TD
-                                                                            </td>
-                                                                            
-                                                                            <td>
-                                                                                @s.TP
-                                                                            </td>
-                                                                            
-                                                                            <td>
-                                                                                @s.Language
-                                                                            </td>
-                                                                            <td>
-                                                                                <input type="checkbox" name="c1[]" />
-                                                                            </td>
-                                                                        </tr>
-
-                                                                    }
-
-                                                                
-
-                                                            }
-
-
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <button type="button" onclick="closePopup()" class="inline-btn">SAVE</button>
-                                            </div>
+                                            <button value="Assign" name="Assign" class="inline-btn" onclick="showAssignPopup(this)" type="button">Assign</button>
 
                                     </td>
 
@@ -152,6 +84,71 @@
                 </tbody>
             </table>
             </form>
+            <div class="popup" id="popup">
+                <!-- Your HTML content for the pop-up screen goes here -->
+                <h2>Assign Professor</h2>
+                <h1 class="heading">Sections</h1>
+                <div class="box-container">
+                    <div class="box">
+
+                        <table class="table table-striped Active-datatable">
+                            <thead>
+                                <tr>
+                                    <th data-searchable="true">Course Code</th>
+                                    <th data-searchable="true">Course Description</th>
+                                    <th data-searchable="true">Course Hours</th>
+
+                                    <th data-searchable="true">TD</th>
+                                    <th data-searchable="true">TP</th>
+
+                                    <th data-searchable="true">Language</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody id="SectionId">
+                                @if (Model != null && Model.Count() > 0)
+                                {
+
+                                    @foreach (var s in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @s.Course.CourseCode
+                                            </td>
+                                            <td>@s.Course.CourseDescription</td>
+                                            <td>
+                                                @s.CourseHours
+                                            </td>
+                                            <td>
+                                                @s.TD
+                                            </td>
+
+                                            <td>
+                                                @s.TP
+                                            </td>
+
+                                            <td>
+                                                @s.Language
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" name="c1[]" />
+                                            </td>
+
+                                        </tr>
+
+                                    }
+
+                                    <button type="button" onclick="showAssignPopup(this)" class="inline-btn">SAVE</button>
+
+
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
         </div>
 
     </div>
