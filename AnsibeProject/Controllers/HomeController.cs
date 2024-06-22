@@ -2,6 +2,8 @@
 using AnsibeProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Nodes;
 
@@ -60,6 +62,30 @@ namespace AnsibeProject.Controllers
             _db.SaveChanges();
             ViewBag.professors = _db.Professors.Where(p => p.ActiveState == ActiveState.Active).Include(p =>p.Contract);
             return PartialView("AssignP", mySections);
+            
+        }
+        [HttpPost]
+        public IActionResult SaveAllocation([FromBody] List<KeyValuePairModel> mapData)
+        {
+            if (mapData.IsNullOrEmpty())
+            {
+                return BadRequest("empty or null data");
+            }
+
+            foreach(KeyValuePairModel kvp in mapData)
+            {
+                try
+                {
+                    //Section section = 
+
+                }catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+
+            var responseData = new { success = true };
+            return Json(responseData);
             
         }
         

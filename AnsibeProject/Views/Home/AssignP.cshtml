@@ -3,7 +3,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <section class="courses">
     <h1 class="heading">Professors</h1>
-    <div class="box-container">
+    <div class="box-container" >
         <div class="box">
             <h3>Active Professors</h3>
             @* <a asp-controller="Professor" asp-action="Add" class="inline-btn">add Professor</a> *@
@@ -15,18 +15,16 @@
                         <th data-searchable="true">Full Name In Arabic</th>
                         <th data-searchable="true">Speciality</th>
                         <th data-searchable="true">Rank</th>
-                        <th data-searchable="true">Email</th>
-                        <th data-searchable="true">Phone Number</th>
+                        
                         <th data-searchable="true">Contract Type</th>
-                        @* <th data-searchable="true">Max Hours</th>
-                        <th data-searchable="true">Min Hours</th> *@
+                        
                         <th data-searchable="true">Full Name</th>
                         <th data-searchable="true">Select</th>
 
                     </tr>
                 </thead>
-                <tbody>
-                    @if (Model != null && Model.Count() > 0)
+                    <tbody style="background-color:white !important;">
+                    @if (ViewBag.professors != null)
                     {
 
 
@@ -48,15 +46,11 @@
                                     <td>
                                         @professor.Rank
                                     </td>
-                                    <td>
-                                        @professor.Email
-                                    </td>
-                                    <td>
-                                        @professor.PhoneNumber
-                                    </td>
+                                    
                                     <td>
                                         @professor.Contract.ContractType
                                     </td>
+                                    
 
                                     @* <td>
                         @professor.Contract.MaxHours
@@ -73,6 +67,31 @@
                                     </td>
 
                                 </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                        <td colspan="5">
+                                            <table id="course-@professor.FileNumber" class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th >Course Code</th>
+                                                        <th >Course Description</th>
+                                                        <th >Course Hours</th>
+
+                                                        <th >TD</th>
+                                                        <th >TP</th>
+
+                                                        <th >Language</th>
+                                                        <th style="display:none">sectionId</th>
+                                                        <th>delete</th>
+                                                        <th style="display:none">sectionId</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="body-@professor.FileNumber">
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
 
                             }
 
@@ -83,6 +102,7 @@
 
                 </tbody>
             </table>
+                <button type="button" onclick="submitAllocation()" class="inline-btn">OK</button>
             </form>
             <div class="popup" id="popup">
                 <!-- Your HTML content for the pop-up screen goes here -->
@@ -90,7 +110,8 @@
                 <h1 class="heading">Sections</h1>
                 <div class="box-container">
                     <div class="box">
-
+                        <button type="button" onclick="showAssignPopup(this)" class="inline-btn">SAVE</button>
+                        <button type="button" onclick="cancel()" class="inline-btn">Cancel</button>
                         <table class="table table-striped Active-datatable">
                             <thead>
                                 <tr>
@@ -131,22 +152,24 @@
                                             <td>
                                                 @s.Language
                                             </td>
+                                            <td style="display:none">@s.SectionId</td>
                                             <td>
                                                 <input type="checkbox" name="c1[]" />
                                             </td>
-
+                                            
                                         </tr>
 
                                     }
-
-                                    <button type="button" onclick="showAssignPopup(this)" class="inline-btn">SAVE</button>
-
+                                    
+                                    
+                                    
 
                                 }
 
 
                             </tbody>
                         </table>
+                        
                     </div>
                 </div>
         </div>
