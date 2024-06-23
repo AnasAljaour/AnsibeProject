@@ -5,7 +5,7 @@
 namespace AnsibeProject.Migrations
 {
     /// <inheritdoc />
-    public partial class SectionAnsibe : Migration
+    public partial class AnsibeSection : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,7 +14,8 @@ namespace AnsibeProject.Migrations
                 name: "Ansibes",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Year = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
@@ -34,7 +35,7 @@ namespace AnsibeProject.Migrations
                     TD = table.Column<int>(type: "int", nullable: true),
                     CourseHours = table.Column<int>(type: "int", nullable: true),
                     Language = table.Column<int>(type: "int", nullable: false),
-                    AnsibeId = table.Column<string>(type: "nvarchar(25)", nullable: true)
+                    AnsibeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

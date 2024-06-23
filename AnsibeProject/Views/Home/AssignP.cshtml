@@ -6,7 +6,7 @@
     <div class="box-container" >
         <div class="box">
             <h3>Active Professors</h3>
-            @* <a asp-controller="Professor" asp-action="Add" class="inline-btn">add Professor</a> *@
+            
             <form method="post">
                 <table class="table table-striped Active-datatable">
                 <thead>
@@ -51,13 +51,6 @@
                                         @professor.Contract.ContractType
                                     </td>
                                     
-
-                                    @* <td>
-                        @professor.Contract.MaxHours
-                        </td>
-                        <td>
-                        @professor.Contract.MinHours
-                        </td> *@
                                     <td>
                                         @professor.FirstName @professor.MiddleName @professor.LastName
                                     </td>
@@ -67,9 +60,9 @@
                                     </td>
 
                                 </tr>
-                                    <tr>
-                                        <td colspan="2"></td>
-                                        <td colspan="5">
+                                    <tr style="margin-bottom: 10px;">
+                                        <td colspan="2" style="border-bottom: 2px solid #333 !important; margin-bottom: 10px !important;"></td>
+                                        <td colspan="5" style="border-bottom: 2px solid #333 !important; margin-bottom: 10px !important;">
                                             <table id="course-@professor.FileNumber" class="table">
                                                 <thead>
                                                     <tr>
@@ -105,12 +98,12 @@
                 <button type="button" onclick="submitAllocation()" class="inline-btn">OK</button>
             </form>
             <div class="popup" id="popup">
-                <!-- Your HTML content for the pop-up screen goes here -->
+               
                 <h2>Assign Professor</h2>
                 <h1 class="heading">Sections</h1>
                 <div class="box-container">
                     <div class="box">
-                        <button type="button" onclick="showAssignPopup(this)" class="inline-btn">SAVE</button>
+                        <button type="button" onclick="saveAssign(this)" class="inline-btn">SAVE</button>
                         <button type="button" onclick="cancel()" class="inline-btn">Cancel</button>
                         <table class="table table-striped Active-datatable">
                             <thead>
