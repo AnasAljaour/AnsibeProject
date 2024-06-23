@@ -25,10 +25,10 @@
 <section class="Assing">
     <div class="box-container" >
         <div class="box">
-            <h3>Section</h3>
+            <h3>Section/Professor</h3>
             <button   class="inline-btn" onclick="showCreateSection()" type="button">Create Section</button>
-            <button class="inline-btn" onclick="" type="button">swap</button>
-            <form method="post">
+            <button class="inline-btn" onclick="swapContent()" type="button">swap</button>
+            <form method="post" class="toggle-div visible" style="display: visible;">
                
                 <table class="table table-striped Active-datatable">
                 <thead>
@@ -90,7 +90,106 @@
                     </table>
                 
             </form>
+            @* I started her making same form but for prof having sections *@
+                <form method="post" class="toggle-div hidden" style="display: none;">
+
+                    <table class="table table-striped Active-datatable">
+                        <thead>
+                            <tr>
+                                <th>Professor Id</th>
+                                <th>Professor Name</th>
+                            
+                                <th>Section </th>
+                                
+                            
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @* @foreach (var professor in ViewBag.professors)
+                            {
+                            if (professor.ActiveState.Equals(ActiveState.Active))
+                            { *@
+                            <tr>
+                                <td>
+                                    FileNumber
+                                </td>
+                                <td>
+                                    FullNameInArabic
+                                </td>
+
+                                                                              
+                                @*   @if (Model != null && Model.Count() > 0)
+                                {
+
+                                @foreach (var s in Model)
+                                { *@
+
+                                <td>
+                                    @* table for sections inside the initial table *@
+                                    <table class="table table-striped Active-datatable">
+                                        <thead>
+                                        <th>Course Code</th>
+                                        <th>Course Description</th>
+                                        <th>Course Hours</th>
+                                        <th>TD</th>
+                                        <th>TP</th>
+                                        <th>Language</th>
+                                        <th>Delete</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                        <td>
+                                            SectionId
+                                        </td>
+
+                                        <td>
+                                            CourseCode
+                                        </td>
+                                        <td>
+                                            CourseDescription
+                                        </td>
+                                        <td>
+                                            CourseHours
+                                        </td>
+                                        <td>
+                                            TD
+                                        </td>
+
+                                        <td>
+                                            TP
+                                        </td>
+
+                                        <td>
+                                            Language
+                                        </td>
+
+                                        <td>
+                                            <button class="inline-delete-btn">Delete</button>
+                                        </td>
+                                        </tr>
+                                            
+                                        </tbody>
+                                    </table>
+
+
+                                    @* }
+                                    } *@
+                    </table>
+                    </td>
+
+                    @* }
+                    }  *@
+                    </tr>
+                    </tbody>
+
+                   
+
+                </form>
+
         </div>
+        @* same pop-up as awad *@
             <div class="popup" id="popup">
                 <form class="box">
                     <h1>Courses</h1>
@@ -159,6 +258,22 @@
         function showCreateSection() {
             var popup = document.getElementById("popup");
             popup.classList.toggle("open-popup");
+        }
+
+        //swap content table
+        function swapContent() {
+            var divs = document.querySelectorAll(".toggle-div");
+            divs.forEach(function (div) {
+                if (div.classList.contains("visible")) {
+                    div.classList.remove("visible");
+                    div.classList.add("hidden");
+                    div.style.display = "none";
+                } else {
+                    div.classList.remove("hidden");
+                    div.classList.add("visible");
+                    div.style.display = "block";
+                }
+            });
         }
     </script>
 
