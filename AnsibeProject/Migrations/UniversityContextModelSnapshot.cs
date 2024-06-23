@@ -24,9 +24,11 @@ namespace AnsibeProject.Migrations
 
             modelBuilder.Entity("AnsibeProject.Models.Ansibe", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Year")
                         .IsRequired()
@@ -35,7 +37,7 @@ namespace AnsibeProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ansibes", (string)null);
+                    b.ToTable("Ansibes");
                 });
 
             modelBuilder.Entity("AnsibeProject.Models.Contract", b =>
@@ -52,7 +54,7 @@ namespace AnsibeProject.Migrations
 
                     b.HasKey("ContractType");
 
-                    b.ToTable("Contracts", (string)null);
+                    b.ToTable("Contracts");
                 });
 
             modelBuilder.Entity("AnsibeProject.Models.Course", b =>
@@ -95,7 +97,7 @@ namespace AnsibeProject.Migrations
 
                     b.HasKey("CourseCode");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("AnsibeProject.Models.Professor", b =>
@@ -155,7 +157,7 @@ namespace AnsibeProject.Migrations
 
                     b.HasIndex("ContractType");
 
-                    b.ToTable("Professors", (string)null);
+                    b.ToTable("Professors");
                 });
 
             modelBuilder.Entity("AnsibeProject.Models.Section", b =>
@@ -166,8 +168,8 @@ namespace AnsibeProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectionId"));
 
-                    b.Property<string>("AnsibeId")
-                        .HasColumnType("nvarchar(25)");
+                    b.Property<int?>("AnsibeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CourseCode")
                         .IsRequired()
@@ -196,7 +198,7 @@ namespace AnsibeProject.Migrations
 
                     b.HasIndex("ProfessorFileNumber");
 
-                    b.ToTable("Sections", (string)null);
+                    b.ToTable("Sections");
                 });
 
             modelBuilder.Entity("AnsibeProject.Models.Professor", b =>

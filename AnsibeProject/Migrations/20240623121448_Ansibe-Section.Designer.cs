@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AnsibeProject.Migrations
 {
     [DbContext(typeof(UniversityContext))]
-    [Migration("20240511195922_Section-Ansibe")]
-    partial class SectionAnsibe
+    [Migration("20240623121448_Ansibe-Section")]
+    partial class AnsibeSection
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,11 @@ namespace AnsibeProject.Migrations
 
             modelBuilder.Entity("AnsibeProject.Models.Ansibe", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Year")
                         .IsRequired()
@@ -169,8 +171,8 @@ namespace AnsibeProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectionId"));
 
-                    b.Property<string>("AnsibeId")
-                        .HasColumnType("nvarchar(25)");
+                    b.Property<int?>("AnsibeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CourseCode")
                         .IsRequired()

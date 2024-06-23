@@ -122,8 +122,35 @@ function createCheckboxesWithStates(checkboxStates, newRow) {
 
 }
 function DeleteSection(button) {
+    
     var parentRow = button.parentNode.parentNode;
+    columns = parentRow.getElementsByTagName('td');
+    let courseCode = columns[0].textContent.trim();
+    
+    let checkboxes = parentRow.querySelectorAll('input[type="checkbox"]');
 
+    var checkedCheckboxes = [];
+    checkboxes.forEach(function (checkbox) {
+        checkedCheckboxes.push(checkbox.checked);
+    });
+    
+
+    let index = sections.findIndex(function (item) {
+        if (item.Course.CourseCode.trim() !== courseCode) return false;
+        
+        if (checkedCheckboxes[2] && item.TP === null) return false;
+        if (checkedCheckboxes[1] && item.TD === null) return false;
+        if (checkedCheckboxes[0] && item.CourseHours === null) return false;
+        let language = (columns[5].textContent === 'E') ? 0 : (columns[5].textContent === 'F') ? 1 : 2
+        if (item.Language !== language) return false;
+
+        return true;
+    });
+   
+    if (index !== -1) {
+        sections.splice(index, 1);
+    }
+   
     parentRow.innerHTML = "";
 
 }
@@ -151,14 +178,18 @@ function confirmDelete(button) {
 
 
 function SubmitSection() {
-    console.log(JSON.stringify(sections))
-    fetch('/Home/AddSection', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(sections)
-    })
+    if (sections.length == 0) {
+        Swal.fire("at least one section should be created", "", "info");
+    }
+
+    else {
+        fetch('/Home/AddSection', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(sections)
+        })
         .then(response => response.text())
         .then(data => {
 
@@ -170,51 +201,48 @@ function SubmitSection() {
             // Handle error
         });
 
-    sections = []
+        sections = []
+    }
 }
 let prof;
 let allocation = [];
 function showAssignPopup(button) {
 
-
-    if (button.textContent.trim() === "Assign") {
         var btn = button.closest("tr");
 
         var firstCell = btn.querySelector("td:first-child");
 
         prof = firstCell.textContent.trim();
-    }
-
-
-
-
-    if (button.textContent == "SAVE") {
-
-        var tbody = document.getElementById("SectionId");
-        var checkboxes = tbody.querySelectorAll('input[type="checkbox"]');
-
-        var checkedCheckboxes = [];
-
-        checkboxes.forEach(function (checkbox) {
-            checkedCheckboxes.push(checkbox.checked);
-
-            if (checkbox.checked) {
-                // Remove the parent row of the checked checkbox
-                var row = checkbox.closest('tr');
-
-
-                var newRow = prepareRow(row);
-                row.parentNode.removeChild(row);
-                let courseTable = document.getElementById("body-" + prof);
-                courseTable.appendChild(newRow);
-            }
-        });
-
-
-    }
+    
     var popup = document.getElementById("popup");
     popup.classList.toggle("open-popup");
 }
+
+
+
+function saveAssign(button) {
+    var tbody = document.getElementById("SectionId");
+    var checkboxes = tbody.querySelectorAll('input[type="checkbox"]');
+
+
+    checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+            // Remove the parent row of the checked checkbox
+            var row = checkbox.closest('tr');
+
+
+            var newRow = prepareRow(row);
+            row.parentNode.removeChild(row);
+            let courseTable = document.getElementById("body-" + prof);
+            courseTable.appendChild(newRow);
+        }
+    });
+
+    var popup = document.getElementById("popup");
+    popup.classList.toggle("open-popup");
+
+}
+
 
 function prepareRow(row) {
 
@@ -269,10 +297,20 @@ function submitAllocation() {
         data: JSON.stringify(allocation),
         dataType: 'json',
         success: function (response) {
-            alert("Success! response =  " + response);
-            allocation = [];
+
             if (response.success) {
-                window.location.href = "/Home/Index";
+                allocation = [];
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Your Allocation has been saved",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                setTimeout(function () {
+                    window.location.href = "/Home/Index";
+                }, 1500);
+               
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -280,21 +318,21 @@ function submitAllocation() {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "Something went wrong!\n"  + jqXHR.responseJSON.error,
+                    text: "Something went wrong! \n"  + jqXHR.responseJSON.error,
                     
                 }); 
             } else if (jqXHR.status === 400) {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "Something went wrong!\n" + jqXHR.responseText,
+                    text: "Something went wrong! \n" + jqXHR.responseText,
                     
                 }); 
             } else {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "Something went wrong!\n" + jqXHR.responseText,
+                    text: "Something went wrong!<br>" + jqXHR.responseText,
                     
                 });
             }
@@ -366,4 +404,6 @@ function cancel() {
     var popup = document.getElementById("popup");
     popup.classList.toggle("open-popup");
 }
+
+
 

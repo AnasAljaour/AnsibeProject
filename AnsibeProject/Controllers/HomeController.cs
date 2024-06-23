@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Nodes;
 
+
 namespace AnsibeProject.Controllers
 {
     public class HomeController : Controller
@@ -71,17 +72,42 @@ namespace AnsibeProject.Controllers
             {
                 return BadRequest("empty or null data");
             }
-
-            foreach(KeyValuePairModel kvp in mapData)
+            Ansibe allocation = new Ansibe();
+            allocation.Id = 0;
+            allocation.Year = DateTime.Now.Year.ToString() + "-"+ (DateTime.Now.Year + 1).ToString();
+            foreach (KeyValuePairModel kvp in mapData)
             {
                 try
                 {
-                    //Section section = 
+                    Section section = _db.Sections.SingleOrDefault(s => s.SectionId == int.Parse(kvp.Key));
+                    Professor professor = _db.Professors.SingleOrDefault(p => p.FileNumber == int.Parse(kvp.Value));
+
+
+                    if (section == null)
+                    {
+                        return BadRequest($"Section with ID {kvp.Key} not found.");
+                    }
+                    if (professor == null)
+                    {
+                        return BadRequest($"Professor with file number {kvp.Value} not found.");
+                    }
+
+                    section.Professor = professor;
+                    allocation.Sections.Add(section);
+                    _db.Sections.Update(section);
 
                 }catch (Exception ex)
                 {
-                    return BadRequest(ex.Message);
+                    return BadRequest($"An error occurred: {ex.Message}");
                 }
+            }
+            try
+            {
+                _db.Ansibes.Add(allocation);
+                _db.SaveChanges();
+            }catch(Exception ex)
+            {
+                return BadRequest($"An error occurred: {ex.Message}");
             }
 
             var responseData = new { success = true };
