@@ -8,15 +8,17 @@
     <title>home</title>
 
     <!-- font awesome cdn link  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <link rel="stylesheet" href="~/lib/css/all.min.css">
+    <link rel="stylesheet" href="~/lib/css/fontawesome.min.css">
+    <link rel="stylesheet" href="~/lib/css/font.css">
+    <link rel="stylesheet" href="~/lib/css/dataTables.css">
 
     <!-- custom css file link  -->
     <link rel="stylesheet" href="~/lib/css/sweetalert2.min.css">
     <script src="~/lib/js/sweetalert2.all.min.js"></script>
-    <!--<script src="~/lib/js/script.js"></script>-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
+    
+    <script src="~/lib/js/jquery.min.js"></script>
+    <script src="~/lib/js/dataTables.js"></script>
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/css/style.css">
 
@@ -82,8 +84,8 @@
             <!-- <a href="contact.html"><i class="fas fa-headset"></i><span>contact us</span></a> -->
         </nav>
 
-    </div>
-    <div> *@
+    </div>*@
+    <div> 
         @RenderBody()
     </div>
     @await RenderSectionAsync("Scripts", required: false)
