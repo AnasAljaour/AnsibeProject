@@ -1,1 +1,165 @@
-﻿
+﻿@using AnsibeProject.Models;
+@*@model List<Section>;*@
+@*ViewBag year*@
+@*ViewBag courses*@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<div class="side-bar">
+
+    <nav class="navbar">
+      <form method="post">
+          <select class="dropdown">
+    <option value="">Year</option>
+</select>
+       </form>
+        <table class="table">
+            <tr>
+                 <th>Id</th>
+                 <th>Ansibe</th>
+                 <th>Show</th>
+            </tr>
+        </table>
+    </nav>
+   
+</div>
+<div>
+<section class="Assing">
+    <div class="box-container" >
+        <div class="box">
+            <h3>Section</h3>
+            <button   class="inline-btn" onclick="showCreateSection()" type="button">Create Section</button>
+            <button class="inline-btn" onclick="" type="button">swap</button>
+            <form method="post">
+               
+                <table class="table table-striped Active-datatable">
+                <thead>
+                    <tr>
+                        <th>Section Id</th>
+                        <th>Professor</th>
+                         <th>Course Code</th>
+                         <th>Course Description</th>
+                        <th>Course Hours</th>
+                        <th>TD</th>
+                        <th>TP</th>
+                        <th>Language</th>
+                        <th>Delete</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @*  @if (Model != null && Model.Count() > 0)
+                        {
+
+                            @foreach (var s in Model)
+                            {*@
+                                <tr>
+                                    <td>
+                                        SectionId
+                                    </td>
+                                    <td>
+                                       Professor
+                                    </td>
+                                    <td>
+                                        Course.CourseCode
+                                    </td>
+                                    <td>
+                                        Course.CourseDescription
+                                     </td>
+                                    <td>
+                                       CourseHours
+                                    </td>
+                                    <td>
+                                        TD
+                                    </td>
+
+                                    <td>
+                                        TP
+                                    </td>
+
+                                    <td>
+                                        Language
+                                    </td>
+                                   
+                                    <td>
+                                         <button class="inline-delete-btn" >Delete</button>
+                                    </td>
+
+                                </tr>
+                          @* }
+                            }*@
+                        </tbody>
+                    </table>
+                
+            </form>
+        </div>
+            <div class="popup" id="popup">
+                <form class="box">
+                    <h1>Courses</h1>
+                    <button type="button" onclick="showCreateSection()" class="inline-btn">SAVE</button>
+                    <button type="button" onclick="showCreateSection()" class="inline-btn">Cancel</button>
+                    <table class="table table-striped Active-datatable">
+                        <thead>
+                        <th>Course Code</th>
+                        <th>Course Description</th>
+                        <th>Course Hour</th>
+                        <th>TD</th>
+                        <th>TP</th>
+                        <th>Language</th>
+                        <th>Add</th>
+                        </thead>
+                        <tbody>
+                         @* @if (ViewBag.courses != null)
+                           {
+
+
+                                @foreach (var course in ViewBag.courses)
+                                {
+                            
+                                    if (course.CourseState.Equals(ActiveState.Active))
+                                    {*@
+                                        <tr id="CourseCode">
+                                            <td>
+                                                CourseCode
+                                            </td>
+                                            <td>
+                                                CourseDescription
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" name="c[]" />
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" name="c[]" />
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" name="c[]" />
+                                            </td>
+                                            <td>
+                                                <select asp-items="Html.GetEnumSelectList<AnsibeProject.Models.Language>()">
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <button class="inline-btn" @*onclick="SaveList(this,'@course.CourseCode','@course.CourseDescription', '@course.NumberOfHours','@course.TP','@course.TD')" *@ type="button">Add</button>
+                                            </td>
+
+                                        </tr>
+
+                                   @* }
+
+                                }
+                           }*@
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+    </div>
+</section>
+</div>
+
+   @section Scripts {
+    <script>
+        function showCreateSection() {
+            var popup = document.getElementById("popup");
+            popup.classList.toggle("open-popup");
+        }
+    </script>
+
+}
