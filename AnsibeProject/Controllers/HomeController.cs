@@ -19,7 +19,26 @@ namespace AnsibeProject.Controllers
         }
         public IActionResult Index()
         {
-            return View( );
+
+                Ansibe? ansibeWithMaxId = _db.Ansibes
+                                               .OrderByDescending(a => a.Id)
+                                               .Include(a => a.Sections)
+                                               .ThenInclude(s => s.Course)
+                                               .Include(a => a.Sections)
+                                               .ThenInclude(s => s.Professor)
+                                               .FirstOrDefault();
+            
+            return View(ansibeWithMaxId);
+        }
+        public IActionResult Details(int Id)
+        {
+            Ansibe? ansibes = _db.Ansibes
+                                         .Include(a => a.Sections)
+                                             .ThenInclude(s => s.Course)
+                                         .Include(a => a.Sections)
+                                             .ThenInclude(s => s.Professor)
+                                         .FirstOrDefault(a => a.Id == Id);
+            return View("Index", ansibes);
         }
         public IActionResult CreateAnsibe()
         {
@@ -110,7 +129,9 @@ namespace AnsibeProject.Controllers
                 return BadRequest($"An error occurred: {ex.Message}");
             }
 
-            var responseData = new { success = true };
+            var responseData = new { success = true,
+            id = allocation.Id
+            };
             return Json(responseData);
             
         }
