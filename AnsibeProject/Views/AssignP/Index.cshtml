@@ -22,174 +22,106 @@
    
 </div>
 <div>
-<section class="Assing">
-    <div class="box-container" >
-        <div class="box">
-            <h3>Section/Professor</h3>
-            <button   class="inline-btn" onclick="showCreateSection()" type="button">Create Section</button>
-            <button class="inline-btn" onclick="swapContent()" type="button">swap</button>
-            <form method="post" class="toggle-div visible" style="display: visible;">
-               
-                <table class="table table-striped Active-datatable">
-                <thead>
-                    <tr>
-                        <th>Section Id</th>
-                        <th>Professor</th>
-                         <th>Course Code</th>
-                         <th>Course Description</th>
-                        <th>Course Hours</th>
-                        <th>TD</th>
-                        <th>TP</th>
-                        <th>Language</th>
-                        <th>Delete</th>
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                    @*  @if (Model != null && Model.Count() > 0)
-                        {
-
-                            @foreach (var s in Model)
-                            {*@
-                                <tr>
-                                    <td>
-                                        SectionId
-                                    </td>
-                                    <td>
-                                       Professor
-                                    </td>
-                                    <td>
-                                        Course.CourseCode
-                                    </td>
-                                    <td>
-                                        Course.CourseDescription
-                                     </td>
-                                    <td>
-                                       CourseHours
-                                    </td>
-                                    <td>
-                                        TD
-                                    </td>
-
-                                    <td>
-                                        TP
-                                    </td>
-
-                                    <td>
-                                        Language
-                                    </td>
-                                   
-                                    <td>
-                                         <button class="inline-delete-btn" >Delete</button>
-                                    </td>
-
-                                </tr>
-                          @* }
-                            }*@
-                        </tbody>
-                    </table>
-                
-            </form>
-            @* I started her making same form but for prof having sections *@
-                <form method="post" class="toggle-div hidden" style="display: none;">
+    <section class="Assing">
+        <div class="box-container">
+            <div class="box">
+                <h3>Section/Professor</h3>
+                <button class="inline-btn" onclick="showCreateSection()" type="button">Create Section</button>
+                <button class="inline-btn" onclick="swapContent()" type="button">swap</button>
+                <form method="post" class="toggle-div visible" style="display: visible;">
 
                     <table class="table table-striped Active-datatable">
                         <thead>
                             <tr>
-                                <th>Professor Id</th>
-                                <th>Professor Name</th>
-                            
+                                <th>Course Code</th>
                                 <th>Section </th>
-                                
-                            
+
 
                             </tr>
                         </thead>
                         <tbody>
-
-                            @* @foreach (var professor in ViewBag.professors)
+                            @* @if (Model != null && Model.Count() > 0)
                             {
-                            if (professor.ActiveState.Equals(ActiveState.Active))
+
+                            @foreach (var s in Model)
                             { *@
                             <tr>
                                 <td>
-                                    FileNumber
+                                    CourseCode
                                 </td>
                                 <td>
-                                    FullNameInArabic
+                                    Section
                                 </td>
-
-                                                                              
-                                @*   @if (Model != null && Model.Count() > 0)
-                                {
-
-                                @foreach (var s in Model)
-                                { *@
-
                                 <td>
-                                    @* table for sections inside the initial table *@
                                     <table class="table table-striped Active-datatable">
                                         <thead>
-                                        <th>Course Code</th>
+                                        <th>Professor</th>
+
                                         <th>Course Description</th>
                                         <th>Course Hours</th>
                                         <th>TD</th>
                                         <th>TP</th>
                                         <th>Language</th>
+                                        <th>Assign</th>
                                         <th>Delete</th>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                        <td>
-                                            SectionId
-                                        </td>
+                                                <td>
+                                                    Professor
+                                                </td>
 
-                                        <td>
-                                            CourseCode
-                                        </td>
-                                        <td>
-                                            CourseDescription
-                                        </td>
-                                        <td>
-                                            CourseHours
-                                        </td>
-                                        <td>
-                                            TD
-                                        </td>
+                                                <td>
+                                                    CourseDescription
+                                                </td>
+                                                <td>
+                                                    CourseHours
+                                                </td>
+                                                <td>
+                                                    TD
+                                                </td>
 
-                                        <td>
-                                            TP
-                                        </td>
+                                                <td>
+                                                    TP
+                                                </td>
 
-                                        <td>
-                                            Language
-                                        </td>
+                                                <td>
+                                                    Language
+                                                </td>
+                                                <td>
+                                                    <button class="inline-delete-btn">Assign</button>
+                                                </td>
 
-                                        <td>
-                                            <button class="inline-delete-btn">Delete</button>
-                                        </td>
-                                        </tr>
-                                            
-                                        </tbody>
-                                    </table>
+                                                <td>
+                                                    <button class="inline-delete-btn">Delete</button>
+                                                </td>
 
-
-                                    @* }
-                                    } *@
+                                            </tr>
+                            </tr>
+                        </tbody>
                     </table>
                     </td>
-
-                    @* }
-                    }  *@
                     </tr>
+                    @* }
+                    } *@
                     </tbody>
-
-                   
+                    </table>
 
                 </form>
 
+
+
+            </div>
+
+
         </div>
-        @* same pop-up as awad *@
+    </section>
+</div>
+
+<div>
+    <section>
+
+        
             <div class="popup" id="popup">
                 <form class="box">
                     <h1>Courses</h1>
@@ -206,7 +138,7 @@
                         <th>Add</th>
                         </thead>
                         <tbody>
-                         @* @if (ViewBag.courses != null)
+                         @if (ViewBag.courses != null)
                            {
 
 
@@ -214,7 +146,7 @@
                                 {
                             
                                     if (course.CourseState.Equals(ActiveState.Active))
-                                    {*@
+                                    {
                                         <tr id="CourseCode">
                                             <td>
                                                 CourseCode
@@ -241,15 +173,15 @@
 
                                         </tr>
 
-                                   @* }
+                                   }
 
                                 }
-                           }*@
+                           }
                         </tbody>
                     </table>
                 </form>
             </div>
-    </div>
+    
 </section>
 </div>
 
