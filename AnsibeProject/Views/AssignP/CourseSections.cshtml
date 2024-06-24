@@ -1,0 +1,102 @@
+﻿@using AnsibeProject.Models;
+@model Ansibe;
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<section class="partial-view">
+    <div>
+        
+                    <form method="post" class="toggle-div visible" style="display: visible;">
+
+                        <table class="table table-striped Active-datatable">
+                            <thead>
+                                <tr>
+                                    <th>Course Code</th>
+                                    <th>Section </th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.courses != null)
+                                {
+
+                                    @foreach (var course in ViewBag.courses)
+                                    {
+                            if (course.ActiveState.Equals(ActiveState.Active))
+                            {
+                            <tr>
+                                <td>
+                                    @course.CourseCode
+                                </td>
+                                
+                                <td>
+                                    <table class="table table-striped Active-datatable">
+                                        <thead>
+                                            <th>Professor</th>
+
+                                            
+                                            <th>Course Hours</th>
+                                            <th>TD</th>
+                                            <th>TP</th>
+                                            <th>Language</th>
+                                            <th>Assign</th>
+                                            <th>Delete</th>
+                                        </thead>
+                                        <tbody>
+
+
+                                            @if (Model != null)
+                                            {
+                        @foreach (Section s in Model.Sections)
+                        {
+                            if (course.CourseCode == @s.Course.CourseCode)
+                            {
+                                                        <tr>
+                                                            <td>
+                                                    @s.Professor.FullNameInArabic
+                                                </td>
+
+                                                
+                                                <td>
+                                                    @s.CourseHours
+                                                </td>
+                                                <td>
+                                                    @s.TD
+                                                </td>
+
+                                                <td>
+                                                    @s.TP
+                                                </td>
+
+                                                <td>
+                                                    @s.Language
+                                                </td>
+                                                <td>
+                                                    <button class="inline-btn">Assign</button>
+                                                </td>
+
+                                                <td>
+                                                    <button class="inline-delete-btn">Delete</button>
+                                                </td>
+
+                                            </tr>
+                                }
+                                    }
+                                        }
+                            </tbody>
+                            </table>
+                            </td>
+                            </tr>
+                        }
+                    }
+                    }
+                </tbody>
+                        </table>
+
+                    </form>
+
+
+
+                
+    </div>
+</section>
