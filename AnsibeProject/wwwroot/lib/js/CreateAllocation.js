@@ -308,7 +308,7 @@ function submitAllocation() {
                     timer: 1500
                 });
                 setTimeout(function () {
-                    window.location.href = "/Home/Index";
+                    window.location.href = "/Home/Details?Id=" + response.id;
                 }, 1500);
                
             }
@@ -401,7 +401,12 @@ function deleteAssignement(button) {
 
 }
 function cancel() {
-    var popup = document.getElementById("popup");
+
+    let popup = document.getElementById("popup");
+    let checkboxes = popup.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) checkbox.checked = false;
+    });
     popup.classList.toggle("open-popup");
 }
 
