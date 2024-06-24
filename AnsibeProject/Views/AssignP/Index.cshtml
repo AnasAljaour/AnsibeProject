@@ -1,7 +1,6 @@
 ﻿@using AnsibeProject.Models;
-@*@model List<Section>;*@
-@*ViewBag year*@
-@*ViewBag courses*@
+@model List<Section>;
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <div class="side-bar">
 
@@ -13,7 +12,6 @@
        </form>
         <table class="table">
             <tr>
-                 <th>Id</th>
                  <th>Ansibe</th>
                  <th>Show</th>
             </tr>
@@ -21,102 +19,18 @@
     </nav>
    
 </div>
-<div>
-    <section class="Assing">
-        <div class="box-container">
-            <div class="box">
-                <h3>Section/Professor</h3>
-                <button class="inline-btn" onclick="showCreateSection()" type="button">Create Section</button>
-                <button class="inline-btn" onclick="swapContent()" type="button">swap</button>
-                <form method="post" class="toggle-div visible" style="display: visible;">
-
-                    <table class="table table-striped Active-datatable">
-                        <thead>
-                            <tr>
-                                <th>Course Code</th>
-                                <th>Section </th>
 
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @* @if (Model != null && Model.Count() > 0)
-                            {
-
-                            @foreach (var s in Model)
-                            { *@
-                            <tr>
-                                <td>
-                                    CourseCode
-                                </td>
-                                <td>
-                                    Section
-                                </td>
-                                <td>
-                                    <table class="table table-striped Active-datatable">
-                                        <thead>
-                                        <th>Professor</th>
-
-                                        <th>Course Description</th>
-                                        <th>Course Hours</th>
-                                        <th>TD</th>
-                                        <th>TP</th>
-                                        <th>Language</th>
-                                        <th>Assign</th>
-                                        <th>Delete</th>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    Professor
-                                                </td>
-
-                                                <td>
-                                                    CourseDescription
-                                                </td>
-                                                <td>
-                                                    CourseHours
-                                                </td>
-                                                <td>
-                                                    TD
-                                                </td>
-
-                                                <td>
-                                                    TP
-                                                </td>
-
-                                                <td>
-                                                    Language
-                                                </td>
-                                                <td>
-                                                    <button class="inline-delete-btn">Assign</button>
-                                                </td>
-
-                                                <td>
-                                                    <button class="inline-delete-btn">Delete</button>
-                                                </td>
-
-                                            </tr>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </td>
-                    </tr>
-                    @* }
-                    } *@
-                    </tbody>
-                    </table>
-
-                </form>
-
-
-
-            </div>
-
-
+<section class="Assing">
+    <div class="box-container">
+        <div class="box">
+            <h3>Section/Professor</h3>
+            <button class="inline-btn" onclick="showCreateSection()" type="button">Create Section</button>
+            <button class="inline-btn" onclick="swapContent()" type="button">swap</button>
         </div>
-    </section>
-</div>
+    </div>
+</section>
+
 
 <div>
     <section>
@@ -209,4 +123,4 @@
         }
     </script>
 
-}
+} 
