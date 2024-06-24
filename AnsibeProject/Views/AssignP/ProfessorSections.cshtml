@@ -1,0 +1,109 @@
+﻿@using AnsibeProject.Models;
+@* @model List<Section>;
+ViewBag year
+ViewBag courses *@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<section class="partial-view">
+    <div class="box-container">
+        <div class="box">
+            <h3>Section/Professor</h3>
+            <button class="inline-btn" onclick="showCreateSection()" type="button">Create Section</button>
+            <button class="inline-btn" onclick="swapContent()" type="button">swap</button>
+<form method="post" class="toggle-div hidden" style="display: none;">
+
+    <table class="table table-striped Active-datatable">
+        <thead>
+            <tr>
+                <th>Professor Id</th>
+                <th>Professor Name</th>
+
+                <th>Section </th>
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @* @foreach (var professor in ViewBag.professors)
+            {
+            if (professor.ActiveState.Equals(ActiveState.Active))
+            { *@
+            <tr>
+                <td>
+                    FileNumber
+                </td>
+                <td>
+                    FullNameInArabic
+                </td>
+
+
+                @*   @if (Model != null && Model.Count() > 0)
+                {
+
+                @foreach (var s in Model)
+                { *@
+
+                <td>
+                    @* table for sections inside the initial table *@
+                    <table class="table table-striped Active-datatable">
+                        <thead>
+                        <th>Section Id</th>
+                        <th>Course Code</th>
+                        <th>Course Description</th>
+                        <th>Course Hours</th>
+                        <th>TD</th>
+                        <th>TP</th>
+                        <th>Language</th>
+                        <th>Delete</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    SectionId
+                                </td>
+
+                                <td>
+                                    CourseCode
+                                </td>
+                                <td>
+                                    CourseDescription
+                                </td>
+                                <td>
+                                    CourseHours
+                                </td>
+                                <td>
+                                    TD
+                                </td>
+
+                                <td>
+                                    TP
+                                </td>
+
+                                <td>
+                                    Language
+                                </td>
+
+                                <td>
+                                    <button class="inline-delete-btn">Delete</button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+                    @* }
+                    } *@
+    </table>
+    </td>
+
+    @* }
+    }  *@
+    </tr>
+    </tbody>
+
+
+
+</form>
+</section>
