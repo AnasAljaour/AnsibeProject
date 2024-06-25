@@ -2,6 +2,25 @@
 @model Ansibe;
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+@{
+    Dictionary<string, List<Section>> professorSections = new Dictionary<string, List<Section>>();
+
+    foreach (var section in Model.Sections)
+    {
+
+        var professorName = section.Professor.FullNameInArabic;
+
+        if (!professorSections.ContainsKey(professorName))
+        {
+            professorSections[professorName] = new List<Section>();
+        }
+        professorSections[professorName].Add(section);
+    }
+}
+
+
 <section class="Assing">
     <div class="box-container">
         <div class="box">
@@ -23,33 +42,27 @@
             </tr>
         </thead>
         <tbody>
-            @if (ViewBag.professors != null)
-                                {
+            
 
-                                    @foreach (var professor in ViewBag.professors)
+                                    @foreach (var professor in professorSections)
                                     {
-                            if (professor.ActiveState.Equals(ActiveState.Active))
-                            {
+                            
             
             <tr>
+               
                 <td>
-                    @professor.FileNumber
-                </td>
-                <td>
-                    @professor.FullNameInArabic
+                    @professor.Key
                 </td>
 
                             
                 
 
                 <td>
-                                            @if (Model != null)
-                                            {
+                                           
 
-                                                @foreach (Section s in Model.Sections)
+                                                @foreach (var s in professor.Value)
                                                 {
-                                                    if (professor.FileNumber == @s.Professor.FileNumber)
-                                                    {
+                                                    
                     <table class="table table-striped Active-datatable">
                         <thead>
                         <th>Section Id</th>
@@ -99,14 +112,12 @@
                     </table>
                                                     
                     }
-                    }
-                    }
+                    
                                                 </td>
                                             
         </tr>
         }
-                                            }
-                                        }
+                                           
     </tbody>             
     </table>
    

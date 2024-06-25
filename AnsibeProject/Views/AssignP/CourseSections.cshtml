@@ -2,6 +2,23 @@
 @model Ansibe;
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Dictionary<string, List<Section>> courseSections = new Dictionary<string, List<Section>>();
+
+    foreach (var section in Model.Sections)
+    {
+
+    var courseCode = section.Course.CourseCode;
+
+        if (!courseSections.ContainsKey(courseCode))
+            {
+            courseSections[courseCode] = new List<Section>();
+        }
+        courseSections[courseCode].Add(section);
+    }
+}
+
 <section>
     <div>
         
@@ -17,16 +34,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (ViewBag.courses != null)
-                                {
+                                
 
-                                    @foreach (var course in ViewBag.courses)
+                                    @foreach (var course in courseSections)
                                     {
-                            if (course.ActiveState.Equals(ActiveState.Active))
-                            {
+                            
                             <tr>
                                 <td>
-                                    @course.CourseCode
+                                    @course.Key
                                 </td>
                                 
                                 <td>
@@ -45,13 +60,12 @@
                                         <tbody>
 
 
-                                            @if (Model != null)
-                                            {
-                        @foreach (Section s in Model.Sections)
+                                            
+                        @foreach (var s in course.Value)
                         {
-                            if (course.CourseCode == @s.Course.CourseCode)
-                            {
+                            
                                                         <tr>
+                                                            
                                                             <td>
                                                     @s.Professor.FullNameInArabic
                                                 </td>
@@ -81,15 +95,14 @@
 
                                             </tr>
                                 }
-                                    }
-                                        }
+                                  
                             </tbody>
                             </table>
                             </td>
                             </tr>
                         }
-                    }
-                    }
+                    
+                    
                 </tbody>
                         </table>
 
