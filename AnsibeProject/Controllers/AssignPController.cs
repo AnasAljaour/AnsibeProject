@@ -19,7 +19,7 @@ namespace AnsibeProject.Controllers
         public IActionResult Index()
         {
             ViewBag.courses = _db.Courses.Where(C => C.CourseState == ActiveState.Active).ToList();
-            ViewBag.Year =                _db.Ansibes
+            ViewBag.Year = _db.Ansibes
                                            .Select(a => a.Year)
                                            .Distinct()
                                            .ToList();
@@ -29,7 +29,7 @@ namespace AnsibeProject.Controllers
         public List<Professor> GetActiveProfessors()
         {
             List<Professor> temp = _db.Professors.Where(p => p.ActiveState == ActiveState.Active).Include(p => p.Contract).ToList();
-           
+
             return temp;
         }
         [HttpPost]
@@ -52,32 +52,32 @@ namespace AnsibeProject.Controllers
         public async Task<IActionResult> getSectionOfTheAnsibeById(int AnsibeId)
         {
 
-            Ansibe? temp = await _db.Ansibes.Include(a=>a.Sections)
+            Ansibe? temp = await _db.Ansibes.Include(a => a.Sections)
                                             .FirstOrDefaultAsync(a => a.Id == AnsibeId);
             if (temp == null)
             {
                 return BadRequest($"No item found with this Id {AnsibeId}");
             }
             ICollection<Models.Section> mySections = temp.Sections;
-            /*var customJson = mySections.Select(s => new
-            {
-                SectionIdentifier = s.SectionId,
-                CourseCode = s.Course.CourseCode,
-                CourseDescription = s.Course.CourseDescription,
-                Credits = s.Course.NumberOfCredits,
-                ProfessorName = s.Professor.Name,
-                ProfessorTitle = s.Professor.Title,
-                TeachingPeriod = s.TP,
-                TeachingDays = s.TD,
-                Hours = s.CourseHours,
-                Language = s.Language
-            });*/
 
-            if (mySections==null || mySections.Count == 0)
+
+            if (mySections == null || mySections.Count == 0)
             {
                 return BadRequest($"Ansibe found but its empty !!");
             }
-            return new JsonResult(mySections);
+            return PartialView("CourseSections", mySections);
         }
-     }
+        public async Task<IActionResult> ToggleView(List<Models.Section> sections,string type)
+        {
+            if (sections == null || sections.Count == 0) return BadRequest("Sections are null or empty");
+            if (type == "PS")
+            {
+                return PartialView("ProfessorSections", sections);
+            }
+            else
+            {
+                return PartialView("CourseSections", sections);
+            }
+        }
+    }
 }
