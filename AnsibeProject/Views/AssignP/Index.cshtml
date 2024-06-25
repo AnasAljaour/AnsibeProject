@@ -1,47 +1,38 @@
 ﻿@using AnsibeProject.Models;
 @* @model List<Ansibe>; *@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-<div class="side-bar">
+<div class="side-bar" style="overflow-y: auto !important; ">
 
     <nav class="navbar">
       <form method="post">
-          <select class="dropdown">
-              <option value="">2024</option>
-              @* @if (Model != null)
-                           {
-                                @foreach (var a in Model)
-                                {
-                                    <option value="">@a.Year</option>                 
-                                }
-                           } *@
-</select>
-       </form>
-        <table class="table">
-            <tr>
-                <th>Record</th>
-                <th>Show</th>
-            </tr>
-            @* @if (Model != null)
-                           {
-
-
-                                @foreach (var a in Model)
-                                {
-
-                    <tr>
-                        <td>@a.Id</td>
-                        <td><input type="checkbox" /></td>
-                    </tr>
-
-
+            <select class="dropdown" onchange="getAllocationBasedOnYear(this)">
+                 <option value="">Year</option>
+                @if (ViewBag.Year != null)
+                {
+                    foreach(string str in ViewBag.Year)
+                    {
+                        <option value="@str">@str</option>
+                    }
                 }
-                           } *@
+            </select>
+       </form>
+        <div >
+        <table class="table">
+            <thead>
+            <tr>
+                 <th>Id</th>
+                 <th>Ansibe</th>
+                 <th>Show</th>
+            </tr>
+            </thead>
+            <tbody id="Ansibe-tbody">
+
+            </tbody>
         </table>
+        </div>
     </nav>
    
 </div>
-
-
 <section class="Assing">
     <div class="box-container">
         <div class="box">
@@ -121,6 +112,7 @@
 </section>
 </div>
 
+
    @section Scripts {
     <script>
         function showCreateSection() {
@@ -143,6 +135,89 @@
                 }
             });
         }
+    </script>
+    <script>
+        function getAllocationBasedOnYear(selected){
+            let year = selected.value;
+           
+            $.ajax({
+                url: '/AssignP/getAnsibeByYear',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ year: year }),
+                success: function(response){
+                    success(response);
+                },
+                error: function (xhr, status, error) {
+                    failed(xhr, status, error);
+                    
+                }
+            });
+
+        }
+
+        function success(response){
+            console.log(response);
+            let tbody = document.getElementById('Ansibe-tbody');
+            tbody.innerHTML = '';
+
+            for (let i = 0; i < response.length; i++) {
+                row = document.createElement("tr");
+                idCell = document.createElement('td');
+                idCell.textContent = response[i].id;
+                row.append(idCell);
+                yearCell = document.createElement("td");
+                yearCell.textContent = response[i].year;
+                row.append(yearCell);
+                
+
+                let button = document.createElement("Button");
+                button.textContent = "show";
+                button.addEventListener("click", function () {
+                    showAllocation(button);
+                });
+                button.classList.toggle("inline-btn");
+                buttonCell = document.createElement('td');
+                buttonCell.appendChild(button);
+                row.append(buttonCell);
+
+
+                tbody.appendChild(row);
+            }
+        }
+
+        function failed(jqXHR, textStatus, errorThrown) {
+
+            if (jqXHR.responseJSON && jqXHR.responseJSON.error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong! \n" + jqXHR.responseJSON.error,
+
+                });
+            } else if (jqXHR.status === 400) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong! \n" + jqXHR.responseText,
+
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Something went wrong! \n" + jqXHR.responseText,
+
+                });
+            }
+        }
+
+        function showAllocation(button) {
+            let row = button.closest('tr');
+            console.log(row);
+        }
+
+
     </script>
 
 } 
