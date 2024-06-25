@@ -1,5 +1,5 @@
 ﻿@using AnsibeProject.Models;
-@model Ansibe;
+@model List<Section>;
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -7,7 +7,7 @@
 @{
     Dictionary<string, List<Section>> professorSections = new Dictionary<string, List<Section>>();
 
-    foreach (var section in Model.Sections)
+    foreach (var section in Model)
     {
 
         var professorName = section.Professor.FullNameInArabic;
@@ -60,7 +60,7 @@
                 <td>
                                            
 
-                                                @foreach (var s in professor.Value)
+                                                @foreach (var s in Model)
                                                 {
                                                     
                     <table class="table table-striped Active-datatable">
