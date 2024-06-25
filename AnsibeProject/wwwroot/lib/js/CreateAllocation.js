@@ -332,7 +332,7 @@ function submitAllocation() {
                 Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "Something went wrong!<br>" + jqXHR.responseText,
+                    text: "Something went wrong! \n" + jqXHR.responseText,
                     
                 });
             }
