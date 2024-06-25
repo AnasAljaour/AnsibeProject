@@ -1,9 +1,8 @@
 ﻿@using AnsibeProject.Models;
-@* @model List<Section>;
-ViewBag year
-ViewBag courses *@
+@model Ansibe;
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-<section class="partial-view">
+<section class="Assing">
     <div class="box-container">
         <div class="box">
             <h3>Section/Professor</h3>
@@ -24,28 +23,33 @@ ViewBag courses *@
             </tr>
         </thead>
         <tbody>
+            @if (ViewBag.professors != null)
+                                {
 
-            @* @foreach (var professor in ViewBag.professors)
-            {
-            if (professor.ActiveState.Equals(ActiveState.Active))
-            { *@
+                                    @foreach (var professor in ViewBag.professors)
+                                    {
+                            if (professor.ActiveState.Equals(ActiveState.Active))
+                            {
+            
             <tr>
                 <td>
-                    FileNumber
+                    @professor.FileNumber
                 </td>
                 <td>
-                    FullNameInArabic
+                    @professor.FullNameInArabic
                 </td>
 
-
-                @*   @if (Model != null && Model.Count() > 0)
-                {
-
-                @foreach (var s in Model)
-                { *@
+                            
+                
 
                 <td>
-                    @* table for sections inside the initial table *@
+                                            @if (Model != null)
+                                            {
+
+                                                @foreach (Section s in Model.Sections)
+                                                {
+                                                    if (professor.FileNumber == @s.Professor.FileNumber)
+                                                    {
                     <table class="table table-striped Active-datatable">
                         <thead>
                         <th>Section Id</th>
@@ -60,30 +64,32 @@ ViewBag courses *@
                         <tbody>
                             <tr>
                                 <td>
-                                    SectionId
+                                    @s.SectionId
                                 </td>
 
                                 <td>
-                                    CourseCode
+                                    @s.Course.CourseCode
                                 </td>
                                 <td>
-                                    CourseDescription
+                                    @s.Course.CourseDescription
                                 </td>
                                 <td>
-                                    CourseHours
+                                    @s.CourseHours
                                 </td>
                                 <td>
-                                    TD
+                                    @s.TD
                                 </td>
 
                                 <td>
-                                    TP
+                                    @s.TP
                                 </td>
 
                                 <td>
-                                    Language
+                                    @s.Language
                                 </td>
-
+                                                                <td>
+                                                                    <button class="inline-btn">Assign</button>
+                                                                </td>
                                 <td>
                                     <button class="inline-delete-btn">Delete</button>
                                 </td>
@@ -91,17 +97,22 @@ ViewBag courses *@
 
                         </tbody>
                     </table>
-
-
-                    @* }
-                    } *@
+                                                    
+                    }
+                    }
+                    }
+                                                </td>
+                                            
+        </tr>
+        }
+                                            }
+                                        }
+    </tbody>             
     </table>
-    </td>
-
-    @* }
-    }  *@
-    </tr>
-    </tbody>
+   
+                                            
+     
+   
 
 
 
