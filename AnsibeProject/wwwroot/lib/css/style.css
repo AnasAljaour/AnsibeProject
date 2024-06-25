@@ -261,7 +261,8 @@ section {
 	left: 0;
 	width: 35rem;
 	background-color: var(--white);
-	height: 100vh;
+	height: 90vh;
+	overflow-y: auto;
 	border-right: var(--border);
 	z-index: 4;
 }
