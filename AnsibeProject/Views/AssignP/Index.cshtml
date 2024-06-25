@@ -1,19 +1,41 @@
 ﻿@using AnsibeProject.Models;
-
+@* @model List<Ansibe>; *@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <div class="side-bar">
 
     <nav class="navbar">
       <form method="post">
           <select class="dropdown">
-    <option value="">Year</option>
+              <option value="">2024</option>
+              @* @if (Model != null)
+                           {
+                                @foreach (var a in Model)
+                                {
+                                    <option value="">@a.Year</option>                 
+                                }
+                           } *@
 </select>
        </form>
         <table class="table">
             <tr>
-                 <th>Ansibe</th>
-                 <th>Show</th>
+                <th>Record</th>
+                <th>Show</th>
             </tr>
+            @* @if (Model != null)
+                           {
+
+
+                                @foreach (var a in Model)
+                                {
+
+                    <tr>
+                        <td>@a.Id</td>
+                        <td><input type="checkbox" /></td>
+                    </tr>
+
+
+                }
+                           } *@
         </table>
     </nav>
    
@@ -25,7 +47,7 @@
         <div class="box">
             <h3>Section/Professor</h3>
             <button class="inline-btn" onclick="showCreateSection()" type="button">Create Section</button>
-            <button class="inline-btn" onclick="swapContent()" type="button">swap</button>
+            <a class="inline-btn" asp-action="CourseSections" asp-controller="AssignP" type="button">swap</a>
         </div>
     </div>
 </section>
@@ -62,10 +84,11 @@
                                     {
                                         <tr id="CourseCode">
                                             <td>
-                                                CourseCode
+                                                @course.CourseCode
                                             </td>
                                             <td>
-                                                CourseDescription
+                                                @course.CourseDescription
+                                                
                                             </td>
                                             <td>
                                                 <input type="checkbox" name="c[]" />
@@ -81,7 +104,7 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <button class="inline-btn" @*onclick="SaveList(this,'@course.CourseCode','@course.CourseDescription', '@course.NumberOfHours','@course.TP','@course.TD')" *@ type="button">Add</button>
+                                                <button class="inline-btn" onclick="SaveList(this,'@course.CourseCode','@course.CourseDescription', '@course.NumberOfHours','@course.TP','@course.TD')" type="button">Add</button>
                                             </td>
 
                                         </tr>
