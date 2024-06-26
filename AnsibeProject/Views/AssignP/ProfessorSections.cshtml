@@ -10,7 +10,7 @@
     foreach (var section in Model)
     {
 
-        var professorName = section.Professor.FullNameInArabic;
+        var professorName = section.Professor.FirstName+ " "+ section.Professor.LastName;
 
         if (!professorSections.ContainsKey(professorName))
         {
@@ -20,23 +20,17 @@
     }
 }
 
-
 <section class="Assign">
-    <div class="box-container">
-        <div class="box">
-            <h3>Section/Professor</h3>
-            <button class="inline-btn" onclick="showCreateSection()" type="button">Create Section</button>
-            <button class="inline-btn" onclick="swapContent()" type="button">swap</button>
-<form method="post" class="toggle-div hidden" style="display: none;">
+<div >
 
-    <table class="table table-striped Active-datatable">
+    <table class="table Active-datatable">
         <thead>
             <tr>
-                <th>Professor Id</th>
+                
                 <th>Professor Name</th>
 
                 <th>Section </th>
-
+                <th></th>
 
 
             </tr>
@@ -44,8 +38,8 @@
         <tbody>
             
 
-                                    @foreach (var professor in professorSections)
-                                    {
+        @foreach (var professor in professorSections)
+        {
                             
             
             <tr>
@@ -60,25 +54,23 @@
                 <td>
                                            
 
-                                                @foreach (var s in Model)
-                                                {
+                     
                                                     
-                    <table class="table table-striped Active-datatable">
+                    <table class="table Active-datatable">
                         <thead>
-                        <th>Section Id</th>
                         <th>Course Code</th>
                         <th>Course Description</th>
                         <th>Course Hours</th>
                         <th>TD</th>
                         <th>TP</th>
                         <th>Language</th>
-                        <th>Delete</th>
+
+                                <th><button class="inline-btn">Assign</button></th>
                         </thead>
                         <tbody>
+                    @foreach (var s in professor.Value)
+                    {
                             <tr>
-                                <td>
-                                    @s.SectionId
-                                </td>
 
                                 <td>
                                     @s.Course.CourseCode
@@ -100,20 +92,19 @@
                                 <td>
                                     @s.Language
                                 </td>
-                                                                <td>
-                                                                    <button class="inline-btn">Assign</button>
-                                                                </td>
+                                
                                 <td>
                                     <button class="inline-delete-btn">Delete</button>
                                 </td>
                             </tr>
-
+                      }
                         </tbody>
                     </table>
                                                     
-                    }
                     
-                                                </td>
+                    
+                 </td>
+                        
                                             
         </tr>
         }
@@ -121,11 +112,5 @@
     </tbody>             
     </table>
    
-                                            
-     
-   
-
-
-
-</form>
+</div>
 </section>

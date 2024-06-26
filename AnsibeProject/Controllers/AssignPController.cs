@@ -49,34 +49,74 @@ namespace AnsibeProject.Controllers
             return BadRequest("Invalid JSON data.");
         }
 
-        public async Task<IActionResult> getSectionOfTheAnsibeById(int AnsibeId)
+
+        [HttpPost]
+        public async Task<IActionResult> getSectionOfTheAnsibeById([FromBody] KeyValuePairModel AnsibeId)
         {
-
-            Ansibe? temp = await _db.Ansibes.Include(a => a.Sections)
-                                            .FirstOrDefaultAsync(a => a.Id == AnsibeId);
-            if (temp == null)
+            try
             {
-                return BadRequest($"No item found with this Id {AnsibeId}");
-            }
-            ICollection<Models.Section> mySections = temp.Sections;
+                Ansibe? temp = await _db.Ansibes.Include(a => a.Sections)
+                                                   .ThenInclude(s => s.Course)
+                                                .Include(a => a.Sections)
+                                                   .ThenInclude(s => s.Professor)
+                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(AnsibeId.Value));
+                if (temp == null)
+                {
+                    return BadRequest($"No item found with this Id {AnsibeId}");
+                }
+                ICollection<Models.Section> mySections = temp.Sections;
 
 
-            if (mySections == null || mySections.Count == 0)
+                if (mySections == null || mySections.Count == 0)
+                {
+                    return BadRequest($"Ansibe found but its empty !!");
+                }
+                return PartialView("CourseSections", mySections);
+            }catch(Exception ex)
             {
-                return BadRequest($"Ansibe found but its empty !!");
+                return BadRequest("Invalid Data !");
             }
-            return PartialView("CourseSections", mySections);
         }
-        public async Task<IActionResult> ToggleView(List<Models.Section> sections,string type)
+        [HttpPost]
+        public async Task<IActionResult> getSectionsOfById([FromBody] KeyValuePairModel AnsibeId)
         {
-            if (sections == null || sections.Count == 0) return BadRequest("Sections are null or empty");
-            if (type == "PS")
+            try
             {
-                return PartialView("ProfessorSections", sections);
+                Ansibe? temp = await _db.Ansibes.Include(a => a.Sections)
+                                                   .ThenInclude(s => s.Course)
+                                                .Include(a => a.Sections)
+                                                   .ThenInclude(s => s.Professor)
+                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(AnsibeId.Value));
+                if (temp == null)
+                {
+                    return BadRequest($"No item found with this Id {AnsibeId.Value}");
+                }
+                ICollection<Models.Section> mySections = temp.Sections;
+
+
+                if (mySections == null || mySections.Count == 0)
+                {
+                    return BadRequest($"Ansibe found but its empty !!");
+                }
+                return Json(mySections);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Invalid Data !");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ToggleView([FromBody] SectionsType sections)
+        {
+            if (sections.Sections == null || sections.Sections.Count == 0) return BadRequest("Sections are null or empty");
+            if (sections.Type == "PS")
+            {
+                return PartialView("ProfessorSections", sections.Sections);
             }
             else
             {
-                return PartialView("CourseSections", sections);
+                return PartialView("CourseSections", sections.Sections);
             }
         }
     }
