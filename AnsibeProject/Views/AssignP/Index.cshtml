@@ -38,7 +38,10 @@
         <div class="box">
             <h3>Section/Professor</h3>
             <button class="inline-btn" onclick="showCreateSection()" type="button">Create Section</button>
-            <a class="inline-btn" asp-action="CourseSections" asp-controller="AssignP" >swap</a>
+            <button class="inline-btn" onclick="swapContent()">swap</button>
+        </div>
+        <div id="holder">
+
         </div>
     </div>
 </section>
@@ -116,109 +119,7 @@
 
    @section Scripts {
     <script>
-        function showCreateSection() {
-            var popup = document.getElementById("popup");
-            popup.classList.toggle("open-popup");
-        }
-
-        //swap content table
-        function swapContent() {
-            var divs = document.querySelectorAll(".toggle-div");
-            divs.forEach(function (div) {
-                if (div.classList.contains("visible")) {
-                    div.classList.remove("visible");
-                    div.classList.add("hidden");
-                    div.style.display = "none";
-                } else {
-                    div.classList.remove("hidden");
-                    div.classList.add("visible");
-                    div.style.display = "block";
-                }
-            });
-        }
+       
     </script>
-    <script>
-        function getAllocationBasedOnYear(selected){
-            let year = selected.value;
-           
-            $.ajax({
-                url: '/AssignP/getAnsibeByYear',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ year: year }),
-                success: function(response){
-                    success(response);
-                },
-                error: function (xhr, status, error) {
-                    failed(xhr, status, error);
-                    
-                }
-            });
-
-        }
-
-        function success(response){
-            console.log(response);
-            let tbody = document.getElementById('Ansibe-tbody');
-            tbody.innerHTML = '';
-
-            for (let i = 0; i < response.length; i++) {
-                row = document.createElement("tr");
-                idCell = document.createElement('td');
-                idCell.textContent = response[i].id;
-                row.append(idCell);
-                yearCell = document.createElement("td");
-                yearCell.textContent = response[i].year;
-                row.append(yearCell);
-                
-
-                let button = document.createElement("Button");
-                button.textContent = "show";
-                button.addEventListener("click", function () {
-                    showAllocation(button);
-                });
-                button.classList.toggle("inline-btn");
-                buttonCell = document.createElement('td');
-                buttonCell.appendChild(button);
-                row.append(buttonCell);
-
-
-                tbody.appendChild(row);
-            }
-        }
-
-        function failed(jqXHR, textStatus, errorThrown) {
-
-            if (jqXHR.responseJSON && jqXHR.responseJSON.error) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Something went wrong! \n" + jqXHR.responseJSON.error,
-
-                });
-            } else if (jqXHR.status === 400) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Something went wrong! \n" + jqXHR.responseText,
-
-                });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Something went wrong! \n" + jqXHR.responseText,
-
-                });
-            }
-        }
-
-        function showAllocation(button) {
-            let row = button.closest('tr');
-            console.log(row);
-        }
-
-
-    </script>
-
+    <script src="~/lib/js/Assign.js"></script>
 } 
