@@ -10,7 +10,8 @@ namespace AnsibeProject.Controllers
 {
     public class AssignPController : Controller
     {
-        UniversityContext _db;
+        private readonly UniversityContext _db;
+        private List<Models.Section>? Sections { get; set; } = null;
         public AssignPController(UniversityContext db)
         {
 
@@ -109,6 +110,7 @@ namespace AnsibeProject.Controllers
         [HttpPost]
         public async Task<IActionResult> ToggleView([FromBody] SectionsType sections)
         {
+            if (sections == null) return BadRequest("Binding variable Failed !");
             if (sections.Sections == null || sections.Sections.Count == 0) return BadRequest("Sections are null or empty");
             if (sections.Type == "PS")
             {
@@ -119,5 +121,68 @@ namespace AnsibeProject.Controllers
                 return PartialView("CourseSections", sections.Sections);
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> SaveCreatedSections([FromBody]SectionsType sections)
+        {
+            //check databinding
+            if (sections == null) return BadRequest();
+            //check if created section is null or empty
+            if (sections.TempSections == null || sections.TempSections.Count == 0) return BadRequest("Created Sections are null or empty");
+            try
+            {
+                //foreach created section assign course and ensure data is correct and not manuplated
+                foreach (var section in sections.TempSections)
+                {
+
+                    Course? course = await _db.Courses.SingleOrDefaultAsync(c => c.CourseCode == section.Course.CourseCode);
+                    if (course == null) return BadRequest("Course Code does not exist !");
+
+                    //one at least of Hourse , TP and TD should be have a value
+                    if (section.CourseHours == null && section.TP == null && section.TD == null) return BadRequest("there is a section with TP & TD & course is null");
+
+                    //ensure data in hours, TP and TD are correct
+                    if (section.CourseHours != null) section.CourseHours = course.NumberOfHours;
+                    if (section.TP != null) section.TP = course.TP;
+                    if (section.TD != null) section.TD = course.TD;
+
+                    section.Course = course;
+                }
+
+                // save new section in database
+                await _db.AddRangeAsync(sections.TempSections);
+                await _db.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            try
+            {
+                if (sections.Type == "CP")
+                {
+                    sections.Sections = sections.Sections ?? new List<Models.Section>();
+                    sections.TempSections.AddRange(sections.Sections);
+                    this.Sections = sections.TempSections;
+                    return PartialView("CourseSections", sections.TempSections);
+                }
+                else
+                {
+                    sections.Sections = sections.Sections ?? new List<Models.Section>();
+                    sections.TempSections.AddRange(sections.Sections);
+                    this.Sections = sections.TempSections;
+                    return PartialView("ProfessorSections", sections.TempSections);
+                }
+            }catch(Exception ex) { return BadRequest(ex.Message); }
+        }
+
+        [HttpPost]
+        public IActionResult getCreatedSections()
+        {
+            if (this.Sections == null) return BadRequest("should create section first");
+            return Json(this.Sections);
+
+        }
     }
+    
 }

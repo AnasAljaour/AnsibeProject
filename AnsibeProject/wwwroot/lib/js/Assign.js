@@ -72,7 +72,7 @@ function failed(jqXHR, textStatus, errorThrown) {
         });
     }
 }
-let sections;
+let sections = [];
 let type;
 function showAllocation(button) {
     let row = button.closest('tr');
@@ -125,27 +125,175 @@ function showAllocation(button) {
 
 
 function swapContent() {
-    //if (type === null) return;
-    console.log(sections);
-    type = (type === "CP") ? "PS" : "CP";
-    $.ajax({
-        url: '/AssignP/ToggleView',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ Sections: sections, Type: type }),
-        dataType: 'html',
-        success: function (response) {
+    if (type !== null &&sections != null && sections.length > 0) {
+        console.log(sections);
+        type = (type === "CP") ? "PS" : "CP";
+        $.ajax({
+            url: '/AssignP/ToggleView',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ Sections: sections, TempSections: null, Type: type }),
+            dataType: 'html',
+            success: function (response) {
 
-            document.getElementById('holder').innerHTML = response;
+                document.getElementById('holder').innerHTML = response;
 
-            console.log(response);
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                failed(xhr, status, error);
+                console.log(error);
+
+            }
+        });
+    }
+}
+
+
+
+
+
+
+function showCreateSection() {
+    let popup = document.getElementById('popup');
+    popup.classList.toggle('open-popup');
+
+}
+let tempSections = []
+
+function createSections(button, CourseCode, CourseDescription, CourseHours, TP, TD) {
+    var model = {
+        SectionId: 0,
+        Course: {
+            CourseCode: CourseCode
         },
-        error: function (xhr, status, error) {
-            failed(xhr, status, error);
-            console.log(error);
-            
+        Professor: null,
+        TP: undefined,
+        TD: undefined,
+        CourseHours: undefined,
+        Language: undefined
+    };
+
+    let row = button.closest("tr");
+    let checkboxes = row.querySelectorAll('input[type="checkbox"]');
+    console.log(checkboxes);
+    let option = row.querySelector('select');
+    var selectedText = option.options[option.selectedIndex].textContent;
+
+    model.Language = option.selectedIndex
+
+    let checkedCheckboxes = [];
+    let i = 0;
+    checkboxes.forEach(function (checkbox) {
+        checkedCheckboxes.push(checkbox.checked);
+
+        if (checkbox.checked) {
+            i++;
+            checkbox.checked = false;
         }
     });
+
+    model.CourseHours = (checkedCheckboxes[0]) ? parseInt(CourseHours) : null;
+    model.TD = (checkedCheckboxes[1]) ? parseInt(TD) : null;
+    model.TP = (checkedCheckboxes[2]) ? parseInt(TP) : null;
+
+
+    if (i > 0) {
+        let newRow = document.createElement('tr');
+
+        let courseCell = document.createElement('td');
+        courseCell.textContent = model.CourseHours;
+
+        let TPCell = document.createElement('td');
+        TPCell.textContent = model.TP;
+
+        let TDCell = document.createElement('td');
+        TDCell.textContent = model.TD;
+
+        let languageCell = document.createElement('td');
+        languageCell.textContent = selectedText
+
+        let deleteButtonCell = document.createElement('td');
+        let deleteButton = document.createElement('button');
+        deleteButton.type = "button";
+        deleteButton.textContent = "delete";
+        deleteButton.onclick = function () {
+
+        };
+
+        deleteButton.classList.toggle("inline-delete-btn");
+        deleteButtonCell.appendChild(deleteButton);
+
+
+        newRow.appendChild(courseCell);
+        newRow.appendChild(TPCell);
+        newRow.appendChild(TDCell);
+        newRow.appendChild(languageCell);
+        newRow.appendChild(deleteButtonCell);
+
+        let tbody = document.getElementById('tbody-' + model.Course.CourseCode);
+        tbody.appendChild(newRow);
+        tempSections.push(model);
+
+
+    }
+    else {
+        Swal.fire("at least one checkbox should be checked", "", "info");
+
+    }
+
+}
+
+function cancelCreation() {
+    let popup = document.getElementById('popup');
+    popup.classList.toggle('open-popup');
+    tempSections = [];
+}
+
+function saveCreatedSections() {
+    if (tempSections.length > 0) {
+        $.ajax({
+            url: '/AssignP/SaveCreatedSections',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ Sections: sections, TempSections: tempSections, Type: type }),
+            dataType: 'html',
+            success: function (response) {
+
+                document.getElementById('holder').innerHTML = response;
+
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                failed(xhr, status, error);
+                console.log(error);
+
+            }
+        });
+
+        $.ajax({
+            url: '/AssignP/getCreatedSections',
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+
+                sections = response;
+
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                failed(xhr, status, error);
+                document.getElementById('holder').innerHTML = '';
+
+
+            }
+        });
+        if (type == null) type = "CP";
+        tempSections = [];
+    }
+    else {
+        Swal.fire("at least one section should be created", "", "info");
+    }
 
 }
 
