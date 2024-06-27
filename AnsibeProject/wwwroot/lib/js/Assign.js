@@ -248,6 +248,11 @@ function cancelCreation() {
     let popup = document.getElementById('popup');
     popup.classList.toggle('open-popup');
     tempSections = [];
+
+    let tbodyElements = popup.querySelectorAll('tbody[id^="tbody-"]');
+    tbodyElements.forEach(function (tbody) {
+        tbody.innerHTML = '';
+    });
 }
 
 function saveCreatedSections() {
@@ -261,35 +266,39 @@ function saveCreatedSections() {
             success: function (response) {
 
                 document.getElementById('holder').innerHTML = response;
+                
+                
+                $.ajax({
+                    url: '/AssignP/getCreatedSections',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (response) {
 
+                        sections = response;
+                        
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        failed(xhr, status, error);
+                        document.getElementById('holder').innerHTML = '';
+                        
+
+                    }
+                });
                 console.log(response);
             },
             error: function (xhr, status, error) {
                 failed(xhr, status, error);
+                
                 console.log(error);
 
-            }
-        });
-
-        $.ajax({
-            url: '/AssignP/getCreatedSections',
-            type: 'POST',
-            dataType: 'json',
-            success: function (response) {
-
-                sections = response;
-
-                console.log(response);
-            },
-            error: function (xhr, status, error) {
-                failed(xhr, status, error);
-                document.getElementById('holder').innerHTML = '';
-
 
             }
         });
-        if (type == null) type = "CP";
-        tempSections = [];
+        if (type == null) type = "PS";
+        cancelCreation()
+        
+        
     }
     else {
         Swal.fire("at least one section should be created", "", "info");

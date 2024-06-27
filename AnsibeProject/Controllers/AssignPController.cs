@@ -3,6 +3,7 @@ using AnsibeProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System.Text.Json;
 using static System.Collections.Specialized.BitVector32;
 
@@ -11,7 +12,7 @@ namespace AnsibeProject.Controllers
     public class AssignPController : Controller
     {
         private readonly UniversityContext _db;
-        private List<Models.Section>? Sections { get; set; } = null;
+        private const string SectionsSessionKey = "Sections";
         public AssignPController(UniversityContext db)
         {
 
@@ -112,6 +113,8 @@ namespace AnsibeProject.Controllers
         {
             if (sections == null) return BadRequest("Binding variable Failed !");
             if (sections.Sections == null || sections.Sections.Count == 0) return BadRequest("Sections are null or empty");
+            ViewBag.professor = _db.Professors.Where(p => p.ActiveState == ActiveState.Active);
+
             if (sections.Type == "PS")
             {
                 return PartialView("ProfessorSections", sections.Sections);
@@ -122,7 +125,7 @@ namespace AnsibeProject.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> SaveCreatedSections([FromBody]SectionsType sections)
+        public  IActionResult SaveCreatedSections([FromBody]SectionsType sections)
         {
             //check databinding
             if (sections == null) return BadRequest();
@@ -134,7 +137,7 @@ namespace AnsibeProject.Controllers
                 foreach (var section in sections.TempSections)
                 {
 
-                    Course? course = await _db.Courses.SingleOrDefaultAsync(c => c.CourseCode == section.Course.CourseCode);
+                    Course? course =  _db.Courses.SingleOrDefault(c => c.CourseCode == section.Course.CourseCode);
                     if (course == null) return BadRequest("Course Code does not exist !");
 
                     //one at least of Hourse , TP and TD should be have a value
@@ -149,8 +152,8 @@ namespace AnsibeProject.Controllers
                 }
 
                 // save new section in database
-                await _db.AddRangeAsync(sections.TempSections);
-                await _db.SaveChangesAsync();
+                 _db.AddRange(sections.TempSections);
+                 _db.SaveChangesAsync();
 
             }
             catch (Exception ex)
@@ -159,18 +162,20 @@ namespace AnsibeProject.Controllers
             }
             try
             {
+                ViewBag.professor = _db.Professors.Where(p => p.ActiveState == ActiveState.Active);
                 if (sections.Type == "CP")
                 {
                     sections.Sections = sections.Sections ?? new List<Models.Section>();
                     sections.TempSections.AddRange(sections.Sections);
-                    this.Sections = sections.TempSections;
+                    HttpContext.Session.SetString(SectionsSessionKey, JsonConvert.SerializeObject(sections.TempSections));
                     return PartialView("CourseSections", sections.TempSections);
                 }
                 else
                 {
                     sections.Sections = sections.Sections ?? new List<Models.Section>();
                     sections.TempSections.AddRange(sections.Sections);
-                    this.Sections = sections.TempSections;
+                    HttpContext.Session.SetString(SectionsSessionKey, JsonConvert.SerializeObject(sections.TempSections));
+                    
                     return PartialView("ProfessorSections", sections.TempSections);
                 }
             }catch(Exception ex) { return BadRequest(ex.Message); }
@@ -179,8 +184,11 @@ namespace AnsibeProject.Controllers
         [HttpPost]
         public IActionResult getCreatedSections()
         {
-            if (this.Sections == null) return BadRequest("should create section first");
-            return Json(this.Sections);
+            var sectionsJson = HttpContext.Session.GetString(SectionsSessionKey);
+            if (sectionsJson == null) return BadRequest("Should create section first");
+
+            var sections = JsonConvert.DeserializeObject<List<Models.Section>>(sectionsJson);
+            return Json(sections); ;
 
         }
     }

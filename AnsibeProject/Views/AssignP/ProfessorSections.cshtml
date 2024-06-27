@@ -6,7 +6,7 @@
 @{
     Dictionary<string, List<Section>> professorSections = new Dictionary<string, List<Section>>();
     List<Section> nullSections = new List<Section>();
-
+    if(ViewBag.professor != null);
     foreach (var section in Model)
     {
         if (section.Professor != null)
@@ -121,7 +121,7 @@
    
 </div>
 
-    <div class="popup" id="popup">
+    <div class="popup" id="popup-section">
 
         <h2>Assign Professor</h2>
         <h1 class="heading">Sections</h1>

@@ -11,7 +11,13 @@ builder.Services.AddDbContext<UniversityContext>(options =>
 });
 
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSession(options =>
+{
+    // Set session timeout (optional)
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 var app = builder.Build();
 app.UseRouting();
 app.UseStaticFiles();
@@ -19,7 +25,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}"
     );
-
+app.UseSession();
 app.Run();
 
 
