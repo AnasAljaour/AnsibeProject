@@ -341,3 +341,21 @@ function cancelCreation1() {
         tbody.innerHTML = '';
     });
 }
+
+let lastCell
+function showAssignProfessors(button) {
+    var btn = button.closest("tr");
+     lastCell = btn.querySelector("td:last-child");
+    var popup = document.getElementById("popupProfessors");
+    popup.classList.toggle("open-popup");
+}
+
+function AssignProfessorInCourse(button) {
+    var btn = button.closest("tr");
+    var firstCell = btn.querySelector("td:first-child");
+    var beforeLastTd = lastCell.previousElementSibling;
+    beforeLastTd.textContent = firstCell.nextElementSibling.textContent;
+    btn.parentNode.removeChild(btn);
+    var popup = document.getElementById("popupProfessors");
+    popup.classList.toggle("open-popup");
+}

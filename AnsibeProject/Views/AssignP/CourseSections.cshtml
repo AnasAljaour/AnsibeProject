@@ -48,8 +48,6 @@
                             <td>
                                 <table class="table Active-datatable">
                                     <thead>
-                                    <th>Professor</th>
-
 
                                     <th>Course Hours</th>
                                     <th>TD</th>
@@ -62,15 +60,11 @@
 
 
 
-                                        @foreach (var s in Model)
+                                        @foreach (var s in course.Value)
                                         {
 
                                             <tr>
 
-                                                <td>
-                                                    @if(s.Professor != null)
-                                                    @s.Professor.FullNameInArabic
-                                                </td>
 
 
                                                 <td>
@@ -88,11 +82,23 @@
                                                     @s.Language
                                                 </td>
                                                 <td>
-                                                    <button class="inline-btn" type="button" onclick="showAssignPopup(this)">Assign</button>
+                                                    @if (s.Professor != null)
+                                                    {
+                                                        @s.Professor.FullNameInArabic
+                                                    }
+
+                                                    else
+                                                    {
+                                                        <button class="inline-btn" type="button" onclick="showAssignProfessors(this)">Assign</button>
+
+                                                    }
                                                 </td>
 
                                                 <td>
+
                                                     <button class="inline-delete-btn">Delete</button>
+
+
                                                 </td>
 
                                             </tr>
@@ -120,7 +126,7 @@
         <div class="box-container">
             <div class="box">
                 <h3>Active Professors</h3>
-                <button type="button" onclick="saveAssign(this)" class="inline-btn">SAVE</button>
+               
                 <button type="button" onclick="cancel()" class="inline-btn">Cancel</button>
                 <table class="table table-striped Active-datatable">
                     <thead>
@@ -169,7 +175,7 @@
                                             @professor.FirstName @professor.MiddleName @professor.LastName
                                         </td>
                                         <td>
-                                            <button value="Assign" name="Assign" class="inline-btn" onclick="" type="button">Assign</button>
+                                            <button value="Assign" name="Assign" class="inline-btn" onclick="AssignProfessorInCourse(this)" type="button">Assign</button>
 
                                         </td>
 
