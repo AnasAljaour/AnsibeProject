@@ -6,15 +6,7 @@
 @{
     Dictionary<string, List<Section>> professorSections = new Dictionary<string, List<Section>>();
     List<Section> nullSections = new List<Section>();
-    List<dynamic> activeProfessor = new List<dynamic>();
-
-    if(ViewBag.professor != null)
-    {
-        foreach (var active in ViewBag.professor)
-        {
-            activeProfessor.Add(active);
-        }
-    }
+    
     
     foreach (var section in Model)
     {
@@ -52,15 +44,15 @@
         </thead>
         <tbody>
             
-
-        @foreach (var professor in activeProfessor)
+            @if (ViewBag.professor!=null){
+        @foreach (var professor in ViewBag.professor)
         {
             var professorName = professor.FirstName + " " + professor.LastName;
             
             <tr>
                
                 <td>
-                    @professorName
+                    @professor.FullNameInArabic
                 </td>
 
 
@@ -135,7 +127,7 @@
                                             
         </tr>
         }
-                                           
+         }                                  
     </tbody>             
     </table>
    
