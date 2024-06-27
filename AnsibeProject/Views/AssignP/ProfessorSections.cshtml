@@ -73,7 +73,7 @@
 
                         
                         </thead>
-                                <td><button class="inline-btn" onclick="showAssignPopup(this)" type="button">Assign</button></td>
+                                <td><button class="inline-btn" onclick="showAssignPopup1(this)" type="button">Assign</button></td>
                         <tbody>
                     @foreach (var s in professor.Value)
                     {
@@ -121,14 +121,14 @@
    
 </div>
 
-    <div class="popup" id="popup-section">
+    <div class="popup" id="popup1">
 
         <h2>Assign Professor</h2>
         <h1 class="heading">Sections</h1>
         <div class="box-container">
             <div class="box">
                 <button type="button" onclick="saveAssign(this)" class="inline-btn">SAVE</button>
-                <button type="button" onclick="cancel()" class="inline-btn">Cancel</button>
+                <button type="button" onclick="cancelCreation1()" class="inline-btn">Cancel</button>
                 <table class="table table-striped Active-datatable">
                     <thead>
                         <tr>

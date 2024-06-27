@@ -319,3 +319,25 @@ function showAssignPopup(button) {
     popup.classList.toggle("open-popup");
 }
 
+function showAssignPopup1(button) {
+
+    var btn = button.closest("tr");
+
+    var firstCell = btn.querySelector("td:first-child");
+    //this needs to be fixed instead of prof
+    prof = firstCell.textContent.trim();
+
+    var popup = document.getElementById("popup1");
+    popup.classList.toggle("open-popup");
+}
+
+function cancelCreation1() {
+    let popup = document.getElementById('popup1');
+    popup.classList.toggle('open-popup');
+    tempSections = [];
+
+    let tbodyElements = popup.querySelectorAll('tbody[id^="tbody-"]');
+    tbodyElements.forEach(function (tbody) {
+        tbody.innerHTML = '';
+    });
+}
