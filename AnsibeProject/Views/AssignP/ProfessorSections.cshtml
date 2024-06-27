@@ -6,7 +6,16 @@
 @{
     Dictionary<string, List<Section>> professorSections = new Dictionary<string, List<Section>>();
     List<Section> nullSections = new List<Section>();
-    if(ViewBag.professor != null);
+    List<dynamic> activeProfessor = new List<dynamic>();
+
+    if(ViewBag.professor != null)
+    {
+        foreach (var active in ViewBag.professor)
+        {
+            activeProfessor.Add(active);
+        }
+    }
+    
     foreach (var section in Model)
     {
         if (section.Professor != null)
@@ -44,73 +53,84 @@
         <tbody>
             
 
-        @foreach (var professor in professorSections)
+        @foreach (var professor in activeProfessor)
         {
-                            
+            var professorName = professor.FirstName + " " + professor.LastName;
             
             <tr>
                
                 <td>
-                    @professor.Key
+                    @professorName
                 </td>
 
-                            
-                
 
-                <td>
-                                           
 
-                     
-                                                    
-                    <table class="table Active-datatable">
-                        <thead>
-                        <th>Course Code</th>
-                        <th>Course Description</th>
-                        <th>Course Hours</th>
-                        <th>TD</th>
-                        <th>TP</th>
-                        <th>Language</th>
+                        @if (professorSections.ContainsKey(@professorName))
+                        {
+                            <td>
 
-                        
-                        </thead>
-                                <td><button class="inline-btn" onclick="showAssignPopup1(this)" type="button">Assign</button></td>
-                        <tbody>
-                    @foreach (var s in professor.Value)
-                    {
-                            <tr>
 
-                                <td>
-                                    @s.Course.CourseCode
-                                </td>
-                                <td>
-                                    @s.Course.CourseDescription
-                                </td>
-                                <td>
-                                    @s.CourseHours
-                                </td>
-                                <td>
-                                    @s.TD
-                                </td>
 
-                                <td>
-                                    @s.TP
-                                </td>
 
-                                <td>
-                                    @s.Language
-                                </td>
-                                
-                                <td>
-                                    <button class="inline-delete-btn" onclick="deletAssignment(this)">Delete</button>
-                                </td>
-                            </tr>
-                      }
-                        </tbody>
-                    </table>
-                                                    
-                    
-                    
-                 </td>
+                                <table class="table Active-datatable">
+                                    <thead>
+                                    <th>Course Code</th>
+                                    <th>Course Description</th>
+                                    <th>Course Hours</th>
+                                    <th>TD</th>
+                                    <th>TP</th>
+                                    <th>Language</th>
+
+
+                                    </thead>
+                                    <td><button class="inline-btn" onclick="showAssignPopup1(this)" type="button">Assign</button></td>
+                                    <tbody>
+                                        @foreach (var s in professorSections[professorName])
+                                        {
+                                        
+
+                                            <tr>
+
+                                                <td>
+                                                    @s.Course.CourseCode
+                                                </td>
+                                                <td>
+                                                    @s.Course.CourseDescription
+                                                </td>
+                                                <td>
+                                                    @s.CourseHours
+                                                </td>
+                                                <td>
+                                                    @s.TD
+                                                </td>
+
+                                                <td>
+                                                    @s.TP
+                                                </td>
+
+                                                <td>
+                                                    @s.Language
+                                                </td>
+
+                                                <td>
+                                                    <button class="inline-delete-btn" onclick="deletAssignment(this)">Delete</button>
+                                                </td>
+                                            </tr>
+                                            }
+                                        
+                                    </tbody>
+                                </table>
+
+
+
+                            </td>
+
+
+                        }
+                        else
+                        {
+                            <td><button class="inline-btn" onclick="showAssignPopup1(this)" type="button">Assign</button></td>
+                        }
                         
                                             
         </tr>
@@ -127,7 +147,7 @@
         <h1 class="heading">Sections</h1>
         <div class="box-container">
             <div class="box">
-                <button type="button" onclick="saveAssign(this)" class="inline-btn">SAVE</button>
+                <button type="button" onclick="saveCreatedSections()" class="inline-btn">SAVE</button>
                 <button type="button" onclick="cancelCreation1()" class="inline-btn">Cancel</button>
                 <table class="table table-striped Active-datatable">
                     <thead>
