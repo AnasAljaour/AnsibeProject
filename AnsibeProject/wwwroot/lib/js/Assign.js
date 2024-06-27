@@ -149,3 +149,16 @@ function swapContent() {
 
 }
 
+
+function showAssignPopup(button) {
+
+    var btn = button.closest("tr");
+
+    var firstCell = btn.querySelector("td:first-child");
+    //this needs to be fixed instead of prof
+    prof = firstCell.textContent.trim();
+
+    var popup = document.getElementById("popup");
+    popup.classList.toggle("open-popup");
+}
+
