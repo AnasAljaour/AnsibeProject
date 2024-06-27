@@ -115,7 +115,7 @@ function showAllocation(button) {
         },
         error: function (xhr, status, error) {
             failed(xhr, status, error);
-            
+
 
         }
     });
@@ -125,7 +125,7 @@ function showAllocation(button) {
 
 
 function swapContent() {
-    if (type !== null &&sections != null && sections.length > 0) {
+    if (type !== null && sections != null && sections.length > 0) {
         console.log(sections);
         type = (type === "CP") ? "PS" : "CP";
         $.ajax({
@@ -266,8 +266,8 @@ function saveCreatedSections() {
             success: function (response) {
 
                 document.getElementById('holder').innerHTML = response;
-                
-                
+
+
                 $.ajax({
                     url: '/AssignP/getCreatedSections',
                     type: 'POST',
@@ -275,28 +275,30 @@ function saveCreatedSections() {
                     success: function (response) {
 
                         sections = response;
-                        
+
                         console.log(response);
                     },
                     error: function (xhr, status, error) {
                         failed(xhr, status, error);
                         document.getElementById('holder').innerHTML = '';
-                        
+
 
                     }
                 });
-                
+                console.log(response);
             },
             error: function (xhr, status, error) {
                 failed(xhr, status, error);
 
+                console.log(error);
+
 
             }
         });
-        if (type == null) type = "CP";
+        if (type == null) type = "PS";
         cancelCreation()
-        
-        
+
+
     }
     else {
         Swal.fire("at least one section should be created", "", "info");
@@ -340,20 +342,29 @@ function cancelCreation1() {
     });
 }
 
-let lastCell
+let TdBtn
+let sectionID
 function showAssignProfessors(button) {
-    var btn = button.closest("tr");
-     lastCell = btn.querySelector("td:last-child");
+    TdBtn = button.closest("td");
+    var row = TdBtn.closest("tr");
+    var firstrowID = row.querySelector('input[type="hidden"]')
+    sectionID = firstrowID.value;
     var popup = document.getElementById("popupProfessors");
     popup.classList.toggle("open-popup");
 }
 
 function AssignProfessorInCourse(button) {
-    var btn = button.closest("tr");
-    var firstCell = btn.querySelector("td:first-child");
-    var beforeLastTd = lastCell.previousElementSibling;
-    beforeLastTd.textContent = firstCell.nextElementSibling.textContent;
-    btn.parentNode.removeChild(btn);
+    var btnAssignProfessor = button.closest("tr");
+
+    var firstCell = btnAssignProfessor.querySelector("td:first-child");
+
+    TdBtn.textContent = firstCell.nextElementSibling.textContent;
+    
+    var section = sections.find(s => s.SectionId === sectionID.parseInt);
+   
+    if (section) 
+        section.professor = { fileNumber: parseInt(firstCell.textContent.trim()) };
+    
     var popup = document.getElementById("popupProfessors");
     popup.classList.toggle("open-popup");
 }

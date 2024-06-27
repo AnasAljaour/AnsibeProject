@@ -48,7 +48,7 @@
                             <td>
                                 <table class="table Active-datatable">
                                     <thead>
-
+                                    <th></th>
                                     <th>Course Hours</th>
                                     <th>TD</th>
                                     <th>TP</th>
@@ -65,7 +65,7 @@
 
                                             <tr>
 
-
+                                              <td> <input type="hidden" value="@s.SectionId" /></td>
 
                                                 <td>
                                                     @s.CourseHours
@@ -126,7 +126,7 @@
         <div class="box-container">
             <div class="box">
                 <h3>Active Professors</h3>
-               
+
                 <button type="button" onclick="cancel()" class="inline-btn">Cancel</button>
                 <table class="table table-striped Active-datatable">
                     <thead>
