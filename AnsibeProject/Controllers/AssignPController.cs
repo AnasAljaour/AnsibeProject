@@ -113,7 +113,7 @@ namespace AnsibeProject.Controllers
         {
             if (sections == null) return BadRequest("Binding variable Failed !");
             if (sections.Sections == null || sections.Sections.Count == 0) return BadRequest("Sections are null or empty");
-            ViewBag.professor = _db.Professors.Where(p => p.ActiveState == ActiveState.Active);
+            ViewBag.professor = _db.Professors.Where(p => p.ActiveState == ActiveState.Active).Include(p => p.Contract);
 
             if (sections.Type == "PS")
             {
@@ -162,8 +162,8 @@ namespace AnsibeProject.Controllers
             }
             try
             {
-                ViewBag.professor = _db.Professors.Where(p => p.ActiveState == ActiveState.Active);
-                if (sections.Type == "CP")
+                ViewBag.professor = _db.Professors.Where(p => p.ActiveState == ActiveState.Active).Include(p => p.Contract);
+                if (sections.Type == "" || sections.Type == "CP")
                 {
                     sections.Sections = sections.Sections ?? new List<Models.Section>();
                     sections.TempSections.AddRange(sections.Sections);
@@ -178,7 +178,8 @@ namespace AnsibeProject.Controllers
                     
                     return PartialView("ProfessorSections", sections.TempSections);
                 }
-            }catch(Exception ex) { return BadRequest(ex.Message); }
+            }catch(Exception ex) { 
+                return BadRequest(ex.Message); }
         }
 
         [HttpPost]
