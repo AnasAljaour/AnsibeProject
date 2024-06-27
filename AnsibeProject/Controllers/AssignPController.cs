@@ -152,8 +152,8 @@ namespace AnsibeProject.Controllers
                 }
 
                 // save new section in database
-                 _db.AddRange(sections.TempSections);
-                 _db.SaveChangesAsync();
+                  _db.AddRange(sections.TempSections);
+                  _db.SaveChanges();
 
             }
             catch (Exception ex)

@@ -285,17 +285,15 @@ function saveCreatedSections() {
 
                     }
                 });
-                console.log(response);
+                
             },
             error: function (xhr, status, error) {
                 failed(xhr, status, error);
-                
-                console.log(error);
 
 
             }
         });
-        if (type == null) type = "PS";
+        if (type == null) type = "CP";
         cancelCreation()
         
         
