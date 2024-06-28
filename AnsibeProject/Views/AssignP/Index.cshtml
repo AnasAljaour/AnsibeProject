@@ -1,159 +1,16 @@
 ﻿@using AnsibeProject.Models;
-@* @model List<Ansibe>; *@
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-<div class="side-bar" >
 
-    <nav class="navbar">
-      <form method="post">
-            <select class="dropdown" onchange="getAllocationBasedOnYear(this)">
-                 <option value="">Year</option>
-                @if (ViewBag.Year != null)
-                {
-                    foreach(string str in ViewBag.Year)
-                    {
-                        <option value="@str">@str</option>
-                    }
-                }
-            </select>
-       </form>
-        <div >
-        <table class="table">
-            <thead>
-            <tr>
-                 <th>Id</th>
-                 <th>Ansibe</th>
-                 <th>Show</th>
-            </tr>
-            </thead>
-            <tbody id="Ansibe-tbody">
+<div class="form-container">
 
-            </tbody>
-        </table>
-        </div>
-    </nav>
-   
-</div>
-<section class="Assing">
-    <div class="box-container">
-        <div class="box">
-            <h3>Section/Professor</h3>
-            <button class="inline-btn" onclick="showCreateSection()" type="button">Create Section</button>
-            <button class="inline-btn" onclick="swapContent()">swap</button>
-        </div>
-        <div id="holder">
 
-        </div>
-    </div>
-</section>
+    <form method="post" asp-controller="" asp-action="">
 
-<section class="Assing"></section>
-
-<div>
-    <section>
-
+        <label asp-for="AnsibeYear">Ansibe Year</label>
+        <input type="text" asp-for="AnsibeYear" placeholder="enter year" class="box">
+            
         
-            <div class="popup" id="popup">
-                <form class="box">
-                    <h1>Courses</h1>
-                <button type="button" onclick="saveCreatedSections()" class="inline-btn">SAVE</button>
-                    <button type="button" onclick="cancelCreation()" class="inline-btn">Cancel</button>
-                    <table class="table Active-datatable">
-                        <thead>
-                        <th>Course Code</th>
-                        <th>Course Description</th>
-                        <th>Course Hour</th>
-                        <th>TD</th>
-                        <th>TP</th>
-                        <th>Language</th>
-                        <th>Add</th>
-                        <th></th>
-                        </thead>
-                        <tbody>
-                         @if (ViewBag.courses != null)
-                           {
-
-
-                                @foreach (var course in ViewBag.courses)
-                                {
-                            
-                                    if (course.CourseState.Equals(ActiveState.Active))
-                                    {
-                                    <tr id="CourseCode" style="border-bottom: 2px solid black;">
-                                            <td>
-                                                @course.CourseCode
-                                            </td>
-                                            <td>
-                                                @course.CourseDescription
-                                                
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" name="c[]" />
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" name="c[]" />
-                                            </td>
-                                            <td>
-                                                <input type="checkbox" name="c[]" />
-                                            </td>
-                                            <td>
-                                                <select asp-items="Html.GetEnumSelectList<AnsibeProject.Models.Language>()">
-                                                </select>
-                                            </td>
-                                            <td>
-                                            <button class="inline-btn" onclick="createSections(this,'@course.CourseCode','@course.CourseDescription', '@course.NumberOfHours','@course.TP','@course.TD')" type="button">Add</button>
-                                            </td>
-                                        <td>
-                                            <table class="table">
-                                                <thead>
-                                                <th>course</th>
-                                                <th>TP</th>
-                                                <th>TD</th>
-                                                <th>Language</th>
-                                                <th></th>
-
-                                                </thead>
-                                                <tbody id="tbody-@course.CourseCode">
-                                                </tbody>
-                                            </table>
-                               
-                                            </td>
-                            
-                                        </tr>
-                                    @*<tr style="border-bottom: 2px solid black;">
-                                            <td colspan="2">
-
-                                            </td>
-                                            <td colspan="5">
-                                                <table class="table">
-                                                      <thead>
-                                                      <th>course</th>
-                                                      <th>TP</th>
-                                                      <th>TD</th>
-                                                      <th>Language</th>
-                                                      <th></th>
-
-                                                      </thead>
-                                                      <tbody id="tbody-@course.CourseCode">
-                                                      </tbody>
-                                                      </table>
-                                            </td>
-                                        </tr>
-                        *@
-                        
-
-                                   }
-
-                                }
-                           }
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-    
-</section>
+    </form>
+            
 </div>
-
-
-   @section Scripts {
-    <script src="~/lib/js/Assign.js"></script>
-} 
