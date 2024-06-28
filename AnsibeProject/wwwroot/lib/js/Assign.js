@@ -320,18 +320,19 @@ function showAssignPopup(button) {
 }
 
 
-let TdBtnn
-let profId
+let prof
+let allocation = [];
+
 function showAssignSections(button) {
-    TdBtnn = button.closest("td");
-    var row = TdBtnn.closest("tr");
+    var row = button.closest("tr");
     var firstrowID = row.querySelector('input[type="hidden"]')
-    profId = firstrowID.value;
+    prof = firstrowID.value;
     var popup = document.getElementById("popup1");
     popup.classList.toggle("open-popup");
+    
 }
 
-function AssignSectionInProfessor() {
+/*function AssignSectionInProfessor() {
     
 
     var checkboxes = document.querySelectorAll('#popup1 input[type="checkbox"]:checked');
@@ -340,23 +341,86 @@ function AssignSectionInProfessor() {
 
         var sectionId = row.querySelector('input[type="hidden"]').value;
 
-        
+        var index = sections.find(s => s.SectionId === sectionId.parseInt);
 
-        var firstCell = row.querySelector("td:first-child");
-
-        TdBtnn.textContent = firstCell.nextElementSibling.textContent;
-
-        var professor = professors.find(p => p.FileNumber === profId.parseInt);
-
-        if (professor != -1)
-            section.professor = { fileNumber: parseInt(firstCell.textContent.trim()) };
+        if (index)
+            index.professor = { fileNumber: parseInt(firstCell.textContent.trim()) };
         
 
     }
 
     var popup = document.getElementById("popup1");
     popup.classList.toggle("open-popup");
+}*/
+
+
+function addCourse(professoreId, sectionId) {
+    let model = {
+        Key: sectionId.toString(),
+        Value: professoreId.toString()
+    };
+    allocation.push(model);
+
 }
+
+
+function saveProfessorAssign() {
+    var tbody = document.getElementById("SectionId");
+    var checkboxes = tbody.querySelectorAll('input[type="checkbox"]');
+
+
+    checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+            // Remove the parent row of the checked checkbox
+            var row = checkbox.closest('tr');
+            console.log(prof);
+
+            var newRow = prepareProfessorRow(row);
+            row.parentNode.removeChild(row);
+            let courseTable = document.getElementById("tbody-" + prof);
+            courseTable.appendChild(newRow);
+        }
+    });
+
+    var popup = document.getElementById("popup");
+    popup.classList.toggle("open-popup");
+
+    console.log(allocation);
+
+}
+
+
+
+function prepareProfessorRow(row) {
+    let newRow = document.createElement("tr");
+    let columns = row.getElementsByTagName("td");
+    var sectionId = row.querySelector('input[type="hidden"]').value;
+    for (let i = 0; i < columns.length - 1; i++) {
+        var newcell = document.createElement("td");
+        newcell.textContent = columns[i].textContent
+
+        newRow.appendChild(newcell);
+
+        
+    }
+    let cellForButton = document.createElement("td");
+
+
+    let btn = document.createElement("button")
+    btn.type = "button";
+    btn.textContent = "delete"
+    btn.onclick = function () {
+        confirmDeleteAssignement(this);
+    };
+    btn.classList.toggle("inline-delete-btn");
+    cellForButton.appendChild(btn);
+    newRow.appendChild(cellForButton);
+
+
+    addCourse(prof, sectionId);
+    return newRow
+}
+
 
 /*let prof;
 function showAssignPopup1(button) {
