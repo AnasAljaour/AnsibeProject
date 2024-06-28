@@ -319,6 +319,7 @@ function showAssignPopup(button) {
     popup.classList.toggle("open-popup");
 }
 
+let prof;
 function showAssignPopup1(button) {
 
     var btn = button.closest("tr");
@@ -327,9 +328,16 @@ function showAssignPopup1(button) {
     //this needs to be fixed instead of prof
     prof = firstCell.textContent.trim();
 
+    var checkboxes = popup.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function (checkbox) {
+        checkbox.setAttribute("data-file-number", fileNumber);
+    
+    });
+
     var popup = document.getElementById("popup1");
     popup.classList.toggle("open-popup");
 }
+
 
 function cancelCreation1() {
     let popup = document.getElementById('popup1');
@@ -368,3 +376,33 @@ function AssignProfessorInCourse(button) {
     var popup = document.getElementById("popupProfessors");
     popup.classList.toggle("open-popup");
 }
+
+function AssignSectionInProfessor(checkbox) {
+    if (checkbox.checked) {
+        // Get the section ID from the current row (popup row)
+        var row = checkbox.closest("tr");
+        var sectionIdCell = row.querySelector("td[data-section-id]");
+        var sectionId = parseInt(sectionIdCell.textContent.trim());
+
+        // Get the professor's file number from the data attribute
+        var fileNumber = parseInt(checkbox.getAttribute("data-file-number"));
+        var professor = professors.find(p => p.FileNumber === fileNumber);
+
+        if (professor) {
+            var section = sections.find(s => s.SectionId === sectionId);
+
+            if (section) {
+                // Assign the section to the professor
+                section.Professor = { FileNumber: fileNumber };
+                professor.Sections.push(section);
+                alert('Section assigned successfully!');
+            } else {
+                alert('Section not found');
+            }
+        } else {
+            alert('Professor not found');
+        }
+    }
+}
+
+

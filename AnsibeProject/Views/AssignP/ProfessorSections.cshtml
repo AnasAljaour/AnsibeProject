@@ -54,7 +54,7 @@
                 <td>
                     @professor.FullNameInArabic
                 </td>
-
+                
 
 
                         @if (professorSections.ContainsKey(@professorName))
@@ -82,7 +82,9 @@
                                         
 
                                             <tr>
-
+                                                    <td style="display: none">
+                                                        @professor.FileNumber
+                                                    </td>
                                                 <td>
                                                     @s.Course.CourseCode
                                                 </td>
@@ -153,7 +155,7 @@
         <h1 class="heading">Sections</h1>
         <div class="box-container">
             <div class="box">
-                <button type="button" onclick="saveCreatedSections()" class="inline-btn">SAVE</button>
+                <button type="button" onclick="AssignSectionInProfessor(c1[])" class="inline-btn">SAVE</button>
                 <button type="button" onclick="cancelCreation1()" class="inline-btn">Cancel</button>
                 <table class="table table-striped Active-datatable">
                     <thead>
@@ -179,6 +181,10 @@
                                     
                                 
                                 <tr>
+                                    
+                                    <td style="display: none">
+                                        @s.SectionId
+                                    </td>
                                     <td>
                                         @s.Course.CourseCode
                                     </td>
