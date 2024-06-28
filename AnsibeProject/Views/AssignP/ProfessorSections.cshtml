@@ -33,7 +33,7 @@
     <table class="table Active-datatable">
         <thead>
             <tr>
-                
+                <th></th>
                 <th>Professor Name</th>
 
                 <th>Section </th>
@@ -50,8 +50,10 @@
             var professorName = professor.FirstName + " " + professor.LastName;
             
             <tr>
-               
-                <td>
+                            <td>
+                                <input type="hidden" value="@professor.FileNumber" />
+                            </td>
+                            <td>
                     @professor.FullNameInArabic
                 </td>
                 
@@ -82,9 +84,7 @@
                                         
 
                                             <tr>
-                                                    <td style="display: none">
-                                                        @professor.FileNumber
-                                                    </td>
+                                                    
                                                 <td>
                                                     @s.Course.CourseCode
                                                 </td>
@@ -118,7 +118,7 @@
 
 
                             </td>
-                                <td><button class="inline-btn" onclick="showAssignPopup1(this)" type="button">Assign</button></td>
+                                <td><button class="inline-btn" onclick="showAssignSections(this)" type="button">Assign</button></td>
 
                         }
                         else
@@ -137,7 +137,7 @@
                                     </thead>
                                     </table>
                                     </td>
-                            <td><button class="inline-btn" onclick="showAssignPopup1(this)" type="button">Assign</button></td>
+                                <td><button class="inline-btn" onclick="showAssignSections(this)" type="button">Assign</button></td>
                         }
                         
                                             
@@ -155,11 +155,12 @@
         <h1 class="heading">Sections</h1>
         <div class="box-container">
             <div class="box">
-                <button type="button" onclick="AssignSectionInProfessor(c1[])" class="inline-btn">SAVE</button>
+                <button type="button" onclick="AssignSectionInProfessor(this)" class="inline-btn">SAVE</button>
                 <button type="button" onclick="cancelCreation1()" class="inline-btn">Cancel</button>
                 <table class="table table-striped Active-datatable">
                     <thead>
                         <tr>
+                            <th></th>
                             <th data-searchable="true">Course Code</th>
                             <th data-searchable="true">Course Description</th>
                             <th data-searchable="true">Course Hours</th>
@@ -182,8 +183,8 @@
                                 
                                 <tr>
                                     
-                                    <td style="display: none">
-                                        @s.SectionId
+                                    <td >
+                                    <input type="hidden" value="@s.SectionId" />
                                     </td>
                                     <td>
                                         @s.Course.CourseCode
@@ -205,7 +206,7 @@
                                     </td>
                                     <td style="display:none">@s.SectionId</td>
                                     <td>
-                                        <input type="checkbox" name="c1[]" />
+                                    <input type="checkbox" id="myCheckbox" name="c1[]" />
                                     </td>
 
                                 </tr>
