@@ -20,12 +20,24 @@ namespace AnsibeProject.Controllers
         }
         public IActionResult Index()
         {
+
+            return View();
+        }
+        public IActionResult CreateNewAnsibe(string year)
+        {
             ViewBag.courses = _db.Courses.Where(C => C.CourseState == ActiveState.Active).ToList();
             ViewBag.Year = _db.Ansibes
                                            .Select(a => a.Year)
                                            .Distinct()
                                            .ToList();
+
+            Ansibe newAnsibe= new Ansibe();
+            newAnsibe.Year = year;
+            _db.Ansibes.Add(newAnsibe);
+            _db.SaveChanges();
+            ViewBag.AnsibeId=newAnsibe.Id;
             return View(GetActiveProfessors());
+
         }
 
         public List<Professor> GetActiveProfessors()
