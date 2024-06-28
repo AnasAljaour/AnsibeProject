@@ -5,10 +5,10 @@
 <div class="form-container">
 
 
-    <form method="post" asp-controller="" asp-action="">
+    <form method="post" asp-controller="AssignP" asp-action="CreateNewAnsibe" onsubmit="return validateForm()">
 
         <label >Ansibe Year</label>
-        <input type="text" placeholder="enter year" class="box">
+        <input type="text" placeholder="enter year" class="box" id="ansibeYear" name="year">
         <input type="submit" value="CREATE" class="inline-btn"/>
             
         

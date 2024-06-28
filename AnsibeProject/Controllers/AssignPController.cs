@@ -23,6 +23,7 @@ namespace AnsibeProject.Controllers
 
             return View();
         }
+        [HttpPost]
         public IActionResult CreateNewAnsibe(string year)
         {
             ViewBag.courses = _db.Courses.Where(C => C.CourseState == ActiveState.Active).ToList();
