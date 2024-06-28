@@ -7,10 +7,36 @@
 
     <form method="post" asp-controller="" asp-action="">
 
-        <label asp-for="AnsibeYear">Ansibe Year</label>
-        <input type="text" asp-for="AnsibeYear" placeholder="enter year" class="box">
+        <label >Ansibe Year</label>
+        <input type="text" placeholder="enter year" class="box">
+        <input type="submit" value="CREATE" class="inline-btn"/>
             
         
     </form>
             
 </div>
+@section Scripts {
+    <script>
+
+        function validateForm() {
+            const yearInput = document.querySelector('#ansibeYear');
+            const yearPattern = /^\d{4}-\d{4}$/;
+
+            if (!yearPattern.test(yearInput.value)) {
+                
+                Swal.fire("Please enter a valid year format (e.g., 9999-9999).", "", "info");
+                return false;
+            }
+
+            // Check if the years are consecutive
+            const years = yearInput.value.split('-').map(Number);
+            if (years[1] !== years[0] + 1) {
+                alert("The years must be consecutive (e.g., 2024-2025).");
+                Swal.fire("The years must be consecutive (e.g., 2024-2025).", "", "info");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+} 
