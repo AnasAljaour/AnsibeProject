@@ -336,14 +336,18 @@ function AssignProfessorInCourse(button) {
     var firstCell = btnAssignProfessor.querySelector("td:first-child");
 
     TdBtn.textContent = firstCell.nextElementSibling.textContent;
-    
-    var section = sections.find(s => s.SectionId === sectionID.parseInt);
+
+    /*var section = sections.find(s => s.SectionId === sectionID.parseInt);
    
     if (section) 
         section.professor = { fileNumber: parseInt(firstCell.textContent.trim()) };
-    
+    */
+    var professoreId = parseInt(firstCell.textContent.trim());
+    addCourse(professoreId, sectionID)
+
     var popup = document.getElementById("popupProfessors");
     popup.classList.toggle("open-popup");
+    console.log(allocation);
 }
 
 
@@ -438,3 +442,14 @@ function prepareRow(row) {
     addCourse(prof, sectionId);
     return newRow
 }
+
+
+function showSidebar() {
+    let sideBar = document.querySelector('.side-bar');
+    sideBar.classList.toggle('active');
+    var s = document.getElementById("sectionAssign")
+    s.classList.toggle('Assing');
+}
+
+
+
