@@ -36,9 +36,10 @@ function success(response) {
 
 
         let button = document.createElement("Button");
-        button.textContent = "show";
+        button.textContent = "use";
         button.addEventListener("click", function () {
             showAllocation(button);
+
         });
         button.classList.toggle("inline-btn");
         buttonCell = document.createElement('td');
@@ -75,66 +76,97 @@ function failed(jqXHR, textStatus, errorThrown) {
         });
     }
 }
-let sections = [];
+
 let type;
 function showAllocation(button) {
     let row = button.closest('tr');
     let columns = row.getElementsByTagName('td');
-    data = {
+    // selected Id from list
+    usedId = {
         Key: "Id",
         Value: columns[0].textContent
     }
+    //created Id for this Ansibe
     newAnsibe = {
         Key: "Id",
         Value: document.getElementById('AnsibeId').value
     }
+    Swal.fire({
+        title: "Are you sure you want to use this ? exsiting work will be lost ",
+        text: "",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            //delete from database and then get the new view based on selected Ansibe ID
+            deleteSectionsFromDataBase(usedId,newAnsibe)
+            
+
+        } else {
+            // If user cancels, show an informational message
+            Swal.fire("cancelled", "", "info");
+        }
+    });
 
 
 
+
+
+    
+
+
+}
+
+function getPartialViewBasedOnSelectedId(usedId, newAnsibe) {
+    
+    
     $.ajax({
-        url: '/AssignP/getSectionsOfById',
+        url: '/AssignP/getSectionOfTheAnsibeById',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify(data),
-        dataType: 'json',
+        data: JSON.stringify({ AnsibeId: usedId, NewAnsibeId: newAnsibe }),
+        dataType: 'html',
         success: function (response) {
-           
-            sections = response;
-            type = "CP";
-            $.ajax({
-                url: '/AssignP/getSectionOfTheAnsibeById',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ AnsibeId: data, NewAnsibeId: newAnsibe }),
-                dataType: 'html',
-                success: function (response) {
 
-                    document.getElementById('holder').innerHTML = response;
-                },
-                error: function (xhr, status, error) {
-                    failed(xhr, status, error);
-                    
-                }
-            });
-
+            document.getElementById('holder').innerHTML = response;
+            showSidebar()
+            type="CP"
+            
         },
         error: function (xhr, status, error) {
             failed(xhr, status, error);
 
+        }
+    });
+}
+
+function deleteSectionsFromDataBase(usedId,newAnsibe) {
+    $.ajax({
+        url: '/AssignP/DeleteSectionsOfAnsibe',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(newAnsibe),
+        dataType: 'json',
+        success: function (response) {
+            getPartialViewBasedOnSelectedId(usedId, newAnsibe);
+        },
+        error: function (xhr, status, error) {
+            failed(xhr, status, error);
+            
 
         }
     });
-
 }
-
-
-
+alert("hello");
 function swapContent() {
     let AnsibeId = {
         Key: "Id",
         Value: document.getElementById('AnsibeId').value
     }
-    if (type !== null && sections != null && sections.length > 0) {
+    if (type !== null) {
 
         type = (type === "CP") ? "PS" : "CP";
         $.ajax({
@@ -271,7 +303,7 @@ function saveCreatedSections() {
             url: '/AssignP/SaveCreatedSections',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ Sections: sections, TempSections: tempSections, Type: type, AnsibeId: AnsibeId }),
+            data: JSON.stringify({TempSections: tempSections, Type: type, AnsibeId: AnsibeId }),
             dataType: 'html',
             success: function (response) {
 

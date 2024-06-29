@@ -132,6 +132,7 @@ namespace AnsibeProject.Controllers
             }
             return newSections;
         }
+        /*
         [HttpPost]
         public async Task<IActionResult> getSectionsOfById([FromBody] KeyValuePairModel AnsibeId)
         {
@@ -160,7 +161,7 @@ namespace AnsibeProject.Controllers
                 return BadRequest("Invalid Data !");
             }
         }
-
+        */
         [HttpPost]
         public async Task<IActionResult> ToggleView([FromBody] AssignToggleRequest request)
         {
@@ -266,15 +267,29 @@ namespace AnsibeProject.Controllers
                 return BadRequest(ex.Message); }
         }
 
+        
+
         [HttpPost]
-        public IActionResult getCreatedSections()
+        public async Task<IActionResult> DeleteSectionsOfAnsibe([FromBody] KeyValuePairModel AnsibeId)
         {
-            var sectionsJson = HttpContext.Session.GetString(SectionsSessionKey);
-            if (sectionsJson == null) return BadRequest("Should create section first");
+            try
+            {
+                if (AnsibeId.Value == null || AnsibeId.Value == "") return BadRequest("null or empty request");
 
-            var sections = JsonConvert.DeserializeObject<List<Models.Section>>(sectionsJson);
-            return Json(sections); ;
+                var ansibe = await _db.Ansibes
+                    .Include(a => a.Sections)
+                    .SingleOrDefaultAsync(a => a.Id == int.Parse(AnsibeId.Value));
+                if (ansibe == null) return BadRequest($"there is no Ansibe with ID {AnsibeId.Value}");
+                if (ansibe.Sections == null) return BadRequest($"there is no sections to delete in Ansibe {AnsibeId.Value}");
+                _db.Sections.RemoveRange(ansibe.Sections);
+                await _db.SaveChangesAsync();
+                return Json(new { success = true });
 
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
     
