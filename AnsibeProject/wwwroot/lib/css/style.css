@@ -265,6 +265,7 @@ section {
 	overflow-y: auto;
 	border-right: var(--border);
 	z-index: 4;
+	transition: .2s linear;
 }
 
 	.side-bar #close-btn {
@@ -342,7 +343,7 @@ section {
 			}
 
 	.side-bar.active {
-		left: -40rem;
+		left: -60rem;
 	}
 @media (max-width:1200px) {
 
@@ -351,13 +352,13 @@ section {
 	}
 
 	.side-bar {
-		left: -40rem;
+		left: -60rem;
 		transition: .2s linear;
 	}
 
-		
+
 		.side-bar.active {
-			left: 0;
+			left: 0rem;
 			box-shadow: 0 0 0 100vw rgba(0,0,0,.8);
 			border-right: 0;
 		}
