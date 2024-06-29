@@ -18,7 +18,7 @@
 }
 
 function success(response) {
-    console.log(response);
+    
     let tbody = document.getElementById('Ansibe-tbody');
     tbody.innerHTML = '';
 
@@ -81,7 +81,7 @@ function showAllocation(button) {
         Key: "Id",
         Value: columns[0].textContent
     }
-    console.log(columns[0].textContent);
+    
 
 
 
@@ -92,7 +92,7 @@ function showAllocation(button) {
         data: JSON.stringify(data),
         dataType: 'json',
         success: function (response) {
-            console.log(response);
+           
             sections = response;
             type = "CP";
             $.ajax({
@@ -107,8 +107,7 @@ function showAllocation(button) {
                 },
                 error: function (xhr, status, error) {
                     failed(xhr, status, error);
-                    console.log(error);
-                    console.log(xhr.responseText);
+                    
                 }
             });
 
@@ -126,7 +125,7 @@ function showAllocation(button) {
 
 function swapContent() {
     if (type !== null && sections != null && sections.length > 0) {
-        console.log(sections);
+        
         type = (type === "CP") ? "PS" : "CP";
         $.ajax({
             url: '/AssignP/ToggleView',
@@ -138,11 +137,11 @@ function swapContent() {
 
                 document.getElementById('holder').innerHTML = response;
 
-                console.log(response);
+                
             },
             error: function (xhr, status, error) {
                 failed(xhr, status, error);
-                console.log(error);
+                
 
             }
         });
@@ -176,7 +175,7 @@ function createSections(button, CourseCode, CourseDescription, CourseHours, TP, 
 
     let row = button.closest("tr");
     let checkboxes = row.querySelectorAll('input[type="checkbox"]');
-    console.log(checkboxes);
+   
     let option = row.querySelector('select');
     var selectedText = option.options[option.selectedIndex].textContent;
 
@@ -276,7 +275,7 @@ function saveCreatedSections() {
 
                         sections = response;
 
-                        console.log(response);
+                        
                     },
                     error: function (xhr, status, error) {
                         failed(xhr, status, error);
@@ -285,17 +284,17 @@ function saveCreatedSections() {
 
                     }
                 });
-                console.log(response);
+                
             },
             error: function (xhr, status, error) {
                 failed(xhr, status, error);
 
-                console.log(error);
+                
 
 
             }
         });
-        if (type == null) type = "PS";
+        if (type == null) type = "CP";
         cancelCreation()
 
 
@@ -307,38 +306,13 @@ function saveCreatedSections() {
 }
 
 
-function showAssignPopup(button) {
 
-    var btn = button.closest("tr");
-
-    var firstCell = btn.querySelector("td:first-child");
-    //this needs to be fixed instead of prof
-    prof = firstCell.textContent.trim();
-
-    var popup = document.getElementById("popup");
-    popup.classList.toggle("open-popup");
-}
-
-function showAssignPopup1(button) {
-
-    var btn = button.closest("tr");
-
-    var firstCell = btn.querySelector("td:first-child");
-    //this needs to be fixed instead of prof
-    prof = firstCell.textContent.trim();
-
-    var popup = document.getElementById("popup1");
-    popup.classList.toggle("open-popup");
-}
-
-function cancelCreation1() {
+function cancelAssignProfessorSection() {
     let popup = document.getElementById('popup1');
     popup.classList.toggle('open-popup');
-    tempSections = [];
-
-    let tbodyElements = popup.querySelectorAll('tbody[id^="tbody-"]');
-    tbodyElements.forEach(function (tbody) {
-        tbody.innerHTML = '';
+    let checkboxes = popup.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function (checkbox) {
+        checkbox.checked = false;
     });
 }
 
@@ -367,4 +341,97 @@ function AssignProfessorInCourse(button) {
     
     var popup = document.getElementById("popupProfessors");
     popup.classList.toggle("open-popup");
+}
+
+
+
+
+
+
+let prof
+let allocation = [];
+
+function showAssignSections(button) {
+    var row = button.closest("tr");
+    var firstrowID = row.querySelector('input[type="hidden"]')
+    prof = firstrowID.value;
+    console.log(prof);
+    var popup = document.getElementById("popup1");
+    popup.classList.toggle("open-popup");
+
+}
+function saveProfessorAssign() {
+    var tbody = document.getElementById("SectionId");
+    var checkboxes = tbody.querySelectorAll('input[type="checkbox"]');
+
+
+    checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+            // Remove the parent row of the checked checkbox
+            var row = checkbox.closest('tr');
+            console.log(prof);
+
+            var newRow = prepareRow(row);
+            row.parentNode.removeChild(row);
+            let courseTable = document.getElementById("tbody-" + prof);
+            courseTable.appendChild(newRow);
+        }
+    });
+
+    var popup = document.getElementById("popup1");
+    popup.classList.toggle("open-popup");
+
+    console.log(allocation);
+
+}
+
+
+
+function prepareProfessorRow(row) {
+    let newRow = document.createElement("tr");
+    let columns = row.getElementsByTagName("td");
+    var sectionId = row.querySelector('input[type="hidden"]').value;
+
+    let cloneCell = columns[0].cloneNode(true);
+    newRow.appendChild(cloneCell);
+    for (let i = 1; i < columns.length - 1; i++) {
+        
+        var newcell = document.createElement("td");
+        newcell.textContent = columns[i].textContent
+
+        newRow.appendChild(newcell);
+
+
+    }
+    let cellForButton = document.createElement("td");
+
+
+    let btn = document.createElement("button")
+    btn.type = "button";
+    btn.textContent = "delete"
+    btn.onclick = function () {
+       // confirmDeleteAssignement(this);
+    };
+    btn.classList.toggle("inline-delete-btn");
+    cellForButton.appendChild(btn);
+    newRow.appendChild(cellForButton);
+
+    addCourse(prof, sectionId);
+    return newRow
+}
+function addCourse(professoreId, sectionId) {
+    let model = {
+        Key: sectionId.toString(),
+        Value: professoreId.toString()
+    };
+    allocation.push(model);
+
+}
+function prepareRow(row) {
+    var sectionId = row.querySelector('input[type="hidden"]').value;
+    let newRow = row.cloneNode(true);
+    let lastCell = newRow.cells[newRow.cells.length - 1];
+    lastCell.innerHTML = '<input type="button" class="inline-delete-btn" value="delete"/>';
+    addCourse(prof, sectionId);
+    return newRow
 }
