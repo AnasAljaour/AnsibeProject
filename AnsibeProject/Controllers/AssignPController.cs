@@ -32,7 +32,7 @@ namespace AnsibeProject.Controllers
                                            .ToList();
 
             Ansibe newAnsibe= new Ansibe();
-            newAnsibe.Year = "2024-2025";
+            newAnsibe.Year = year;
             _db.Ansibes.Add(newAnsibe);
             _db.SaveChanges();
             ViewBag.AnsibeId=newAnsibe.Id;
