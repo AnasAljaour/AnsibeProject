@@ -1,5 +1,6 @@
 ﻿using AnsibeProject.Data;
 using AnsibeProject.Models;
+using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -161,19 +162,46 @@ namespace AnsibeProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ToggleView([FromBody] SectionsType sections)
+        public async Task<IActionResult> ToggleView([FromBody] AssignToggleRequest request)
         {
-            if (sections == null) return BadRequest("Binding variable Failed !");
-            if (sections.Sections == null || sections.Sections.Count == 0) return BadRequest("Sections are null or empty");
+            if (request.AnsibeId == null || request.AnsibeId.Value == "") return BadRequest("Ansibe id is null or empty !");
+            if (request.Allocation == null ) return BadRequest("Sections allocations are null or empty");
             ViewBag.professor = _db.Professors.Where(p => p.ActiveState == ActiveState.Active).Include(p => p.Contract);
-
-            if (sections.Type == "PS")
+            Ansibe? temp = await _db.Ansibes.Include(a => a.Sections)
+                                                   .ThenInclude(s => s.Course)
+                                                .Include(a => a.Sections)
+                                                   .ThenInclude(s => s.Professor)
+                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(request.AnsibeId.Value));
+            if (temp ==null)
             {
-                return PartialView("ProfessorSections", sections.Sections);
+                return BadRequest("newAnsibe is null or empty !");
+            }
+            foreach (var pair in request.Allocation)
+            {
+              Models.Section s=  temp.Sections.FirstOrDefault(s => s.SectionId == int.Parse(pair.Key));
+                if (s == null)
+                {
+                    return BadRequest("section is null or empty !");
+                }
+                Professor TempP = await _db.Professors.FirstOrDefaultAsync(p => p.FileNumber == int.Parse(pair.Value));
+                if (TempP == null)
+                {
+                    return BadRequest("allocated prof is null");
+
+                }
+                s.Professor = TempP;
+                _db.Update(s);
+
+            }
+            _db.Update(temp);
+            _db.SaveChanges();
+            if (request.Type == "PS")
+            {
+                return PartialView("ProfessorSections", temp.Sections);
             }
             else
             {
-                return PartialView("CourseSections", sections.Sections);
+                return PartialView("CourseSections", temp.Sections);
             }
         }
         [HttpPost]
@@ -181,30 +209,43 @@ namespace AnsibeProject.Controllers
         {
             //check databinding
             if (sections == null) return BadRequest();
+
+            Ansibe? temp =  _db.Ansibes.Include(a => a.Sections)
+                                                   .ThenInclude(s => s.Course)
+                                                .Include(a => a.Sections)
+                                                   .ThenInclude(s => s.Professor)
+                                                .FirstOrDefault(a => a.Id == int.Parse(sections.AnsibeId));
+            if (temp == null)
+            {
+                return BadRequest("Ansibe is null or empty !");
+            }
+
             //check if created section is null or empty
             if (sections.TempSections == null || sections.TempSections.Count == 0) return BadRequest("Created Sections are null or empty");
             try
             {
                 //foreach created section assign course and ensure data is correct and not manuplated
-                foreach (var section in sections.TempSections)
+                foreach (var worksection in sections.TempSections)
                 {
 
-                    Course? course =  _db.Courses.SingleOrDefault(c => c.CourseCode == section.Course.CourseCode);
+                    Course? course =  _db.Courses.SingleOrDefault(c => c.CourseCode == worksection.Course.CourseCode);
                     if (course == null) return BadRequest("Course Code does not exist !");
 
                     //one at least of Hourse , TP and TD should be have a value
-                    if (section.CourseHours == null && section.TP == null && section.TD == null) return BadRequest("there is a section with TP & TD & course is null");
+                    if (worksection.CourseHours == null && worksection.TP == null && worksection.TD == null) return BadRequest("there is a section with TP & TD & course is null");
 
                     //ensure data in hours, TP and TD are correct
-                    if (section.CourseHours != null) section.CourseHours = course.NumberOfHours;
-                    if (section.TP != null) section.TP = course.TP;
-                    if (section.TD != null) section.TD = course.TD;
+                    if (worksection.CourseHours != null) worksection.CourseHours = course.NumberOfHours;
+                    if (worksection.TP != null) worksection.TP = course.TP;
+                    if (worksection.TD != null) worksection.TD = course.TD;
 
-                    section.Course = course;
+                    worksection.Course = course;
+                    temp.Sections.Add(worksection);
                 }
 
                 // save new section in database
-                  _db.AddRange(sections.TempSections);
+                //  _db.AddRange(sections.TempSections);
+                _db.Update(temp);
                   _db.SaveChanges();
 
             }
