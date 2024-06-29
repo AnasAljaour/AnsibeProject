@@ -32,7 +32,7 @@ namespace AnsibeProject.Controllers
                                            .ToList();
 
             Ansibe newAnsibe= new Ansibe();
-            newAnsibe.Year = year;
+            newAnsibe.Year = "2024-2025";
             _db.Ansibes.Add(newAnsibe);
             _db.SaveChanges();
             ViewBag.AnsibeId=newAnsibe.Id;
@@ -73,7 +73,7 @@ namespace AnsibeProject.Controllers
                                                    .ThenInclude(s => s.Course)
                                                 .Include(a => a.Sections)
                                                    .ThenInclude(s => s.Professor)
-                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(AnsibeId.Value));
+                                                .FirstOrDefaultAsync(a => a.Id == 1);
                 if (temp == null)
                 {
                     return BadRequest($"No item found with this Id {AnsibeId}");
@@ -86,12 +86,13 @@ namespace AnsibeProject.Controllers
                     return BadRequest($"Ansibe found but its empty !!");
                 }
                 ICollection<Models.Section> myNewSections = CopySections(mySections);
-                Ansibe? temp2 = await _db.Ansibes
-                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(NewAnsibeId.Value));
+                Ansibe? temp2 = await _db.Ansibes.Include(s=> s.Sections)
+                                                .FirstOrDefaultAsync(a => a.Id == 2);
                 if (temp2 == null)
                 {
-                    return BadRequest($"No item found with this Id {NewAnsibeId.Value}");
+                    return BadRequest("No item found with this Id {NewAnsibeId.Value}");
                 }
+                _db.Sections.RemoveRange(temp2.Sections);
                 temp2.Sections = myNewSections;
                 _db.Update(temp2);
                 _db.SaveChanges();
