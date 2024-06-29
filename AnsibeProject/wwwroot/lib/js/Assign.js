@@ -160,7 +160,7 @@ function deleteSectionsFromDataBase(usedId,newAnsibe) {
         }
     });
 }
-alert("hello");
+
 function swapContent() {
     let AnsibeId = {
         Key: "Id",
