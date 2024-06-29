@@ -389,15 +389,36 @@ function showAssignSections(button) {
 
 }
 function saveProfessorAssign() {
+
+
+
     var tbody = document.getElementById("SectionId");
     var checkboxes = tbody.querySelectorAll('input[type="checkbox"]');
 
 
     checkboxes.forEach(function (checkbox) {
         if (checkbox.checked) {
-            // Remove the parent row of the checked checkbox
             var row = checkbox.closest('tr');
-            console.log(prof);
+
+            let td1 = 0;
+
+            for (let node of row.children) {
+                if (node.tagName === 'TD') {
+                    let cellValue = parseInt(node.textContent || node.value);
+                    if (!isNaN(cellValue)) {
+                        td1 = td1 + cellValue;
+                    }
+                }
+            }
+
+            var totalHoursElement = document.getElementById('totalH-' + prof);
+            var totalHours = parseInt(totalHoursElement.textContent);
+
+
+            totalHours = totalHours + td1;
+
+            totalHoursElement.textContent = totalHours;
+
 
             var newRow = prepareRow(row);
             row.parentNode.removeChild(row);
@@ -459,7 +480,7 @@ function prepareRow(row) {
     var sectionId = row.querySelector('input[type="hidden"]').value;
     let newRow = row.cloneNode(true);
     let lastCell = newRow.cells[newRow.cells.length - 1];
-    lastCell.innerHTML = '<input type="button" class="inline-delete-btn" value="delete"/>';
+    lastCell.innerHTML = '<input type="button" class="inline-delete-btn" value="delete" onclick="confirmDeleteAssignement(this)"/>';
     addCourse(prof, sectionId);
     return newRow
 }
@@ -473,4 +494,61 @@ function showSidebar() {
 }
 
 
+function confirmDeleteAssignement(button) {
+    Swal.fire({
+        title: "Are you sure you want to delete this ?",
+        text: "This action cannot be undone.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteAssignement(button)
+        } else {
+            Swal.fire("Deletion cancelled", "", "info");
+        }
+    });
+}
 
+
+function deleteAssignement(button) {
+    let closestTr = button.closest('table').closest('tr');
+    let row = button.closest('tr');
+    let td1 = 0;
+
+    for (let node of row.children) {
+        if (node.tagName === 'TD' && node.id !== 'ctptd' && node.id !== 'totalH') {
+            let cellValue = parseInt(node.textContent || node.value);
+            if (!isNaN(cellValue)) {
+                td1 = td1 + cellValue;
+            }
+        }
+    }
+
+
+    var sectionId = row.querySelector('input[type="hidden"]').value;
+    let id = 'totalH-' + (closestTr && closestTr.cells.length > 0 ? closestTr.cells[0].querySelector('input[type="hidden"]').value : '');
+    var totalHoursElement = document.getElementById(id);
+
+    var totalHours = parseInt(totalHoursElement.textContent);
+
+    totalHours = totalHours - td1;
+
+    totalHoursElement.textContent = totalHours;
+
+
+    let newRow = row.cloneNode(true);
+    let lastCell = newRow.cells[newRow.cells.length - 1];
+    lastCell.innerHTML = '<input type="checkbox" id="myCheckbox" name="c1[]" />';
+
+    let tbody = document.getElementById("SectionId");
+    tbody.appendChild(newRow);
+
+    button.closest('tbody').removeChild(row);
+
+    allocation = allocation.filter(function (element) {
+        return element.Key !== sectionId;
+    });
+}
