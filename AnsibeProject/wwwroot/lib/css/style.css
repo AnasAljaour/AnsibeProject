@@ -32,6 +32,8 @@
 	transform: translate(-50%,-50%) scale(1);
 	min-width: fit-content;
 	z-index:5;
+	overflow-y:auto;
+	max-height:70vh;
 }
 label {
 	color:var(--black);
@@ -285,7 +287,7 @@ section {
 	.side-bar #close-btn {
 		text-align: right;
 		padding: 1rem;
-		
+		display:inline;
 	}
 
 		.side-bar #close-btn i {
@@ -331,12 +333,12 @@ section {
 			color: var(--light-color);
 		}
 
-	.side-bar .navbar  {
+	.side-bar .navbar {
 		display: block;
-		width:100%;
-		padding: 2rem;
+		width: 100%;
+		padding: 1rem;
 		font-size: 2rem;
-		background-color:var(--white);
+		background-color: var(--white);
 	}
 
 		.side-bar .navbar a i {
@@ -526,9 +528,9 @@ a {
 	border-radius: .5rem;
 	padding: 1.4rem;
 	background-color: var(--light-bg);
-	width: 100%;
+	width: 90%;
 	margin: 1rem;
-	text-align:center;
+	text-align: center;
 }
 .Assing .box-container {
 	display: grid;
