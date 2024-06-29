@@ -66,7 +66,7 @@ namespace AnsibeProject.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> getSectionOfTheAnsibeById([FromBody] KeyValuePairModel AnsibeId, [FromBody] KeyValuePairModel NewAnsibeId)
+        public async Task<IActionResult> getSectionOfTheAnsibeById([FromBody] AnsibeRequest request)
         {
             try
             {
@@ -74,10 +74,10 @@ namespace AnsibeProject.Controllers
                                                    .ThenInclude(s => s.Course)
                                                 .Include(a => a.Sections)
                                                    .ThenInclude(s => s.Professor)
-                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(AnsibeId.Value));
+                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(request.AnsibeId.Value));
                 if (temp == null)
                 {
-                    return BadRequest($"No item found with this Id {AnsibeId}");
+                    return BadRequest($"No item found with this Id {request.AnsibeId}");
                 }
                 ICollection<Models.Section> mySections = temp.Sections;
                 
@@ -88,7 +88,7 @@ namespace AnsibeProject.Controllers
                 }
                 ICollection<Models.Section> myNewSections = CopySections(mySections);
                 Ansibe? temp2 = await _db.Ansibes.Include(s=> s.Sections)
-                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(NewAnsibeId.Value));
+                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(request.NewAnsibeId.Value));
                 if (temp2 == null)
                 {
                     return BadRequest("No item found with this Id {NewAnsibeId.Value}");

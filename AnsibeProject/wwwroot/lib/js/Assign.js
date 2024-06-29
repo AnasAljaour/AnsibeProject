@@ -81,7 +81,10 @@ function showAllocation(button) {
         Key: "Id",
         Value: columns[0].textContent
     }
-    
+    newAnsibe = {
+        Key: "Id",
+        Value: document.getElementById('AnsibeId').value
+    }
 
 
 
@@ -99,7 +102,7 @@ function showAllocation(button) {
                 url: '/AssignP/getSectionOfTheAnsibeById',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify(data),
+                data: JSON.stringify({ AnsibeId: data, NewAnsibeId: newAnsibe }),
                 dataType: 'html',
                 success: function (response) {
 
