@@ -493,6 +493,46 @@ function showSidebar() {
     s.classList.toggle('Assing');
 }
 
+function confirmDelete(button) {
+    Swal.fire({
+        title: "Are you sure you want to delete this ?",
+        text: "This action cannot be undone.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If user confirms, perform the delete action
+            deleteAssignProfessors(button)
+        } else {
+            // If user cancels, show an informational message
+            Swal.fire("Deletion cancelled", "", "info");
+        }
+    });
+}
+function deleteAssignProfessors(button) {
+    var Btn = button.closest("td");
+    var row = Btn.closest("tr");
+    var firstrowID = row.querySelector('input[type="hidden"]')
+    var sectionId = firstrowID.value;
+    allocation = allocation.filter(function (element) {
+        return element.Key !== sectionId;
+    });
+    
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = "Assign"
+    b.classList.toggle("inline-btn");
+    b.onclick = function () {
+        showAssignProfessors(this);
+    };
+    var assignButton = Btn.previousElementSibling;
+    assignButton.innerHTML = "";
+    assignButton.appendChild(b);
+    console.log(allocation);
+}
 
 function confirmDeleteAssignement(button) {
     Swal.fire({
