@@ -6,8 +6,8 @@
 @{
     Dictionary<string, List<Section>> professorSections = new Dictionary<string, List<Section>>();
     List<Section> nullSections = new List<Section>();
-    
-    
+
+
     foreach (var section in Model)
     {
         if (section.Professor != null)
@@ -28,110 +28,114 @@
 }
 
 <section class="Assign">
-<div >
+    <div>
 
-    <table class="table Active-datatable">
-        <thead>
-            <tr>
-                
-                <th>Professor Name</th>
+        <table class="table Active-datatable">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Professor Name</th>
 
-                <th>Section </th>
-                <th></th>
-
-
-            </tr>
-        </thead>
-        <tbody>
-            
-            @if (ViewBag.professor!=null){
-        @foreach (var professor in ViewBag.professor)
-        {
-            var professorName = professor.FirstName + " " + professor.LastName;
-            
-            <tr>
-               
-                <td>
-                    @professor.FullNameInArabic
-                </td>
+                    <th>Section </th>
+                    <th></th>
 
 
+                </tr>
+            </thead>
+            <tbody>
 
-                        @if (professorSections.ContainsKey(@professorName))
-                        {
+                @if (ViewBag.professor != null)
+                {
+                    @foreach (var professor in ViewBag.professor)
+                    {
+                        var professorName = professor.FirstName + " " + professor.LastName;
+
+                        <tr>
                             <td>
-
-
-
-
-                                <table class="table Active-datatable">
-                                    <thead>
-                                    <th>Course Code</th>
-                                    <th>Course Description</th>
-                                    <th>Course Hours</th>
-                                    <th>TD</th>
-                                    <th>TP</th>
-                                    <th>Language</th>
-                                        <th><button class="inline-btn" onclick="showAssignPopup1(this)" type="button">Assign</button></th>
-
-                                    </thead>
-                                    
-                                    <tbody>
-                                        @foreach (var s in professorSections[professorName])
-                                        {
-                                        
-
-                                            <tr>
-
-                                                <td>
-                                                    @s.Course.CourseCode
-                                                </td>
-                                                <td>
-                                                    @s.Course.CourseDescription
-                                                </td>
-                                                <td>
-                                                    @s.CourseHours
-                                                </td>
-                                                <td>
-                                                    @s.TD
-                                                </td>
-
-                                                <td>
-                                                    @s.TP
-                                                </td>
-
-                                                <td>
-                                                    @s.Language
-                                                </td>
-
-                                                <td>
-                                                    <button class="inline-delete-btn" onclick="deletAssignment(this)">Delete</button>
-                                                </td>
-                                            </tr>
-                                            }
-                                        
-                                    </tbody>
-                                </table>
-
-
-
+                                <input type="hidden" value="@professor.FileNumber" />
+                            </td>
+                            <td>
+                                @professor.FullNameInArabic
                             </td>
 
 
-                        }
-                        else
-                        {
-                            <td><button class="inline-btn" onclick="showAssignPopup1(this)" type="button">Assign</button></td>
-                        }
-                        
-                                            
-        </tr>
-        }
-         }                                  
-    </tbody>             
-    </table>
-   
-</div>
+
+                            
+                                <td>
+
+
+
+
+                                    <table class="table Active-datatable">
+                                        <thead>
+                                        <th></th>
+                                        <th>Course Code</th>
+                                        <th>Course Description</th>
+                                        <th>Course Hours</th>
+                                        <th>TD</th>
+                                        <th>TP</th>
+                                        <th>Language</th>
+
+
+                                        </thead>
+
+                                        <tbody id="tbody-@professor.FileNumber">
+                                        @if (professorSections.ContainsKey(@professorName))
+                                        {
+                                            @foreach (var s in professorSections[professorName])
+                                            {
+
+
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" value="@s.SectionId" />
+                                                    </td>
+
+                                                    <td>
+                                                        @s.Course.CourseCode
+                                                    </td>
+                                                    <td>
+                                                        @s.Course.CourseDescription
+                                                    </td>
+                                                    <td>
+                                                        @s.CourseHours
+                                                    </td>
+                                                    <td>
+                                                        @s.TD
+                                                    </td>
+
+                                                    <td>
+                                                        @s.TP
+                                                    </td>
+
+                                                    <td>
+                                                        @s.Language
+                                                    </td>
+
+                                                    <td>
+                                                        <button class="inline-delete-btn" onclick="deletAssignment(this)">Delete</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            }
+
+                                        </tbody>
+                                    </table>
+
+
+
+                                </td>
+                                <td><button class="inline-btn" onclick="showAssignSections(this)" type="button">Assign</button></td>
+
+
+
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+    </div>
 
     <div class="popup" id="popup1">
 
@@ -139,11 +143,12 @@
         <h1 class="heading">Sections</h1>
         <div class="box-container">
             <div class="box">
-                <button type="button" onclick="saveCreatedSections()" class="inline-btn">SAVE</button>
-                <button type="button" onclick="cancelCreation1()" class="inline-btn">Cancel</button>
+                <button type="button" onclick="saveProfessorAssign()" class="inline-btn">SAVE</button>
+                <button type="button" onclick="cancelAssignProfessorSection()" class="inline-btn">Cancel</button>
                 <table class="table table-striped Active-datatable">
                     <thead>
                         <tr>
+                            <th></th>
                             <th data-searchable="true">Course Code</th>
                             <th data-searchable="true">Course Description</th>
                             <th data-searchable="true">Course Hours</th>
@@ -157,40 +162,43 @@
                         </tr>
                     </thead>
                     <tbody id="SectionId">
-                        
 
-                            @foreach (var s in nullSections)
-                            {
-                               
-                                    
-                                
-                                <tr>
-                                    <td>
-                                        @s.Course.CourseCode
-                                    </td>
-                                    <td>@s.Course.CourseDescription</td>
-                                    <td>
-                                        @s.CourseHours
-                                    </td>
-                                    <td>
-                                        @s.TD
-                                    </td>
 
-                                    <td>
-                                        @s.TP
-                                    </td>
+                        @foreach (var s in nullSections)
+                        {
 
-                                    <td>
-                                        @s.Language
-                                    </td>
-                                    <td style="display:none">@s.SectionId</td>
-                                    <td>
-                                        <input type="checkbox" name="c1[]" />
-                                    </td>
 
-                                </tr>
 
-                          }
+                            <tr>
+
+                                <td>
+                                    <input type="hidden" value="@s.SectionId" />
+                                </td>
+                                <td>
+                                    @s.Course.CourseCode
+                                </td>
+                                <td>@s.Course.CourseDescription</td>
+                                <td>
+                                    @s.CourseHours
+                                </td>
+                                <td>
+                                    @s.TD
+                                </td>
+
+                                <td>
+                                    @s.TP
+                                </td>
+
+                                <td>
+                                    @s.Language
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="myCheckbox" name="c1[]" />
+                                </td>
+
+                            </tr>
+
+                        }
 
 
                     </tbody>
