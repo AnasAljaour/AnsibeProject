@@ -19,12 +19,14 @@
                 professorSections[professorName] = new List<Section>();
             }
             professorSections[professorName].Add(section);
+
         }
         else
         {
             nullSections.Add(section);
         }
     }
+
 }
 
 <section class="Assign">
@@ -37,17 +39,22 @@
                     <th>Professor Name</th>
 
                     <th>Section </th>
+                    <th> Total Hours</th>
                     <th></th>
 
 
                 </tr>
             </thead>
             <tbody>
-
                 @if (ViewBag.professor != null)
                 {
                     @foreach (var professor in ViewBag.professor)
                     {
+
+                        var totalCombinedTDTP = 0;
+
+
+
                         var professorName = professor.FirstName + " " + professor.LastName;
 
                         <tr>
@@ -60,26 +67,26 @@
 
 
 
-                            
-                                <td>
+
+                            <td>
 
 
 
 
-                                    <table class="table Active-datatable">
-                                        <thead>
-                                        <th></th>
-                                        <th>Course Code</th>
-                                        <th>Course Description</th>
-                                        <th>Course Hours</th>
-                                        <th>TD</th>
-                                        <th>TP</th>
-                                        <th>Language</th>
+                                <table class="table Active-datatable">
+                                    <thead>
+                                    <th></th>
+                                    <th>Course Code</th>
+                                    <th>Course Description</th>
+                                    <th>Course Hours</th>
+                                    <th>TD</th>
+                                    <th>TP</th>
+                                    <th>Language</th>
 
 
-                                        </thead>
+                                    </thead>
 
-                                        <tbody id="tbody-@professor.FileNumber">
+                                    <tbody id="tbody-@professor.FileNumber">
                                         @if (professorSections.ContainsKey(@professorName))
                                         {
                                             @foreach (var s in professorSections[professorName])
@@ -99,33 +106,51 @@
                                                     </td>
                                                     <td>
                                                         @s.CourseHours
+
                                                     </td>
                                                     <td>
                                                         @s.TD
+
                                                     </td>
 
                                                     <td>
                                                         @s.TP
+
+
                                                     </td>
 
                                                     <td>
                                                         @s.Language
                                                     </td>
+                                                    <td style="display: none" id="ctptd" data-combinedtdtp="@((s.CourseHours ?? 0) + (s.TD ?? 0) + (s.TP ?? 0))">
+                                                        @{
+                                                            var combinedTDTP = (s.CourseHours ?? 0) + (s.TD ?? 0) + (s.TP ?? 0);
+                                                            totalCombinedTDTP += combinedTDTP;
+                                                        }
 
-                                                    <td>
-                                                        <button class="inline-delete-btn" onclick="deletAssignment(this)">Delete</button>
+
                                                     </td>
+                                                    <td>
+                                                        <button class="inline-delete-btn" onclick="confirmDeleteAssignement(this)">Delete</button>
+                                                    </td>
+
                                                 </tr>
                                             }
-                                            }
+                                            //
 
-                                        </tbody>
-                                    </table>
+                                        }
+
+                                    </tbody>
+                                </table>
 
 
 
-                                </td>
-                                <td><button class="inline-btn" onclick="showAssignSections(this)" type="button">Assign</button></td>
+                            </td>
+                            <td id="totalH-@professor.FileNumber">
+                                @totalCombinedTDTP
+
+                            </td>
+                            <td><button class="inline-btn" onclick="showAssignSections(this)" type="button">Assign</button></td>
 
 
 
