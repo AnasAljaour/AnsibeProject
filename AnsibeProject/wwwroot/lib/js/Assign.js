@@ -276,25 +276,6 @@ function saveCreatedSections() {
             success: function (response) {
 
                 document.getElementById('holder').innerHTML = response;
-
-
-                $.ajax({
-                    url: '/AssignP/getCreatedSections',
-                    type: 'POST',
-                    dataType: 'json',
-                    success: function (response) {
-
-                        sections = response;
-
-                        
-                    },
-                    error: function (xhr, status, error) {
-                        failed(xhr, status, error);
-                        document.getElementById('holder').innerHTML = '';
-
-
-                    }
-                });
                 
             },
             error: function (xhr, status, error) {
