@@ -100,8 +100,8 @@ namespace AnsibeProject.Controllers
 
 
 
-                //return PartialView("CourseSections", mySections);
-                return Json(myNewSections);
+                return PartialView("CourseSections", mySections);
+                
             }catch(Exception ex)
             {
                 return BadRequest("Invalid Data !");
