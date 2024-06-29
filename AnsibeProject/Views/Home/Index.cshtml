@@ -31,8 +31,9 @@
                             {
                                 <tr>
                                     <td>@s.Course.CourseCode</td>
-                                    <td>@s.Professor.FileNumber</td>
-                                    <td>@s.Professor.FirstName  @s.Professor.MiddleName @s.Professor.LastName</td>
+                                    <td>@if(s.Professor!= null) @s.Professor.FileNumber</td>
+                                    <td>@if (s.Professor != null)
+                                            {@s.Professor.FirstName @s.Professor.MiddleName @s.Professor.LastName}</td>
                                     <td>@s.TP</td>
                                     <td>@s.TD</td>
                                     <td>@s.CourseHours</td>

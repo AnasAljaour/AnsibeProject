@@ -248,28 +248,19 @@ namespace AnsibeProject.Controllers
                 _db.Update(temp);
                   _db.SaveChanges();
 
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            try
-            {
+            
                 ViewBag.professor = _db.Professors.Where(p => p.ActiveState == ActiveState.Active).Include(p => p.Contract);
                 if (sections.Type == "" || sections.Type == "CP")
                 {
-                    sections.Sections = sections.Sections ?? new List<Models.Section>();
-                    sections.TempSections.AddRange(sections.Sections);
-                    HttpContext.Session.SetString(SectionsSessionKey, JsonConvert.SerializeObject(sections.TempSections));
-                    return PartialView("CourseSections", sections.TempSections);
+                    
+                   
+                    return PartialView("CourseSections", temp.Sections);
                 }
                 else
                 {
-                    sections.Sections = sections.Sections ?? new List<Models.Section>();
-                    sections.TempSections.AddRange(sections.Sections);
-                    HttpContext.Session.SetString(SectionsSessionKey, JsonConvert.SerializeObject(sections.TempSections));
                     
-                    return PartialView("ProfessorSections", sections.TempSections);
+        
+                    return PartialView("ProfessorSections", temp.Sections);
                 }
             }catch(Exception ex) { 
                 return BadRequest(ex.Message); }
