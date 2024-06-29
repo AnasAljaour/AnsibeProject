@@ -73,7 +73,7 @@ namespace AnsibeProject.Controllers
                                                    .ThenInclude(s => s.Course)
                                                 .Include(a => a.Sections)
                                                    .ThenInclude(s => s.Professor)
-                                                .FirstOrDefaultAsync(a => a.Id == 1);
+                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(AnsibeId.Value));
                 if (temp == null)
                 {
                     return BadRequest($"No item found with this Id {AnsibeId}");
@@ -87,7 +87,7 @@ namespace AnsibeProject.Controllers
                 }
                 ICollection<Models.Section> myNewSections = CopySections(mySections);
                 Ansibe? temp2 = await _db.Ansibes.Include(s=> s.Sections)
-                                                .FirstOrDefaultAsync(a => a.Id == 2);
+                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(NewAnsibeId.Value));
                 if (temp2 == null)
                 {
                     return BadRequest("No item found with this Id {NewAnsibeId.Value}");
