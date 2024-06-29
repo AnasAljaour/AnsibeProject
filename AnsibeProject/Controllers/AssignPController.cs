@@ -66,7 +66,7 @@ namespace AnsibeProject.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> getSectionOfTheAnsibeById([FromBody] KeyValuePairModel AnsibeId)
+        public async Task<IActionResult> getSectionOfTheAnsibeById([FromBody] KeyValuePairModel AnsibeId, [FromBody] KeyValuePairModel NewAnsibeId)
         {
             try
             {
@@ -80,17 +80,56 @@ namespace AnsibeProject.Controllers
                     return BadRequest($"No item found with this Id {AnsibeId}");
                 }
                 ICollection<Models.Section> mySections = temp.Sections;
-
+                
 
                 if (mySections == null || mySections.Count == 0)
                 {
                     return BadRequest($"Ansibe found but its empty !!");
                 }
-                return PartialView("CourseSections", mySections);
+                ICollection<Models.Section> myNewSections = CopySections(mySections);
+                Ansibe? temp2 = await _db.Ansibes.Include(s=> s.Sections)
+                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(NewAnsibeId.Value));
+                if (temp2 == null)
+                {
+                    return BadRequest("No item found with this Id {NewAnsibeId.Value}");
+                }
+                _db.Sections.RemoveRange(temp2.Sections);
+                temp2.Sections = myNewSections;
+                _db.Update(temp2);
+                _db.SaveChanges();
+
+
+
+                //return PartialView("CourseSections", mySections);
+                return Json(myNewSections);
             }catch(Exception ex)
             {
                 return BadRequest("Invalid Data !");
             }
+        }
+
+        private ICollection<Models.Section> CopySections(ICollection<Models.Section> sectionsToCopy)
+        {
+            ICollection<Models.Section> newSections = new List<Models.Section>();
+            foreach (var originalSection in sectionsToCopy)
+            {
+                Models.Section newSection = new Models.Section
+                {
+                    TP = originalSection.TP,
+                    TD = originalSection.TD,
+                    CourseHours = originalSection.CourseHours,
+                    Language = originalSection.Language,
+
+                    // Shallow copy of Course
+                    Professor = originalSection.Professor,
+                    Course = originalSection.Course
+                    
+                };
+                _db.Entry(newSection.Course).State = EntityState.Unchanged;
+                _db.Entry(newSection.Professor).State = EntityState.Unchanged;
+                newSections.Add(newSection);
+            }
+            return newSections;
         }
         [HttpPost]
         public async Task<IActionResult> getSectionsOfById([FromBody] KeyValuePairModel AnsibeId)
