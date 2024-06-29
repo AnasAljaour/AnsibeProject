@@ -1,4 +1,7 @@
-﻿function getAllocationBasedOnYear(selected) {
+﻿let allocation = [];
+
+
+function getAllocationBasedOnYear(selected) {
     let year = selected.value;
 
     $.ajax({
@@ -127,24 +130,28 @@ function showAllocation(button) {
 
 
 function swapContent() {
+    let AnsibeId = {
+        Key: "Id",
+        Value: document.getElementById('AnsibeId').value
+    }
     if (type !== null && sections != null && sections.length > 0) {
-        
+
         type = (type === "CP") ? "PS" : "CP";
         $.ajax({
             url: '/AssignP/ToggleView',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ Sections: sections, TempSections: null, Type: type }),
+            data: JSON.stringify({ AnsibeId: AnsibeId, Allocation: allocation, Type: type }),
             dataType: 'html',
             success: function (response) {
 
                 document.getElementById('holder').innerHTML = response;
 
-                
+
             },
             error: function (xhr, status, error) {
                 failed(xhr, status, error);
-                
+
 
             }
         });
@@ -259,11 +266,12 @@ function cancelCreation() {
 
 function saveCreatedSections() {
     if (tempSections.length > 0) {
+        let AnsibeId = document.getElementById('AnsibeId').value
         $.ajax({
             url: '/AssignP/SaveCreatedSections',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ Sections: sections, TempSections: tempSections, Type: type }),
+            data: JSON.stringify({ Sections: sections, TempSections: tempSections, Type: type, AnsibeId: AnsibeId }),
             dataType: 'html',
             success: function (response) {
 
@@ -356,7 +364,7 @@ function AssignProfessorInCourse(button) {
 
 
 let prof
-let allocation = [];
+
 
 function showAssignSections(button) {
     var row = button.closest("tr");
