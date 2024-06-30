@@ -2,13 +2,16 @@
 
 
 function getAllocationBasedOnYear(selected) {
-    let year = selected.value;
-
+    let data = {
+        Key: document.getElementById('AnsibeId').value,
+        Value: selected.value
+    }
+    
     $.ajax({
         url: '/AssignP/getAnsibeByYear',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ year: year }),
+        data: JSON.stringify(data),
         success: function (response) {
             success(response);
         },
@@ -178,6 +181,7 @@ function swapContent() {
             success: function (response) {
 
                 document.getElementById('holder').innerHTML = response;
+                allocation = [];
 
 
             },
@@ -617,5 +621,29 @@ function deleteAssignement(button) {
 
     allocation = allocation.filter(function (element) {
         return element.Key !== sectionId;
+    });
+}
+
+function saveWork() {
+    let AnsibeId = {
+        Key: "Id",
+        Value: document.getElementById('AnsibeId').value
+    }
+    $.ajax({
+        url: '/AssignP/SaveWork',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ Allocation: allocation, Type: type, AnsibeId: AnsibeId }),
+        dataType: 'json',
+        success: function (response) {
+
+            window.location.href = "/Home/Index";
+            allocation = [];
+
+        },
+        error: function (xhr, status, error) {
+            failed(xhr, status, error);
+
+        }
     });
 }
