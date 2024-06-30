@@ -1,6 +1,7 @@
 ﻿using AnsibeProject.Data;
 using AnsibeProject.Models;
 using Azure.Core;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -27,6 +28,7 @@ namespace AnsibeProject.Controllers
         [HttpPost]
         public IActionResult CreateNewAnsibe(string year)
         {
+            
             ViewBag.courses = _db.Courses.Where(C => C.CourseState == ActiveState.Active).ToList();
             ViewBag.Year = _db.Ansibes
                                            .Select(a => a.Year)
@@ -49,37 +51,47 @@ namespace AnsibeProject.Controllers
             return temp;
         }
         [HttpPost]
-        public async Task<IActionResult> getAnsibeByYear([FromBody] JsonElement jsonElement)
+        public IActionResult getAnsibeByYear([FromBody] KeyValuePairModel request)
         {
-            if (jsonElement.TryGetProperty("year", out JsonElement yearElement))
+            try
             {
-                string? year = yearElement.GetString();
+                if (request == null) return BadRequest("null request");
+                if (request.Value == null || request.Value == "") return BadRequest("you must select a year");
+                if (request.Key == null || request.Key == "") return BadRequest("there must be an Ansibe Created");
+                if (!int.TryParse(request.Key, out var ansibeId))
+                    return BadRequest("Invalide AnsibeId");
+                var year = request.Value;
                 if (year == null) return BadRequest("Invalid year");
-                var temp = await _db.Ansibes
-                                        .Where(a => a.Year == year)
+                var temp = _db.Ansibes
+                                        .Where(a => a.Year == year && a.Id != ansibeId)
                                         .Select(a => new { a.Id, a.Year })
                                         .OrderByDescending(a => a.Id)
-                                        .ToListAsync();
+                                        .ToList();
                 return new JsonResult(temp);
             }
-            return BadRequest("Invalid JSON data.");
+            catch (Exception e)
+            {
+                return BadRequest("Invalid JSON data.");
+            }
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> getSectionOfTheAnsibeById([FromBody] AnsibeRequest request)
+        public IActionResult getSectionOfTheAnsibeById([FromBody] AnsibeRequest request)
         {
             try
             {
-                Ansibe? temp = await _db.Ansibes.Include(a => a.Sections)
+                Ansibe? temp = _db.Ansibes.Include(a => a.Sections)
                                                    .ThenInclude(s => s.Course)
                                                 .Include(a => a.Sections)
                                                    .ThenInclude(s => s.Professor)
-                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(request.AnsibeId.Value));
+                                                .FirstOrDefault(a => a.Id == int.Parse(request.AnsibeId.Value));
+                
                 if (temp == null)
                 {
                     return BadRequest($"No item found with this Id {request.AnsibeId}");
                 }
+               // await _db.Entry(temp).ReloadAsync();
                 ICollection<Models.Section> mySections = temp.Sections;
                 
 
@@ -88,8 +100,8 @@ namespace AnsibeProject.Controllers
                     return BadRequest($"Ansibe found but its empty !!");
                 }
                 ICollection<Models.Section> myNewSections = CopySections(mySections);
-                Ansibe? temp2 = await _db.Ansibes.Include(s=> s.Sections)
-                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(request.NewAnsibeId.Value));
+                Ansibe? temp2 = _db.Ansibes.Include(s=> s.Sections)
+                                                .FirstOrDefault(a => a.Id == int.Parse(request.NewAnsibeId.Value));
                 if (temp2 == null)
                 {
                     return BadRequest("No item found with this Id {NewAnsibeId.Value}");
@@ -163,28 +175,28 @@ namespace AnsibeProject.Controllers
         }
         */
         [HttpPost]
-        public async Task<IActionResult> ToggleView([FromBody] AssignToggleRequest request)
+        public IActionResult ToggleView([FromBody] AssignRequest request)
         {
             if (request.AnsibeId == null || request.AnsibeId.Value == "") return BadRequest("Ansibe id is null or empty !");
             if (request.Allocation == null ) return BadRequest("Sections allocations are null or empty");
             ViewBag.professor = _db.Professors.Where(p => p.ActiveState == ActiveState.Active).Include(p => p.Contract);
-            Ansibe? temp = await _db.Ansibes.Include(a => a.Sections)
+            Ansibe? temp = _db.Ansibes.Include(a => a.Sections)
                                                    .ThenInclude(s => s.Course)
                                                 .Include(a => a.Sections)
                                                    .ThenInclude(s => s.Professor)
-                                                .FirstOrDefaultAsync(a => a.Id == int.Parse(request.AnsibeId.Value));
+                                                .FirstOrDefault(a => a.Id == int.Parse(request.AnsibeId.Value));
             if (temp ==null)
             {
                 return BadRequest("newAnsibe is null or empty !");
             }
             foreach (var pair in request.Allocation)
             {
-              Models.Section s=  temp.Sections.FirstOrDefault(s => s.SectionId == int.Parse(pair.Key));
+              Models.Section? s=  temp.Sections.FirstOrDefault(s => s.SectionId == int.Parse(pair.Key));
                 if (s == null)
                 {
                     return BadRequest("section is null or empty !");
                 }
-                Professor TempP = await _db.Professors.FirstOrDefaultAsync(p => p.FileNumber == int.Parse(pair.Value));
+                Professor? TempP = _db.Professors.FirstOrDefault(p => p.FileNumber == int.Parse(pair.Value));
                 if (TempP == null)
                 {
                     return BadRequest("allocated prof is null");
@@ -270,19 +282,19 @@ namespace AnsibeProject.Controllers
         
 
         [HttpPost]
-        public async Task<IActionResult> DeleteSectionsOfAnsibe([FromBody] KeyValuePairModel AnsibeId)
+        public IActionResult DeleteSectionsOfAnsibe([FromBody] KeyValuePairModel AnsibeId)
         {
             try
             {
                 if (AnsibeId.Value == null || AnsibeId.Value == "") return BadRequest("null or empty request");
 
-                var ansibe = await _db.Ansibes
+                var ansibe = _db.Ansibes
                     .Include(a => a.Sections)
-                    .SingleOrDefaultAsync(a => a.Id == int.Parse(AnsibeId.Value));
+                    .SingleOrDefault(a => a.Id == int.Parse(AnsibeId.Value));
                 if (ansibe == null) return BadRequest($"there is no Ansibe with ID {AnsibeId.Value}");
                 if (ansibe.Sections == null) return BadRequest($"there is no sections to delete in Ansibe {AnsibeId.Value}");
                 _db.Sections.RemoveRange(ansibe.Sections);
-                await _db.SaveChangesAsync();
+                _db.SaveChanges();
                 return Json(new { success = true });
 
             }
@@ -291,6 +303,72 @@ namespace AnsibeProject.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpPost]
+        public IActionResult SaveWork([FromBody] AssignRequest request)
+        {
+            try
+            {
+                if (request == null)
+                    return BadRequest("request failed");
+                if (request.Allocation == null )
+                    return BadRequest("Invalid allocation data!");
+
+                if (request.AnsibeId == null)
+                    return BadRequest("AnsibeId is null");
+               
+                if (!int.TryParse(request.AnsibeId.Value, out var ansibeId))
+                    return BadRequest("Invalid AnsibeId!");
+
+                
+                var ansibe = _db.Ansibes
+                                      .Include(a => a.Sections)
+                                      .ThenInclude(s => s.Professor)
+                                      .SingleOrDefault(a => a.Id == ansibeId);
+
+                if (ansibe == null)
+                    return BadRequest($"Ansibe {request.AnsibeId} not found");
+
+                if (request.Allocation.Count > 0)
+                {
+
+
+
+                    foreach (var kvp in request.Allocation)
+                    {
+                        
+                        if (!int.TryParse(kvp.Key, out var sectionId) || !int.TryParse(kvp.Value, out var professorId))
+                            return BadRequest("Invalid SectionId or ProfessorId!");
+
+                        
+                        var section = ansibe.Sections.SingleOrDefault(s => s.SectionId == sectionId);
+                        if (section == null)
+                            return BadRequest($"Section with ID {kvp.Key} not exist in DB");
+
+                        
+                        var professor = _db.Professors.SingleOrDefault(p => p.FileNumber == professorId);
+                        if (professor == null)
+                            return BadRequest($"Professor with ID {kvp.Value} not found");
+
+                        
+                        section.Professor = professor;
+                    }
+
+                    
+                    _db.Ansibes.Update(ansibe);
+                    _db.SaveChanges();
+
+                    
+                }
+                return Json(new { success = true });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
+    
     
 }
