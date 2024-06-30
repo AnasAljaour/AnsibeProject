@@ -447,7 +447,8 @@ function prepareRow(row) {
     var sectionId = row.querySelector('input[type="hidden"]').value;
     let newRow = row.cloneNode(true);
     let lastCell = newRow.cells[newRow.cells.length - 1];
-    lastCell.innerHTML = '<input type="button" class="inline-delete-btn" value="delete" onclick="confirmDeleteAssignement(this)"/>';
+    lastCell.innerHTML = '<button class="inline-delete-btn" onclick="confirmDeleteAssignement(this)">Delete</button>"'+
+    '<a href = "#" class="clickable-icon" onclick = "deleteSection(this)" ><i class="fas fa-trash" style="color:#e74c3c"></i></a >';
     addCourse(prof, sectionId);
     return newRow
 }

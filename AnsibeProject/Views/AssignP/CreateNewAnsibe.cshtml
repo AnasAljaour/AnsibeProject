@@ -4,9 +4,9 @@
 <div class="side-bar">
 
     <nav class="navbar">
-        <a onclick="showDropdown()"><i class="fas fa-code-compare"></i><span>Use Existing One</span></a>
-        <a onclick="showCreateSection()"><i class="fas fa-plus"></i><span>Create Section</span></a>
-        <a onclick="swapContent()"><i class="fas fa-right-left"></i><span>swap<span></a>
+        <a onclick="showDropdown()"><i class="fas fa-code-compare"></i><span style="user-select: none;">Use Existing One</span></a>
+        <a onclick="showCreateSection()"><i class="fas fa-plus"></i><span style="user-select: none;">Create Section</span></a>
+        <a onclick="swapContent()"><i class="fas fa-right-left"></i><span style="user-select: none;">swap<span></a>
 
 
     </nav>
@@ -46,12 +46,15 @@
 <section class="Assign">
     <div class="box-container">
         <div class="box">
-            <h3>Section/Professor</h3>
+            <h3>work space</h3>
 
             <input type="hidden" id="AnsibeId" value="@ViewBag.AnsibeId" />
+
+            <div id="holder">
+            </div>
+            <button onclick="saveWork()" class="inline-btn" type="button">Finish !</button>
         </div>
-        <div id="holder">
-        </div>
+        
     </div>
 </section>
 
@@ -161,15 +164,6 @@
 
     </section>
 </div>
-<section class="Assign">
-    <div class="box-container">
-        <div class="box">
-            <button onclick="saveWork()" class="inline-btn" type="button">Finish !</button>
-
-        </div>
-
-    </div>
-</section>
 
 @section Scripts {
     <script src="~/lib/js/Assign.js"></script>
