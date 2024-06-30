@@ -452,41 +452,6 @@ function prepareRow(row) {
     return newRow
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    let sideBar = document.querySelector('.side-bar');
-    let button = document.querySelector('#menu-btn'); 
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    button.addEventListener('click', showSidebar);
-});
-
-
-function showSidebar() {
-    let sideBar = document.querySelector('.side-bar');
-    sideBar.classList.toggle('active');
-    var s = document.getElementById("sectionAssign");
-    s.classList.toggle('Assing');
-}
-
-
-function handleResize() {
-    let sideBar = document.querySelector('.side-bar');
-    var s = document.getElementById("sectionAssign");
-    if (window.innerWidth < 1200) {
-        if (sideBar.classList.contains('active')) {
-            sideBar.classList.remove('active');
-            s.classList.toggle('Assing');
-        }
-    }
-    else {
-        if (!sideBar.classList.contains('active')) {
-            sideBar.classList.add('active');
-            s.classList.toggle('Assing');
-        }
-            
-    }
-
-}
 function confirmDelete(button) {
     Swal.fire({
         title: "Are you sure you want to delete this ?",
