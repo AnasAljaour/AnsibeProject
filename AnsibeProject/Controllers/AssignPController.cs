@@ -1,13 +1,10 @@
 ﻿using AnsibeProject.Data;
 using AnsibeProject.Models;
-using Azure.Core;
-using Microsoft.AspNetCore.Http.HttpResults;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using System.Text.Json;
-using static System.Collections.Specialized.BitVector32;
+
+
 
 namespace AnsibeProject.Controllers
 {
@@ -100,6 +97,7 @@ namespace AnsibeProject.Controllers
                     return BadRequest($"Ansibe found but its empty !!");
                 }
                 ICollection<Models.Section> myNewSections = CopySections(mySections);
+                
                 Ansibe? temp2 = _db.Ansibes.Include(s=> s.Sections)
                                                 .FirstOrDefault(a => a.Id == int.Parse(request.NewAnsibeId.Value));
                 if (temp2 == null)
@@ -111,13 +109,13 @@ namespace AnsibeProject.Controllers
                 _db.Update(temp2);
                 _db.SaveChanges();
 
+                ViewBag.professor = _db.Professors.Where(p => p.ActiveState == ActiveState.Active).Include(p => p.Contract);
 
-
-                return PartialView("CourseSections", mySections);
+                return PartialView("CourseSections", myNewSections);
                 
             }catch(Exception ex)
             {
-                return BadRequest("Invalid Data !");
+                return BadRequest(ex.Message);
             }
         }
 
@@ -128,20 +126,28 @@ namespace AnsibeProject.Controllers
             {
                 Models.Section newSection = new Models.Section
                 {
+                    SectionId = 0,
                     TP = originalSection.TP,
                     TD = originalSection.TD,
                     CourseHours = originalSection.CourseHours,
                     Language = originalSection.Language,
 
                     // Shallow copy of Course
-                    Professor = originalSection.Professor,
+                    Professor =originalSection.Professor,
                     Course = originalSection.Course
                     
                 };
+                
                 _db.Entry(newSection.Course).State = EntityState.Unchanged;
-                _db.Entry(newSection.Professor).State = EntityState.Unchanged;
+                if(newSection.Professor != null)
+                {
+                    _db.Entry(newSection.Professor).State = EntityState.Unchanged;
+                    
+                }
+                
                 newSections.Add(newSection);
             }
+            
             return newSections;
         }
         /*
@@ -368,7 +374,33 @@ namespace AnsibeProject.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [HttpPost]
+        public IActionResult DeleteAssignement([FromBody] string sectionId)
+        {
+            try
+            {
+                if (sectionId == null || sectionId == "") BadRequest("section Id is null or empty");
+
+                if(!int.TryParse(sectionId, out var sectionID))
+                {
+                    return BadRequest("Invalid section Id");
+                }
+                var section = _db.Sections.Include(s =>s.Professor).SingleOrDefault(s => s.SectionId == sectionID);
+                if (section == null) return BadRequest("section id not exist");
+                section.Professor = null;
+                _db.Sections.Update(section);
+                _db.SaveChanges();
+                return Json(new { success = true });
+
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
     }
+
     
     
 }

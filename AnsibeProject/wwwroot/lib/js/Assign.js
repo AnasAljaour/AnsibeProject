@@ -317,9 +317,6 @@ function saveCreatedSections() {
             error: function (xhr, status, error) {
                 failed(xhr, status, error);
 
-                
-
-
             }
         });
         if (type == null) type = "CP";
@@ -438,40 +435,6 @@ function saveProfessorAssign() {
 
 }
 
-
-
-function prepareProfessorRow(row) {
-    let newRow = document.createElement("tr");
-    let columns = row.getElementsByTagName("td");
-    var sectionId = row.querySelector('input[type="hidden"]').value;
-
-    let cloneCell = columns[0].cloneNode(true);
-    newRow.appendChild(cloneCell);
-    for (let i = 1; i < columns.length - 1; i++) {
-        
-        var newcell = document.createElement("td");
-        newcell.textContent = columns[i].textContent
-
-        newRow.appendChild(newcell);
-
-
-    }
-    let cellForButton = document.createElement("td");
-
-
-    let btn = document.createElement("button")
-    btn.type = "button";
-    btn.textContent = "delete"
-    btn.onclick = function () {
-       // confirmDeleteAssignement(this);
-    };
-    btn.classList.toggle("inline-delete-btn");
-    cellForButton.appendChild(btn);
-    newRow.appendChild(cellForButton);
-
-    addCourse(prof, sectionId);
-    return newRow
-}
 function addCourse(professoreId, sectionId) {
     let model = {
         Key: sectionId.toString(),
@@ -543,26 +506,58 @@ function confirmDelete(button) {
         }
     });
 }
+
 function deleteAssignProfessors(button) {
     var Btn = button.closest("td");
     var row = Btn.closest("tr");
     var firstrowID = row.querySelector('input[type="hidden"]')
     var sectionId = firstrowID.value;
-    allocation = allocation.filter(function (element) {
-        return element.Key !== sectionId;
-    });
-    
-    var b = document.createElement("button");
-    b.type = "button";
-    b.textContent = "Assign"
-    b.classList.toggle("inline-btn");
-    b.onclick = function () {
-        showAssignProfessors(this);
-    };
-    var assignButton = Btn.previousElementSibling;
-    assignButton.innerHTML = "";
-    assignButton.appendChild(b);
-    console.log(allocation);
+    let model = allocation.find(m => m.Key == sectionId);
+   
+    if (model) {
+        allocation = allocation.filter(function (element) {
+            return element.Key !== sectionId;
+        });
+        var b = document.createElement("button");
+        b.type = "button";
+        b.textContent = "Assign"
+        b.classList.toggle("inline-btn");
+        b.onclick = function () {
+            showAssignProfessors(b);
+        };
+        var assignButton = Btn.previousElementSibling;
+        assignButton.innerHTML = "";
+        assignButton.appendChild(b);
+        console.log(allocation);
+    }
+    else {
+        $.ajax({
+            url: '/AssignP/DeleteAssignement',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(sectionId),
+            dataType: 'json',
+            success: function (response) {
+            },
+            error: function (xhr, status, error) {
+                failed(xhr, status, error);
+
+            }
+        });
+
+        var b = document.createElement("button");
+        b.type = "button";
+        b.textContent = "Assign"
+        b.classList.toggle("inline-btn");
+        b.onclick = function () {
+            showAssignProfessors(b);
+        };
+        var assignButton = Btn.previousElementSibling;
+        assignButton.innerHTML = "";
+        assignButton.appendChild(b);
+        console.log(allocation);
+    }
+   
 }
 
 function confirmDeleteAssignement(button) {
@@ -585,44 +580,101 @@ function confirmDeleteAssignement(button) {
 
 
 function deleteAssignement(button) {
-    let closestTr = button.closest('table').closest('tr');
     let row = button.closest('tr');
-    let td1 = 0;
+    var sectionId = row.querySelector('input[type="hidden"]').value;
+    let model = allocation.find(m => m.Key == sectionId);
+    if (model) {
+        let closestTr = button.closest('table').closest('tr');
+        
+        let td1 = 0;
 
-    for (let node of row.children) {
-        if (node.tagName === 'TD' && node.id !== 'ctptd' && node.id !== 'totalH') {
-            let cellValue = parseInt(node.textContent || node.value);
-            if (!isNaN(cellValue)) {
-                td1 = td1 + cellValue;
+        for (let node of row.children) {
+            if (node.tagName === 'TD' && node.id !== 'ctptd' && node.id !== 'totalH') {
+                let cellValue = parseInt(node.textContent || node.value);
+                if (!isNaN(cellValue)) {
+                    td1 = td1 + cellValue;
+                }
             }
         }
+
+
+
+        let id = 'totalH-' + (closestTr && closestTr.cells.length > 0 ? closestTr.cells[0].querySelector('input[type="hidden"]').value : '');
+        var totalHoursElement = document.getElementById(id);
+
+        var totalHours = parseInt(totalHoursElement.textContent);
+
+        totalHours = totalHours - td1;
+
+        totalHoursElement.textContent = totalHours;
+
+
+        let newRow = row.cloneNode(true);
+        let lastCell = newRow.cells[newRow.cells.length - 1];
+        lastCell.innerHTML = '<input type="checkbox" id="myCheckbox" name="c1[]" />';
+
+        let tbody = document.getElementById("SectionId");
+        tbody.appendChild(newRow);
+
+        button.closest('tbody').removeChild(row);
+
+        allocation = allocation.filter(function (element) {
+            return element.Key !== sectionId;
+        });
     }
+    else {
+        $.ajax({
+            url: '/AssignP/DeleteAssignement',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(sectionId),
+            dataType: 'json',
+            success: function (response) {
+
+                let closestTr = button.closest('table').closest('tr');
+                let row = button.closest('tr');
+                let td1 = 0;
+
+                for (let node of row.children) {
+                    if (node.tagName === 'TD' && node.id !== 'ctptd' && node.id !== 'totalH') {
+                        let cellValue = parseInt(node.textContent || node.value);
+                        if (!isNaN(cellValue)) {
+                            td1 = td1 + cellValue;
+                        }
+                    }
+                }
 
 
-    var sectionId = row.querySelector('input[type="hidden"]').value;
-    let id = 'totalH-' + (closestTr && closestTr.cells.length > 0 ? closestTr.cells[0].querySelector('input[type="hidden"]').value : '');
-    var totalHoursElement = document.getElementById(id);
 
-    var totalHours = parseInt(totalHoursElement.textContent);
+                let id = 'totalH-' + (closestTr && closestTr.cells.length > 0 ? closestTr.cells[0].querySelector('input[type="hidden"]').value : '');
+                var totalHoursElement = document.getElementById(id);
 
-    totalHours = totalHours - td1;
+                var totalHours = parseInt(totalHoursElement.textContent);
 
-    totalHoursElement.textContent = totalHours;
+                totalHours = totalHours - td1;
+
+                totalHoursElement.textContent = totalHours;
 
 
-    let newRow = row.cloneNode(true);
-    let lastCell = newRow.cells[newRow.cells.length - 1];
-    lastCell.innerHTML = '<input type="checkbox" id="myCheckbox" name="c1[]" />';
+                let newRow = row.cloneNode(true);
+                let lastCell = newRow.cells[newRow.cells.length - 1];
+                lastCell.innerHTML = '<input type="checkbox" id="myCheckbox" name="c1[]" />';
 
-    let tbody = document.getElementById("SectionId");
-    tbody.appendChild(newRow);
+                let tbody = document.getElementById("SectionId");
+                tbody.appendChild(newRow);
 
-    button.closest('tbody').removeChild(row);
+                button.closest('tbody').removeChild(row);
 
-    allocation = allocation.filter(function (element) {
-        return element.Key !== sectionId;
-    });
+            },
+            error: function (xhr, status, error) {
+                failed(xhr, status, error);
+
+            }
+        });
+    }
+    
 }
+
 
 function saveWork() {
     let AnsibeId = {
@@ -646,4 +698,13 @@ function saveWork() {
 
         }
     });
+}
+function cancel() {
+
+    let popup = document.getElementById("popupProfessors");
+    let checkboxes = popup.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) checkbox.checked = false;
+    });
+    popup.classList.toggle("open-popup");
 }
