@@ -6,7 +6,7 @@ function getAllocationBasedOnYear(selected) {
         Key: document.getElementById('AnsibeId').value,
         Value: selected.value
     }
-    
+
     $.ajax({
         url: '/AssignP/getAnsibeByYear',
         type: 'POST',
@@ -24,7 +24,7 @@ function getAllocationBasedOnYear(selected) {
 }
 
 function success(response) {
-    
+
     let tbody = document.getElementById('Ansibe-tbody');
     tbody.innerHTML = '';
 
@@ -105,8 +105,8 @@ function showAllocation(button) {
     }).then((result) => {
         if (result.isConfirmed) {
             //delete from database and then get the new view based on selected Ansibe ID
-            deleteSectionsFromDataBase(usedId,newAnsibe)
-            
+            deleteSectionsFromDataBase(usedId, newAnsibe)
+
 
         } else {
             // If user cancels, show an informational message
@@ -118,14 +118,14 @@ function showAllocation(button) {
 
 
 
-    
+
 
 
 }
 
 function getPartialViewBasedOnSelectedId(usedId, newAnsibe) {
-    
-    
+
+
     $.ajax({
         url: '/AssignP/getSectionOfTheAnsibeById',
         type: 'POST',
@@ -136,8 +136,8 @@ function getPartialViewBasedOnSelectedId(usedId, newAnsibe) {
 
             document.getElementById('holder').innerHTML = response;
             showSidebar()
-            type="CP"
-            
+            type = "CP"
+
         },
         error: function (xhr, status, error) {
             failed(xhr, status, error);
@@ -146,7 +146,7 @@ function getPartialViewBasedOnSelectedId(usedId, newAnsibe) {
     });
 }
 
-function deleteSectionsFromDataBase(usedId,newAnsibe) {
+function deleteSectionsFromDataBase(usedId, newAnsibe) {
     $.ajax({
         url: '/AssignP/DeleteSectionsOfAnsibe',
         type: 'POST',
@@ -158,7 +158,7 @@ function deleteSectionsFromDataBase(usedId,newAnsibe) {
         },
         error: function (xhr, status, error) {
             failed(xhr, status, error);
-            
+
 
         }
     });
@@ -221,7 +221,7 @@ function createSections(button, CourseCode, CourseDescription, CourseHours, TP, 
 
     let row = button.closest("tr");
     let checkboxes = row.querySelectorAll('input[type="checkbox"]');
-   
+
     let option = row.querySelector('select');
     var selectedText = option.options[option.selectedIndex].textContent;
 
@@ -307,17 +307,17 @@ function saveCreatedSections() {
             url: '/AssignP/SaveCreatedSections',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({TempSections: tempSections, Type: type, AnsibeId: AnsibeId }),
+            data: JSON.stringify({ TempSections: tempSections, Type: type, AnsibeId: AnsibeId }),
             dataType: 'html',
             success: function (response) {
 
                 document.getElementById('holder').innerHTML = response;
-                
+
             },
             error: function (xhr, status, error) {
                 failed(xhr, status, error);
 
-                
+
 
 
             }
@@ -448,7 +448,7 @@ function prepareProfessorRow(row) {
     let cloneCell = columns[0].cloneNode(true);
     newRow.appendChild(cloneCell);
     for (let i = 1; i < columns.length - 1; i++) {
-        
+
         var newcell = document.createElement("td");
         newcell.textContent = columns[i].textContent
 
@@ -463,7 +463,7 @@ function prepareProfessorRow(row) {
     btn.type = "button";
     btn.textContent = "delete"
     btn.onclick = function () {
-       // confirmDeleteAssignement(this);
+        // confirmDeleteAssignement(this);
     };
     btn.classList.toggle("inline-delete-btn");
     cellForButton.appendChild(btn);
@@ -489,9 +489,9 @@ function prepareRow(row) {
     return newRow
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
+/*document.addEventListener('DOMContentLoaded', (event) => {
     let sideBar = document.querySelector('.side-bar');
-    let button = document.querySelector('#menu-btn'); 
+    let button = document.querySelector('#menu-btn');
     handleResize();
     window.addEventListener('resize', handleResize);
     button.addEventListener('click', showSidebar);
@@ -499,31 +499,65 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 function showSidebar() {
-    let sideBar = document.querySelector('.side-bar');
-    sideBar.classList.toggle('active');
-    var s = document.getElementById("sectionAssign");
-    s.classList.toggle('Assing');
+    let saidebar = document.querySelectorAll('.side-bar');
+    var s = document.querySelectorAll('.Assign');
+
+    if (saidebar[0].classList.contains('active')) {
+        saidebar[0].classList.remove('active');
+        saidebar[1].classList.add('active');
+        
+        s.forEach(function (element) {
+            if (element.classList.contains('courses'))
+                element.classList.remove('courses');;
+        });
+    }
+    else {
+        saidebar[0].classList.add('active');
+        s.forEach(function (element) {
+            if (!element.classList.contains('courses'))
+                element.classList.add('courses');
+        });
+    }
+    
+    
+  
+
 }
 
 
 function handleResize() {
-    let sideBar = document.querySelector('.side-bar');
-    var s = document.getElementById("sectionAssign");
+    let sideBar = document.querySelectorAll('.side-bar');
+    var s = document.querySelectorAll('.Assign');
     if (window.innerWidth < 1200) {
-        if (sideBar.classList.contains('active')) {
-            sideBar.classList.remove('active');
-            s.classList.toggle('Assing');
-        }
+        sideBar.forEach(function (element) {
+            if (element.classList.contains('active')) {
+                element.classList.remove('active');
+
+            }
+            });
+
+        
     }
     else {
-        if (!sideBar.classList.contains('active')) {
-            sideBar.classList.add('active');
-            s.classList.toggle('Assing');
+       
+        if (!sideBar[0].classList.contains('active')) {
+            sideBar[0].classList.remove('active');
+            sideBar[1].classList.add('active');
         }
-            
+        
+       
+
+
     }
 
 }
+function showDropdown() {
+    
+    let saidebar = document.querySelectorAll('.side-bar');
+    saidebar[0].classList.add('active');
+    saidebar[1].classList.remove('active');
+}
+*/
 function confirmDelete(button) {
     Swal.fire({
         title: "Are you sure you want to delete this ?",
@@ -551,7 +585,7 @@ function deleteAssignProfessors(button) {
     allocation = allocation.filter(function (element) {
         return element.Key !== sectionId;
     });
-    
+
     var b = document.createElement("button");
     b.type = "button";
     b.textContent = "Assign"

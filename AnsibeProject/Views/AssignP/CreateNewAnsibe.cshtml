@@ -1,11 +1,19 @@
 ﻿@using AnsibeProject.Models;
 @* @model List<Ansibe>; *@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-<div class="side-bar active">
-   
-    <nav class="navbar">
+<div class="side-bar">
 
-       
+    <nav class="navbar">
+        <a onclick="showDropdown()"><i class="fas fa-code-compare"></i><span>Use Existing One</span></a>
+        <a onclick="showCreateSection()"><i class="fas fa-plus"></i><span>Create Section</span></a>
+        <a onclick="swapContent()"><i class="fas fa-right-left"></i><span>swap<span></a>
+
+        
+    </nav>
+
+</div>
+<div class="side-bar active">
+    <nav class="navbar">
         <form method="post">
             <select class="dropdown" onchange="getAllocationBasedOnYear(this)">
                 <option value="">Year</option>
@@ -17,7 +25,7 @@
                     }
                 }
             </select>
-            
+
         </form>
         <div>
             <table class="table">
@@ -32,17 +40,14 @@
                 </tbody>
             </table>
         </div>
-    </nav>
+        </nav>
 
 </div>
-<section class="courses" id="sectionAssign">
+<section class="Assign">
     <div class="box-container">
         <div class="box">
             <h3>Section/Professor</h3>
-            <button class="inline-btn" id="menu-btn">Use Existing One</button>
-            <button class="inline-btn" onclick="showCreateSection()" type="button">Create Section</button>
-            <button class="inline-btn" onclick="swapContent()">swap</button>
-            
+           
             <input type="hidden" id="AnsibeId" value="@ViewBag.AnsibeId" />
         </div>
         <div id="holder">
@@ -156,16 +161,17 @@
 
     </section>
 </div>
-<section class="courses">
-<div class="box-container">
-    <div class="box">
-        <button onclick="saveWork()" class="inline-btn" type="button">Finish !</button>
+<section class="Assign">
+    <div class="box-container">
+        <div class="box">
+            <button onclick="saveWork()" class="inline-btn" type="button">Finish !</button>
+
+        </div>
 
     </div>
-
-</div>
 </section>
 
 @section Scripts {
     <script src="~/lib/js/Assign.js"></script>
+    <script src="~/lib/js/side-bar.js"></script>
 } 

@@ -340,6 +340,10 @@ section {
 		font-size: 2rem;
 		background-color: var(--white);
 	}
+		.side-bar .navbar a{
+			display:block;
+			margin:2rem .5rem;
+		}
 
 		.side-bar .navbar a i {
 			margin-right: 1.5rem;
@@ -381,7 +385,32 @@ section {
 			border-right: 0;
 		}
 }
-	
+.Assign .box-container {
+	display: grid;
+	grid-auto-rows: auto auto;
+	gap: 1.5rem;
+	justify-content: right;
+	align-items: center;
+	width: 100%;
+}
+
+	.Assign .box-container .box {
+		border-radius: .5rem;
+		background-color: var(--white);
+		padding: 1rem;
+		border: 1px solid var(--main-color);
+		overflow: hidden;
+		text-align: center;
+		font-size: 1.3rem;
+		min-width: 1000px;
+	}
+
+		.Assign .box-container .box h3 {
+			font-size: 2rem;
+			font-weight: bold;
+			margin: 0.5rem;
+			color: var(--black);
+		}
 .courses .box-container {
 	display: grid;
 	grid-auto-rows: auto auto;
@@ -532,21 +561,4 @@ a {
 	margin: 1rem;
 	text-align: center;
 }
-.Assing .box-container {
-	display: grid;
-	grid-auto-rows: auto auto;
-	gap: 1.5rem;
-	justify-content: right;
-	align-items: center;
-	width: 100%;
-}
-.Assing .box-container .box {
-	border-radius: .5rem;
-	background-color: var(--white);
-	padding: 1rem;
-	border: 1px solid var(--main-color);
-	overflow: hidden;
-	text-align: center;
-	font-size: 1.3rem;
-	min-width: 1000px;
-}
+
