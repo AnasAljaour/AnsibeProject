@@ -386,6 +386,33 @@ section {
         }
 }
 
+.Assign .box-container {
+    display: grid;
+    grid-auto-rows: auto auto;
+    gap: 1.5rem;
+    justify-content: right;
+    align-items: center;
+    width: 100%;
+}
+
+    .Assign .box-container .box {
+        border-radius: .5rem;
+        background-color: var(--white);
+        padding: 1rem;
+        border: 1px solid var(--main-color);
+        overflow: hidden;
+        text-align: center;
+        font-size: 1.3rem;
+        min-width: 1000px;
+    }
+
+        .Assign .box-container .box h3 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0.5rem;
+            color: var(--black);
+        }
+
 .courses .box-container {
     display: grid;
     grid-auto-rows: auto auto;
@@ -537,25 +564,7 @@ a {
     text-align: center;
 }
 
-.Assing .box-container {
-    display: grid;
-    grid-auto-rows: auto auto;
-    gap: 1.5rem;
-    justify-content: right;
-    align-items: center;
-    width: 100%;
-}
 
-    .Assing .box-container .box {
-        border-radius: .5rem;
-        background-color: var(--white);
-        padding: 1rem;
-        border: 1px solid var(--main-color);
-        overflow: hidden;
-        text-align: center;
-        font-size: 1.3rem;
-        min-width: 1000px;
-    }
 
 .clickable-icon {
     font-size: 24px;
