@@ -343,6 +343,10 @@ section {
         font-size: 2rem;
         background-color: var(--white);
     }
+        .side-bar .navbar a {
+            display: block;
+            margin: 2rem .5rem;
+        }
 
         .side-bar .navbar a i {
             margin-right: 1.5rem;
