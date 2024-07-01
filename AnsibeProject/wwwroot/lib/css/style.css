@@ -582,9 +582,17 @@ a {
 
 
 .trash-icon {
-    color: #e74c3c;
+    color: var(--red);
+    
     font-size: 150%;
+    cursor: pointer;
 }
+
+    .trash-icon:hover {
+        transform: scale(1.2);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        color: var(--black);
+    }
 
 .customizedB {
     background-color:black;

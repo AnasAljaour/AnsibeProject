@@ -301,6 +301,28 @@ function cancelCreation() {
 }
 
 function saveCreatedSections() {
+    if (allocation.length > 0) {
+        let AnsibeId = {
+            Key: "Id",
+            Value: document.getElementById('AnsibeId').value
+        }
+        $.ajax({
+            url: '/AssignP/SaveWork',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ Allocation: allocation, Type: type, AnsibeId: AnsibeId }),
+            dataType: 'json',
+            success: function (response) {
+
+                allocation = [];
+
+            },
+            error: function (xhr, status, error) {
+                failed(xhr, status, error);
+
+            }
+        });
+    }
     if (tempSections.length > 0) {
         let AnsibeId = document.getElementById('AnsibeId').value
         $.ajax({
@@ -447,8 +469,7 @@ function prepareRow(row) {
     var sectionId = row.querySelector('input[type="hidden"]').value;
     let newRow = row.cloneNode(true);
     let lastCell = newRow.cells[newRow.cells.length - 1];
-    lastCell.innerHTML = '<button class="inline-delete-btn" onclick="confirmDeleteAssignement(this)">Delete</button>'+
-    '<a class="clickable-icon" onclick="deleteSectionPermenetlyInProfessorView(this)" ><i class="fas fa-trash" style="color:#e74c3c"></i></a >';
+    lastCell.innerHTML = '<button class="inline-delete-btn" onclick="confirmDeleteAssignement(this)">Delete</button>';
     addCourse(prof, sectionId);
     return newRow
 }
@@ -553,7 +574,7 @@ function deleteAssignement(button) {
         subtracteHoursForProfessor(button);
         let newRow = row.cloneNode(true);
         let lastCell = newRow.cells[newRow.cells.length - 1];
-        lastCell.innerHTML = '<input type="checkbox" id="myCheckbox" name="c1[]" />';
+        lastCell.innerHTML = '<input type="checkbox" id="myCheckbox" name="c1[]" /><a class="clickable-icon" onclick = "deleteSectionPermenetlyInProfessorView(this,"popup")" ><i class="fas fa-trash trash-icon"></i>';
 
         let tbody = document.getElementById("SectionId");
         tbody.appendChild(newRow);
@@ -578,7 +599,7 @@ function deleteAssignement(button) {
 
                 let newRow = row.cloneNode(true);
                 let lastCell = newRow.cells[newRow.cells.length - 1];
-                lastCell.innerHTML = '<input type="checkbox" id="myCheckbox" name="c1[]" />';
+                lastCell.innerHTML = '<input type="checkbox" id="myCheckbox" name="c1[]" /><a class="clickable-icon" onclick = "deleteSectionPermenetlyInProfessorView(this,"popup")" ><i class="fas fa-trash trash-icon"></i>';
 
                 let tbody = document.getElementById("SectionId");
                 tbody.appendChild(newRow);
@@ -621,34 +642,49 @@ function subtracteHoursForProfessor(button) {
     totalHoursElement.textContent = totalHours;
 }
 
-function deleteSectionPermenetlyInProfessorView(button) {
-    let row = button.closest('tr');
-    let sectionId = row.querySelector('input[type="hidden"]').value;
-    let model = allocation.find(m => m.Key == sectionId);
-    if (model) {
-        allocation = allocation.filter(function (element) {
-            return element.Key !== sectionId;
-        });
-    }
-    $.ajax({
-        url: '/AssignP/DeleteSectionPermenetly',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(sectionId),
-        dataType: 'json',
-        success: function (response) {
+function deleteSectionPermenetlyInProfessorView(button,fromWhere) {
+    Swal.fire({
+        title: "Are you sure you want to delete this ?",
+        text: "This action cannot be undone.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let row = button.closest('tr');
+            let sectionId = row.querySelector('input[type="hidden"]').value;
+            let model = allocation.find(m => m.Key == sectionId);
+            if (model) {
+                allocation = allocation.filter(function (element) {
+                    return element.Key !== sectionId;
+                });
+            }
+            $.ajax({
+                url: '/AssignP/DeleteSectionPermenetly',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(sectionId),
+                dataType: 'json',
+                success: function (response) {
 
+                    button.closest('tbody').removeChild(row);
 
-            subtracteHoursForProfessor(button);
+                },
+                error: function (xhr, status, error) {
+                    failed(xhr, status, error);
 
-            button.closest('tbody').removeChild(row);
-
-        },
-        error: function (xhr, status, error) {
-            failed(xhr, status, error);
-
+                }
+            });
+            
+        } else {
+            // If user cancels, show an informational message
+            Swal.fire("Deletion cancelled", "", "info");
         }
     });
+
+    
     
 }
 function saveWork() {

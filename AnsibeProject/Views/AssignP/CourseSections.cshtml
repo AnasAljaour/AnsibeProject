@@ -23,7 +23,7 @@
 <section class="Assign" id="sectionAssign">
     <div>
 
-        <form method="post" class="toggle-div visible" style="display: visible;">
+        
 
             <table class="table Active-datatable">
                 <thead>
@@ -53,8 +53,8 @@
                                     <th>TD</th>
                                     <th>TP</th>
                                     <th>Language</th>
-                                    <th>Assign</th>
-                                    <th>Delete</th>
+                                    <th></th>
+                                    <th></th>
                                     </thead>
                                     <tbody>
 
@@ -96,8 +96,9 @@
 
                                                 <td>
 
-                                                    <button class="inline-delete-btn" onclick="confirmDelete(this)">Delete</button>
-
+                                                    <button class="inline-delete-btn" onclick="confirmDelete(this)">Unassign</button>
+                                                <a class="clickable-icon" onclick="deleteSectionPermenetlyInProfessorView(this,'course')">
+                                                    <i class="fas fa-trash trash-icon"></i>
 
                                                 </td>
 
@@ -115,7 +116,7 @@
                 </tbody>
             </table>
 
-        </form>
+        
 
 
 
