@@ -1,7 +1,17 @@
 ﻿@using AnsibeProject.Models;
 @model Ansibe;
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers 
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<div class="mainn">
+<header class="new-header-home">
+    <img src='lu.png' alt="Ansibe" class="lu-img"/>
+    <div>
+        <h1 class="home-h1">ANSIBE</h1>
+        <p class="h-p"></p>
+    </div>
+</header>
+</div>
 <section class="courses">
+
     <div class="box-container">
         <a class="inline-btn" asp-action="CreateAnsibe" asp-controller="Home">Create Ansibe</a>
     </div>
