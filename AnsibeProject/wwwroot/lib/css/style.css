@@ -572,10 +572,14 @@ a {
 
 
 .clickable-icon {
-    font-size: 34px;
-    color: #dc3545; /* Red color for delete icon */
+    border-radius: .5rem;
+    color: #fff;
+    font-weight: bold;
     cursor: pointer;
-    transition: color 0.3s;
+    text-transform: capitalize;
+    padding: 1rem 2rem;
+    text-align: center;
+    margin-top: 1rem;
 }
 
     .clickable-icon:hover {
