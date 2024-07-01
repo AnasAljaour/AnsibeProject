@@ -131,14 +131,7 @@
 
                                                     </td>
                                                     <td>
-                                                        <button class="inline-delete-btn" onclick="confirmDeleteAssignement(this)">Delete</button>
-
-                                                        
-
-                                                        <a href="#" class="clickable-icon" onclick="deleteSection(this)" >
-                                                            <i class="fas fa-trash trash-icon"></i>
-
-                                                        </a>
+                                                        <button class="inline-delete-btn" onclick="confirmDeleteAssignement(this)">Unassign</button>
                                                     </td>
                                                     @* "clickable-icon" *@
                                                 </tr>
@@ -226,6 +219,8 @@
                                 </td>
                                 <td>
                                     <input type="checkbox" id="myCheckbox" name="c1[]" />
+                                    <a class="clickable-icon" onclick="deleteSectionPermenetlyInProfessorView(this,'popup')">
+                                        <i class="fas fa-trash trash-icon"></i>
                                 </td>
 
                             </tr>
