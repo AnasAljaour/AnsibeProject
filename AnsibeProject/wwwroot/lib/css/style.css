@@ -572,7 +572,7 @@ a {
 
 
 .clickable-icon {
-    font-size: 24px;
+    font-size: 34px;
     color: #dc3545; /* Red color for delete icon */
     cursor: pointer;
     transition: color 0.3s;
@@ -581,3 +581,70 @@ a {
     .clickable-icon:hover {
         color: #c82333;
     }
+
+
+
+
+
+
+
+
+
+
+.mainn {
+    width: 90%;
+    max-width: 80%;
+    margin: 2.5rem auto;
+    display: grid;
+    grid-auto-flow: row;
+    gap: 2rem;
+}
+
+.new-header-home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 90%;
+    margin: 0 auto 2rem auto;
+    text-align: center;
+    background-color: var(--main-color);
+    padding: 1rem;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+
+.lu-img {
+    width: 3.5rem;
+    object-fit: contain;
+}
+
+.home-h1 {
+    color:white;
+    font-size: 5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.h-p {
+    margin: 0;
+    font-size: 0.8rem;
+    text-wrap: balance;
+}
+
+/*@media (min-width: 768px) {
+    header {
+        padding: 2rem;
+    }
+
+    img {
+        width: 4.5rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin: 0;
+        padding: 0;
+    }
+}*/
