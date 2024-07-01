@@ -572,14 +572,15 @@ a {
 
 
 .clickable-icon {
-    border-radius: .5rem;
+/*    font-size: 150%;
+*/    /*border-radius: .5rem;
     color: #fff;
     font-weight: bold;
     cursor: pointer;
     text-transform: capitalize;
     padding: 1rem 2rem;
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 1rem;*/
 }
 
     .clickable-icon:hover {
@@ -589,7 +590,7 @@ a {
 
 
 
-
+    
 
 
 
