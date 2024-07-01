@@ -572,15 +572,8 @@ a {
 
 
 .clickable-icon {
-/*    font-size: 150%;
-*/    /*border-radius: .5rem;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    text-transform: capitalize;
-    padding: 1rem 2rem;
-    text-align: center;
-    margin-top: 1rem;*/
+    background-color: transparent;
+    margin-left: 15%;
 }
 
     .clickable-icon:hover {
@@ -588,6 +581,14 @@ a {
     }
 
 
+.trash-icon {
+    color: #e74c3c;
+    font-size: 150%;
+}
+
+.customizedB {
+    background-color:black;
+}
 
 
     
