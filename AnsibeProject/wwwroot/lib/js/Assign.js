@@ -447,8 +447,8 @@ function prepareRow(row) {
     var sectionId = row.querySelector('input[type="hidden"]').value;
     let newRow = row.cloneNode(true);
     let lastCell = newRow.cells[newRow.cells.length - 1];
-    lastCell.innerHTML = '<button class="inline-delete-btn" onclick="confirmDeleteAssignement(this)">Delete</button>"'+
-    '<a href = "#" class="clickable-icon" onclick = "deleteSection(this)" ><i class="fas fa-trash" style="color:#e74c3c"></i></a >';
+    lastCell.innerHTML = '<button class="inline-delete-btn" onclick="confirmDeleteAssignement(this)">Delete</button>'+
+    '<a class="clickable-icon" onclick="deleteSectionPermenetlyInProfessorView(this)" ><i class="fas fa-trash" style="color:#e74c3c"></i></a >';
     addCourse(prof, sectionId);
     return newRow
 }
@@ -550,31 +550,7 @@ function deleteAssignement(button) {
     var sectionId = row.querySelector('input[type="hidden"]').value;
     let model = allocation.find(m => m.Key == sectionId);
     if (model) {
-        let closestTr = button.closest('table').closest('tr');
-        
-        let td1 = 0;
-
-        for (let node of row.children) {
-            if (node.tagName === 'TD' && node.id !== 'ctptd' && node.id !== 'totalH') {
-                let cellValue = parseInt(node.textContent || node.value);
-                if (!isNaN(cellValue)) {
-                    td1 = td1 + cellValue;
-                }
-            }
-        }
-
-
-
-        let id = 'totalH-' + (closestTr && closestTr.cells.length > 0 ? closestTr.cells[0].querySelector('input[type="hidden"]').value : '');
-        var totalHoursElement = document.getElementById(id);
-
-        var totalHours = parseInt(totalHoursElement.textContent);
-
-        totalHours = totalHours - td1;
-
-        totalHoursElement.textContent = totalHours;
-
-
+        subtracteHoursForProfessor(button);
         let newRow = row.cloneNode(true);
         let lastCell = newRow.cells[newRow.cells.length - 1];
         lastCell.innerHTML = '<input type="checkbox" id="myCheckbox" name="c1[]" />';
@@ -597,30 +573,8 @@ function deleteAssignement(button) {
             dataType: 'json',
             success: function (response) {
 
-                let closestTr = button.closest('table').closest('tr');
-                let row = button.closest('tr');
-                let td1 = 0;
 
-                for (let node of row.children) {
-                    if (node.tagName === 'TD' && node.id !== 'ctptd' && node.id !== 'totalH') {
-                        let cellValue = parseInt(node.textContent || node.value);
-                        if (!isNaN(cellValue)) {
-                            td1 = td1 + cellValue;
-                        }
-                    }
-                }
-
-
-
-                let id = 'totalH-' + (closestTr && closestTr.cells.length > 0 ? closestTr.cells[0].querySelector('input[type="hidden"]').value : '');
-                var totalHoursElement = document.getElementById(id);
-
-                var totalHours = parseInt(totalHoursElement.textContent);
-
-                totalHours = totalHours - td1;
-
-                totalHoursElement.textContent = totalHours;
-
+                subtracteHoursForProfessor(button)
 
                 let newRow = row.cloneNode(true);
                 let lastCell = newRow.cells[newRow.cells.length - 1];
@@ -641,7 +595,62 @@ function deleteAssignement(button) {
     
 }
 
+function subtracteHoursForProfessor(button) {
+    let closestTr = button.closest('table').closest('tr');
+    let row = button.closest('tr');
+    let td1 = 0;
 
+    for (let node of row.children) {
+        if (node.tagName === 'TD' && node.id !== 'ctptd' && node.id !== 'totalH') {
+            let cellValue = parseInt(node.textContent || node.value);
+            if (!isNaN(cellValue)) {
+                td1 = td1 + cellValue;
+            }
+        }
+    }
+
+
+
+    let id = 'totalH-' + (closestTr && closestTr.cells.length > 0 ? closestTr.cells[0].querySelector('input[type="hidden"]').value : '');
+    var totalHoursElement = document.getElementById(id);
+
+    var totalHours = parseInt(totalHoursElement.textContent);
+
+    totalHours = totalHours - td1;
+
+    totalHoursElement.textContent = totalHours;
+}
+
+function deleteSectionPermenetlyInProfessorView(button) {
+    let row = button.closest('tr');
+    let sectionId = row.querySelector('input[type="hidden"]').value;
+    let model = allocation.find(m => m.Key == sectionId);
+    if (model) {
+        allocation = allocation.filter(function (element) {
+            return element.Key !== sectionId;
+        });
+    }
+    $.ajax({
+        url: '/AssignP/DeleteSectionPermenetly',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(sectionId),
+        dataType: 'json',
+        success: function (response) {
+
+
+            subtracteHoursForProfessor(button);
+
+            button.closest('tbody').removeChild(row);
+
+        },
+        error: function (xhr, status, error) {
+            failed(xhr, status, error);
+
+        }
+    });
+    
+}
 function saveWork() {
     let AnsibeId = {
         Key: "Id",

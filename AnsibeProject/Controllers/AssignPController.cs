@@ -398,8 +398,35 @@ namespace AnsibeProject.Controllers
                 return BadRequest(e.Message);
             }
         }
-        
+        [HttpPost]
+    public IActionResult DeleteSectionPermenetly([FromBody] string sectionId)
+        {
+            try
+            {
+                if (sectionId == null || sectionId == "") BadRequest("section Id is null or empty");
+
+                if (!int.TryParse(sectionId, out var sectionID))
+                {
+                    return BadRequest("Invalid section Id");
+                }
+                var section = _db.Sections.SingleOrDefault(s => s.SectionId == sectionID);
+                if (section == null) return BadRequest("section id not exist");
+                _db.Remove(section);
+                _db.SaveChanges();
+                return Json(new { success = true });
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+    
+    
     }
+
+
+    
 
     
     
