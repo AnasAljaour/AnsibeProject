@@ -1,4 +1,5 @@
-﻿using AnsibeProject.Data;
+﻿using AnsibeProject.Controllers.ExcelWork;
+using AnsibeProject.Data;
 using AnsibeProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -188,7 +189,8 @@ namespace AnsibeProject.Controllers
                     .SingleOrDefaultAsync(a => a.Id == ansibeId);
                 if (ansibe == null) return BadRequest("Ansibe does not exist!");
                 return PartialView("Professores", ansibe);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
@@ -220,11 +222,39 @@ namespace AnsibeProject.Controllers
                 }
                 return BadRequest("Type does not match");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
         }
-        
+
+        [HttpPost]
+        public async Task<IActionResult> Download(int id)
+        {
+            try
+            {
+
+                if (id == null || id == 0) return BadRequest("Invalid Id");
+                //if (!int.TryParse(id, out var ansibeId)) return;
+                Ansibe? ansibe = await _db.Ansibes.Include(a => a.Sections)
+                                                    .ThenInclude(s => s.Course)
+                                                  .Include(a => a.Sections)
+                                                  .ThenInclude(s => s.Professor)
+                                                  .ThenInclude(p => p.Contract)
+                    .SingleOrDefaultAsync(a => a.Id == id);
+                if (ansibe == null) return BadRequest("ansibe not found");
+                ExportAnsibeToExcel.ExportAnsibe(ansibe, "C:\\Users\\Admin\\Downloads\\fullTest.xlsx");
+                ViewBag.Year = _db.Ansibes
+                                          .Select(a => a.Year)
+                                          .Distinct()
+                                          .ToList();
+                return View("Index", ansibe) ;
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+        }
     }
 }

@@ -91,7 +91,8 @@ namespace AnsibeProject.Controllers.ExcelWork
                 worksheet.Column(2).Width = 18;
                 worksheet.Column(17).Width = 15;
                 // Save the Excel file
-                workbook.SaveAs("F:\\Users\\faiz\\Source\\Repos\\Excels\\fullTest.xlsx");
+                //string downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+                workbook.SaveAs(path);
                 myMap.Clear();
                 labeledSections.Clear();
             }
