@@ -35,7 +35,11 @@
 
     <thead class="fixed-header">
         <tr>
-            <th><input type="button" class="inline-btn" value="Export" /> <input type="hidden" value="@Model.Id" id="ansibe-id" /></th>
+                <th>
+                    <form method="post" asp-controller="Home" asp-action="Download">
+                        <input type="submit" value="Export" class="inline-btn" /><input type="hidden" value="@Model.Id" id="ansibe-id" name="id" />
+                    </form>
+                </th>
                 <th colspan="11" >جدول تحديد نصاب الأستاذة للعام الحامعي :<b dir="ltr">@Model.Year</b></th>
             </tr>
             <tr>
