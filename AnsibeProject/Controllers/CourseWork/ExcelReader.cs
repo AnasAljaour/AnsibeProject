@@ -5,6 +5,7 @@ using AnsibeProject.Models;
 using Microsoft.AspNetCore.Http;
 using OfficeOpenXml;
 using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 
 public class ExcelReader<T> where T:new()
@@ -40,16 +41,37 @@ public class ExcelReader<T> where T:new()
                                 myAttribute.SetValue(dataObject, myEnum);
                             }
                             catch (Exception ex) { }
-                        } else if (myAttribute.PropertyType == typeof(Contract))
+                        } else if (myAttribute.PropertyType == typeof(Models.Contract))
                         {
                             try
                             {
                                 var contract = _universityContext.Contracts.FirstOrDefault(c => c.ContractType == cell);
-                                myAttribute.SetValue(dataObject, contract);
+                                if (contract != null)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("Contract found: " + contract.ContractType);
+                                    myAttribute.SetValue(dataObject, contract);
+                                }
+                                else
+                                {
+                                    System.Diagnostics.Debug.WriteLine("Contract not found, setting default values.");
+                                    myAttribute.SetValue(dataObject, new Models.Contract()
+                                    {
+                                        ContractType = "failed to load contract",
+                                        MaxHours = 0,
+                                        MinHours = 0,
+                                        Professors = new List<Models.Professor>()
+                                    });
+                                }
                             }
                             catch (Exception ex)
                             {
-                                // IGNORE
+                                myAttribute.SetValue(dataObject, new Models.Contract()
+                                {
+                                    ContractType = "failed to load contract",
+                                    MaxHours = 0,
+                                    MinHours = 0,
+                                    Professors = new List<Models.Professor>()
+                                });
                             }
                         }else if(myAttribute.PropertyType == typeof(DateOnly))
                         {
