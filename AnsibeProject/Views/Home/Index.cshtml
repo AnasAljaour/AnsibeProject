@@ -1,7 +1,52 @@
 ﻿@using AnsibeProject.Models;
 @model Ansibe;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-<div class="mainn">
+
+<div class="side-bar active" id="side-bar-containr">
+    <nav class="navbar">
+
+        <select class="dropdown" onchange="getAnsibeBySelectedYear(this)">
+                <option value="">Year</option>
+                @if (ViewBag.Year != null)
+                {
+                    foreach (string str in ViewBag.Year)
+                    {
+                        <option value="@str">@str</option>
+                    }
+                }
+            </select>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Ansibe</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="Ansibe-tbody">
+                </tbody>
+            </table>
+        </div>
+    </nav>
+
+</div>
+<section>
+    <div class="box-container">
+        <div class="box" id="Ansibe-holder">
+
+
+            @await Html.PartialAsync("Courses", Model)
+
+        </div>
+
+    </div>
+</section>
+@section Scripts {
+   <script src="~/lib/js/Home-View.js"></script>
+}
+@*<div class="mainn">
 <header class="new-header-home">
     <div>
         <h1 class="home-h1">ANSIBE</h1>
@@ -10,7 +55,7 @@
 
             @*<div class="box-container">
                 <a class="inline-btn customizedB" asp-action="CreateAnsibe" asp-controller="Home">Create Ansibe</a>
-            </div>*@
+            </div>
             <div class="box-container">
                 @if (Model != null)
                 {
@@ -63,3 +108,4 @@
         </section>
 </header>
 </div>
+*@
