@@ -699,7 +699,7 @@ function saveWork() {
         data: JSON.stringify({ Allocation: allocation, Type: type, AnsibeId: AnsibeId }),
         dataType: 'json',
         success: function (response) {
-
+            savechange = true;
             window.location.href = "/Home/Index";
             allocation = [];
 
@@ -719,3 +719,15 @@ function cancel() {
     });
     popup.classList.toggle("open-popup");
 }
+let savechange = false;
+window.addEventListener('beforeunload', function (e) {
+    if (! savechange) {
+        var confirmationMessage = 'Are you sure you want to leave? Changes you made may not be saved.';
+
+        // Standard way to display the confirmation message in modern browsers
+        (e || window.event).returnValue = confirmationMessage;
+
+        // For older browsers
+        return confirmationMessage;
+    }
+});

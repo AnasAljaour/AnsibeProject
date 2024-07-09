@@ -1,0 +1,175 @@
+﻿@using AnsibeProject.Models;
+@model Ansibe;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    
+    Dictionary<string, List<Section>> professorSections = new Dictionary<string, List<Section>>();
+    List<Section> nullSections = new List<Section>();
+
+
+    foreach (var section in Model.Sections)
+    {
+        if (section.Professor != null)
+        {
+            var professorName = section.Professor.FullNameInArabic;
+
+            if (!professorSections.ContainsKey(professorName))
+            {
+                professorSections[professorName] = new List<Section>();
+            }
+            professorSections[professorName].Add(section);
+
+        }
+        else
+        {
+            nullSections.Add(section);
+        }
+    }
+
+}
+
+@if(Model != null && Model.Sections.Count > 0)
+{
+    <table class="table" dir="rtl" id="Professor-Ansibe">
+
+    <thead class="fixed-header">
+        <tr>
+            <th><input type="button" class="inline-btn" value="Export" /> <input type="hidden" value="@Model.Id" id="ansibe-id" /></th>
+                <th colspan="11" >جدول تحديد نصاب الأستاذة للعام الحامعي :<b dir="ltr">@Model.Year</b></th>
+            </tr>
+            <tr>
+                <th colspan="4">الأستاذ</th>
+                <th colspan="7">الشعب المسندة</th>
+                <th rowspan="2">مجموع نصاب الأستاذ</th>
+            </tr>
+            <tr >
+                <th >أسم الأستاذ</th>
+                <th >الرتبة</th>
+                <th >نوع العقد</th>
+                <th >الأختصاص</th>
+                <th >المواد المسندة</th>
+                <th >الفصل</th>
+                <th >رمز المادة</th>
+
+                <th >ظبيعة المادة</th>
+                <th >عدد الساعات</th>
+                <th >السنة المنهجية مع ذكر </th>
+                <th >اللغة</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var key in professorSections.Keys)
+            {
+                int? TotalHours = 0;
+                if (professorSections.TryGetValue(key, out List<Section> sections))
+                {
+                    int i = 0;
+                    
+                    foreach (Section s in sections.OrderBy(s => s.Course.CourseCode))
+                    {
+                        <tr class="@(i == 0 ? "thick-border" : "")">
+                            @if (i == 0)
+                            {
+
+
+                                <td rowspan="@sections.Count">
+                                    @key
+                                </td>
+                                <td rowspan="@sections.Count">
+                                    @s.Professor.Rank
+                                </td>
+                                <td rowspan="@sections.Count">
+                                    @s.Professor.Contract.ContractType
+                                </td>
+                                <td rowspan="@sections.Count">
+                                    @s.Professor.Speciality
+                                </td>
+                            }
+                            
+
+                            <td>
+                                @s.Course.CourseDescription
+                            </td>
+                            <td>
+                                @s.Course.Semester
+                            </td>
+                            <td>
+                                @s.Course.CourseCode
+                            </td>
+                            <td>
+                                @{
+                                    string str = "";
+                                    str += (s.CourseHours != null) ? "C" : "";
+                                    str += (s.TD != null) ? "+TD" : "";
+                                    str += (s.TP != null) ? "+TP" : "";
+                                    if (str.StartsWith('+')) str = str.Substring(1);
+                                    if (str.EndsWith('+')) str = str.Substring(0, str.Length - 1);
+                                }
+                                @str
+                            </td>
+                            <td>
+                                @{
+                                    int? numberOfHourseInSection = 0;
+                                    numberOfHourseInSection += (s.CourseHours != null) ? s.CourseHours : 0;
+                                    numberOfHourseInSection += (s.TP != null) ? s.TP : 0;
+                                    numberOfHourseInSection += (s.TD != null) ? s.TD : 0;
+
+                                }
+                                @numberOfHourseInSection
+
+                            </td>
+                            <td>
+                                @if (s.Course.Semester == 1 || s.Course.Semester == 2)
+                                {
+                                    @: الأولى
+                                }
+                                else if (s.Course.Semester == 3 || s.Course.Semester == 4)
+                                {
+                                    @: الثانية
+                                }
+                                else if (s.Course.Semester == 5 || s.Course.Semester == 6)
+                                {
+                                    @: الثالثة
+                                }
+                                else if (s.Course.Semester == 7 || s.Course.Semester == 8)
+                                {
+                                    @: الرابعة
+                                }
+                                else
+                                {
+                                    @: M2
+                                }
+                            </td>
+                            <td>
+                                @s.Language
+                            </td>
+                            @if (i == 0)
+                            {
+                                foreach (Section sec in sections)
+                                {
+                                    TotalHours += (sec.CourseHours != null) ? sec.CourseHours : 0;
+                                    TotalHours += (sec.TP != null) ? sec.TP : 0;
+                                    TotalHours += (sec.TD != null) ? sec.TD : 0;
+                                }
+                                <td rowspan="@sections.Count">
+                                    @TotalHours
+                                </td>
+
+                            }
+                            
+                            @{
+                                i += 1;
+                            }
+
+                        </tr>
+                    }
+
+                }
+
+            }
+        </tbody>
+
+
+    </table>
+}

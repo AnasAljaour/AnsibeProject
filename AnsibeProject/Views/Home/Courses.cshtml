@@ -1,0 +1,179 @@
+﻿@using AnsibeProject.Models
+@model Ansibe
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+            @{
+                Dictionary<string, List<Section>> courseSections = new Dictionary<string, List<Section>>();
+
+                foreach (var section in Model.Sections)
+                {
+                    var courseCode = section.Course.CourseCode;
+
+                    if (!courseSections.ContainsKey(courseCode))
+                    {
+                        courseSections[courseCode] = new List<Section>();
+                    }
+                    courseSections[courseCode].Add(section);
+                }
+            }
+    
+
+    
+                        @if (Model != null && Model.Sections.Count() > 0)
+                        {
+                             <table class="table ansibe-table" dir="rtl" id="Course-table">
+                                <thead class="fixed-header">
+                                     
+                                    <tr>
+                                        <th><input type="button" value="Export" class="inline-btn"/><input type="hidden" value="@Model.Id" id="ansibe-id"/></th>
+                                        <th colspan="14"> <h4 > جدول توزيع مواد التدريس للعام الجامعي:<b dir="ltr">@Model.Year</b></h4></th>
+                                       
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th colspan="5">المادة</th>
+                                        <th colspan="6">الشعب</th>
+                                        <th colspan="2">الأستاذ</th>
+                                        <th rowspan="2">عدد الساعات الشاغرة</th>
+                                        <th rowspan="2">عدد الساعات المؤمنة</th>
+                                    </tr>
+                                    <tr>
+                                        <th>رمز المادة</th>
+                                        <th>الاختصاص</th>
+                                        <th>الفصل</th>
+                                        <th>مادة التدريس</th>
+                                        <th>عدد ساعات المادة</th>
+                                        <th>عدد الشعب</th>
+                                        <th>نظري</th>
+                                        <th>تدريب أعمال موجهة</th>
+                                        <th>اعمال تطبيقية</th>
+                                        <th>لغة التدريس</th>
+                                        <th>رقم الشعبة</th>
+                                        <th>اسم الاستاذ</th>
+                                        <th>العقد</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (var courseCode in courseSections.Keys)
+                                        {
+                                            var counter = 0;
+                                            var sectionCount = courseSections[courseCode].Count;
+                                            var c = 0;
+                                            var x = 0;
+                                            var y = 0;
+                                            foreach (var s in courseSections[courseCode])
+                                            {
+                                                <tr class="@(counter == 0 ? "thick-border" : "")">
+                                                    @{
+                                                        if (s.Professor != null)
+                                                        {
+                                                            int tdValue = 0;
+                                                            int tdValue1 = 0;
+                                                            int tdValue2 = 0;
+                                                            if (int.TryParse(s.TD?.ToString(), out tdValue))
+                                                            {
+                                                                x += tdValue;
+                                                            }
+                                                            if (int.TryParse(s.TP?.ToString(), out tdValue1))
+                                                            {
+                                                                x += tdValue1;
+                                                            }
+                                                            if (int.TryParse(s.CourseHours?.ToString(), out tdValue2))
+                                                            {
+                                                                x += tdValue2;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            int tdValue = 0;
+                                                            int tdValue1 = 0;
+                                                            int tdValue2 = 0;
+                                                            if (int.TryParse(s.TD?.ToString(), out tdValue))
+                                                            {
+                                                                y += tdValue;
+                                                            }
+                                                            if (int.TryParse(s.TP?.ToString(), out tdValue1))
+                                                            {
+                                                                y += tdValue1;
+                                                            }
+                                                            if (int.TryParse(s.CourseHours?.ToString(), out tdValue2))
+                                                            {
+                                                                y += tdValue2;
+                                                            }
+                                                        }
+
+                                                    }
+
+
+                                                    @if (c < 1)
+                                                    {
+                                                        <td rowspan="@sectionCount">@s.Course.CourseCode</td>
+                                                        <td rowspan="@sectionCount">@s.Course.Major</td>
+                                                        <td rowspan="@sectionCount">@s.Course.Semester</td>
+                                                        <td rowspan="@sectionCount">@s.Course.CourseDescription</td>
+
+
+
+
+
+
+                                                        <td rowspan="@sectionCount">@s.Course.TotalNumberOfHours</td>
+                                                        <td rowspan="@sectionCount">@sectionCount</td>
+                                                        c = c + 1;
+                                                    }
+                                                    <td>@s.CourseHours</td>
+                                                    <td>@s.TD</td>
+                                                    <td>@s.TP</td>
+                                                    <td>@s.Language</td>
+                                                    <td>@(++counter)</td>
+
+                                                    @if (s.Professor != null)
+                                                    {
+                                                        <td>
+                                                            @s.Professor.FullNameInArabic
+                                                        </td>
+                                                        <td>
+                                                            @s.Professor.Contract.ContractType
+                                                        </td>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <td style="background-color: red"></td>
+                                                        <td style="background-color: red"></td>
+                                                    }
+
+
+
+                                                    @if (counter == 1)
+                                                    {   int? ProfHours = 0;
+                                                        int? freeHours = 0;
+                                                        foreach( Section section in courseSections[courseCode]){
+                                                            int? temp = 0;
+                                                            if(section.TP != null) temp += section.TP;
+                                                            if(section.TD != null) temp += section.TD;
+                                                            if(section.CourseHours != null) temp += section.CourseHours;
+
+                                                            if(section.Professor != null) ProfHours+= temp;
+                                                            else{
+                                                                freeHours += temp;
+                                                            }
+                                                        }
+                                                        <td rowspan="@sectionCount">@freeHours</td>
+                                                        <td rowspan="@sectionCount">@ProfHours</td>
+
+                                                    }
+       
+
+
+
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+ 
