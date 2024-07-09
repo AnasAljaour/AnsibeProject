@@ -7,8 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Text.Json.Nodes;
-
+using System.Web;
 
 namespace AnsibeProject.Controllers
 {
@@ -243,12 +244,18 @@ namespace AnsibeProject.Controllers
                                                   .ThenInclude(p => p.Contract)
                     .SingleOrDefaultAsync(a => a.Id == id);
                 if (ansibe == null) return BadRequest("ansibe not found");
-                ExportAnsibeToExcel.ExportAnsibe(ansibe, "C:\\Users\\Admin\\Downloads\\fullTest.xlsx");
+                var stream= ExportAnsibeToExcel.ExportAnsibe(ansibe);
+
+
+                return (File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Ansibe_"+ansibe.Year+".xlsx"));
+                /*return RedirectToAction("Index"); // Redirect to the desired view or action
+
+
                 ViewBag.Year = _db.Ansibes
                                           .Select(a => a.Year)
                                           .Distinct()
                                           .ToList();
-                return View("Index", ansibe) ;
+                return View("Index", ansibe) ;*/
             }
             catch (Exception e)
             {

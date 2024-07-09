@@ -1,4 +1,5 @@
 ﻿using AnsibeProject.Models;
+using Azure;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -25,7 +26,7 @@ namespace AnsibeProject.Controllers.ExcelWork
             
             // Add more colors as needed
         };
-        public static void ExportAnsibe(Models.Ansibe ansibeToExport, string path)
+        public static MemoryStream ExportAnsibe(Models.Ansibe ansibeToExport)
         {
             if (ansibeToExport == null) throw new ArgumentNullException("Ansibe is null");
 
@@ -92,9 +93,19 @@ namespace AnsibeProject.Controllers.ExcelWork
                 worksheet.Column(17).Width = 15;
                 // Save the Excel file
                 //string downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
-                workbook.SaveAs(path);
+                //workbook.SaveAs(path);
+                string fileName = "Ansibe"+ansibeToExport.Year + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xlsx";
+
+                // Save the workbook to a memory stream
+                MemoryStream stream = new MemoryStream();
+                workbook.SaveAs(stream);
+                stream.Position = 0; // Reset the stream position for reading
+
+                // Prepare the response to send the Excel file as a download
+               
                 myMap.Clear();
                 labeledSections.Clear();
+                return stream;
             }
 
 
@@ -144,8 +155,8 @@ namespace AnsibeProject.Controllers.ExcelWork
             {
                 worksheet.Cell(work_row, 3).Value =section.Course.TotalNumberOfHours;
                 Professor prof = section.Professor;
-                worksheet.Cell(work_row, 4).Value = prof.Contract.ContractType;
-                worksheet.Cell(work_row, 7).Value = prof.FullNameInArabic;
+                worksheet.Cell(work_row, 4).Value =(prof!=null)? prof.Contract.ContractType:"null prof";
+                worksheet.Cell(work_row, 7).Value = (prof != null) ? prof.FullNameInArabic : "null prof";
                 worksheet.Cell(work_row, 8).Value = 0;
                 string sectionLabel= myMap[section.Course.CourseCode][0]++ + "\\" + myMap[section.Course.CourseCode][1];
                 worksheet.Cell(work_row, 9).Value = sectionLabel;//work in map
