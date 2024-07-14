@@ -4,10 +4,11 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
+
     Dictionary<string, List<Section>> professorSections = new Dictionary<string, List<Section>>();
     List<Section> nullSections = new List<Section>();
 
-
+    if(Model != null)
     foreach (var section in Model)
     {
         if (section.Professor != null)
@@ -131,7 +132,7 @@
 
                                                     </td>
                                                     <td>
-                                                        <button class="inline-delete-btn" onclick="confirmDeleteAssignement(this)">Unassign</button>
+                                                        <button class="inline-delete-btn" onclick="confirmDeleteAssignement(this)">Remove</button>
                                                     </td>
                                                     @* "clickable-icon" *@
                                                 </tr>

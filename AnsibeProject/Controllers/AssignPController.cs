@@ -37,7 +37,8 @@ namespace AnsibeProject.Controllers
             _db.Ansibes.Add(newAnsibe);
             _db.SaveChanges();
             ViewBag.AnsibeId=newAnsibe.Id;
-            return View(GetActiveProfessors());
+            ViewBag.professor = _db.Professors.Where(p => p.ActiveState == ActiveState.Active).Include(p => p.Contract);
+            return View();
 
         }
 

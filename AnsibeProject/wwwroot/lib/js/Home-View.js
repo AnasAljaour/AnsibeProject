@@ -53,7 +53,7 @@ function success(response) {
         row.append(buttonCell);
 
 
-        let editButton = document.createElement("Button");
+       /* let editButton = document.createElement("Button");
         editButton.textContent = "Edit";
         editButton.addEventListener("click", function () {
 
@@ -62,7 +62,7 @@ function success(response) {
 
         let EditbuttonCell = document.createElement('td');
         EditbuttonCell.appendChild(editButton);
-        row.append(EditbuttonCell);
+        row.append(EditbuttonCell);*/
 
         tbody.appendChild(row);
     }
@@ -109,27 +109,7 @@ function getTable(button) {
             div.innerHTML = response;
             type = "P";
             hideSideBar();
-            /*$('#Professor-Ansibe').DataTable({
-                "paging": true,         // Enable paging
-                "searching": true,      // Enable searching/filtering
-                "ordering": true,       // Enable sorting
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],  // Customize the number of rows per page
-                "language": {           // Customize DataTables text
-                    "paginate": {
-                        "next": "التالي",
-                        "previous": "السابق"
-                    },
-                    "search": "بحث:",
-                    "lengthMenu": "إظهار _MENU_ صفوف"
-                    // Add more translations as needed
-                },
-                "rowGroup": {
-                    "dataSrc": [0,1,2,3,12] // Index of the column you want to group by (e.g., 'أسم الأستاذ')
-                },
-                "columnDefs": [
-                    { "visible": true, "targets": 0 } // Hide the grouping column if needed
-                ]
-            });*/
+            
         },
         error: function (xhr, status, error) {
             failed(xhr, status, error);

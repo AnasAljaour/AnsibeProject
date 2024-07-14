@@ -80,7 +80,7 @@ function failed(jqXHR, textStatus, errorThrown) {
     }
 }
 
-let type;
+let type = 'PS';
 function showAllocation(button) {
     let row = button.closest('tr');
     let columns = row.getElementsByTagName('td');
@@ -263,7 +263,7 @@ function createSections(button, CourseCode, CourseDescription, CourseHours, TP, 
         deleteButton.type = "button";
         deleteButton.textContent = "delete";
         deleteButton.onclick = function () {
-
+            deleteUnCreatedSection(deleteButton)
         };
 
         deleteButton.classList.toggle("inline-delete-btn");
@@ -469,27 +469,27 @@ function prepareRow(row) {
     var sectionId = row.querySelector('input[type="hidden"]').value;
     let newRow = row.cloneNode(true);
     let lastCell = newRow.cells[newRow.cells.length - 1];
-    lastCell.innerHTML = '<button class="inline-delete-btn" onclick="confirmDeleteAssignement(this)">Delete</button>';
+    lastCell.innerHTML = '<button class="inline-delete-btn" onclick="confirmDeleteAssignement(this)">Remove</button>';
     addCourse(prof, sectionId);
     return newRow
 }
 
 function confirmDelete(button) {
     Swal.fire({
-        title: "Are you sure you want to delete this ?",
+        title: "Are you sure you want to Remove this Assignment ?",
         text: "This action cannot be undone.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonText: "Yes, Remove it!"
     }).then((result) => {
         if (result.isConfirmed) {
             // If user confirms, perform the delete action
             deleteAssignProfessors(button)
         } else {
             // If user cancels, show an informational message
-            Swal.fire("Deletion cancelled", "", "info");
+            Swal.fire("Remove is cancelled", "", "info");
         }
     });
 }
@@ -549,18 +549,18 @@ function deleteAssignProfessors(button) {
 
 function confirmDeleteAssignement(button) {
     Swal.fire({
-        title: "Are you sure you want to delete this ?",
+        title: "Are you sure you want to Remove this Assignemnt ?",
         text: "This action cannot be undone.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, delete it!"
+        confirmButtonText: "Yes, Remove it!"
     }).then((result) => {
         if (result.isConfirmed) {
             deleteAssignement(button)
         } else {
-            Swal.fire("Deletion cancelled", "", "info");
+            Swal.fire("Remove is cancelled", "", "info");
         }
     });
 }
@@ -731,3 +731,30 @@ window.addEventListener('beforeunload', function (e) {
         return confirmationMessage;
     }
 });
+
+function deleteUnCreatedSection(button) {
+    let row = button.closest('tr');
+    let coursecode = button.closest('table').closest('tr').cells[0].textContent;
+    let index = tempSections.findIndex(function (model) {
+       
+        if (coursecode.trim() !== model.Course.CourseCode) return false;
+
+        
+        if ((row.cells[0].textContent.trim() !== '') && (model.CourseHours == null)) return false;
+
+        
+        if ((row.cells[1].textContent.trim() !== '') && (model.TP == null)) return false;
+
+        
+        if ((row.cells[2].textContent.trim() !== '') && (model.TD == null)) return false;
+
+       
+        let lang = (row.cells[3].textContent.trim() === 'E') ? 0 : (row.cells[3].textContent.trim() === 'F')?1 : 2;
+        
+        if ( lang !== model.Language) return false;
+
+        return true;
+    });
+    if (index != -1) tempSections.splice(index, 1);
+    button.closest('tbody').removeChild(row);
+}
