@@ -1,5 +1,5 @@
 ﻿@using AnsibeProject.Models;
-@* @model List<Ansibe>; *@
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <div class="side-bar">
 
@@ -52,6 +52,7 @@
             <input type="hidden" id="AnsibeId" value="@ViewBag.AnsibeId" />
 
             <div id="holder">
+                 @await Html.PartialAsync("ProfessorSections");
             </div>
             
         </div>

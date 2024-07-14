@@ -7,7 +7,7 @@
     Dictionary<string, List<Section>> professorSections = new Dictionary<string, List<Section>>();
     List<Section> nullSections = new List<Section>();
 
-
+    if(Model != null)
     foreach (var section in Model.Sections)
     {
         if (section.Professor != null)
@@ -36,7 +36,7 @@
     <thead class="fixed-header">
         <tr>
                 <th>
-                    <form method="post" asp-controller="Home" asp-action="Download">
+                    <form method="post" asp-controller="Home" asp-action="Download" target="downloadFrame">
                         <input type="submit" value="Export" class="inline-btn" /><input type="hidden" value="@Model.Id" id="ansibe-id" name="id" />
                     </form>
                 </th>
@@ -176,4 +176,5 @@
 
 
     </table>
+    <iframe id="downloadFrame" name="downloadFrame" style="display:none;"></iframe>
 }

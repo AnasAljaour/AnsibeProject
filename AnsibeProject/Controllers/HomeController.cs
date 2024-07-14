@@ -23,32 +23,45 @@ namespace AnsibeProject.Controllers
         }
         public IActionResult Index()
         {
+            try
+            {
+                Ansibe? ansibeWithMaxId = _db.Ansibes
+                                               .OrderByDescending(a => a.Id)
+                                               .Include(a => a.Sections)
+                                               .ThenInclude(s => s.Course)
+                                               .Include(a => a.Sections)
+                                               .ThenInclude(s => s.Professor)
+                                               .ThenInclude(p => p.Contract)
+                                               .FirstOrDefault();
 
-            Ansibe? ansibeWithMaxId = _db.Ansibes
-                                           .OrderByDescending(a => a.Id)
-                                           .Include(a => a.Sections)
-                                           .ThenInclude(s => s.Course)
-                                           .Include(a => a.Sections)
-                                           .ThenInclude(s => s.Professor)
-                                           .ThenInclude(p => p.Contract)
-                                           .FirstOrDefault();
+                ViewBag.Year = _db.Ansibes
+                                               .Select(a => a.Year)
+                                               .Distinct()
+                                               .ToList();
 
-            ViewBag.Year = _db.Ansibes
-                                           .Select(a => a.Year)
-                                           .Distinct()
-                                           .ToList();
-
-            return View(ansibeWithMaxId);
+                return View(ansibeWithMaxId);
+            }catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
+        /*
         public IActionResult Details(int Id)
         {
-            Ansibe? ansibes = _db.Ansibes
-                                         .Include(a => a.Sections)
-                                             .ThenInclude(s => s.Course)
-                                         .Include(a => a.Sections)
-                                             .ThenInclude(s => s.Professor)
-                                         .FirstOrDefault(a => a.Id == Id);
-            return View("Index", ansibes);
+            try
+            {
+                Ansibe? ansibes = _db.Ansibes
+                                             .Include(a => a.Sections)
+                                                 .ThenInclude(s => s.Course)
+                                             .Include(a => a.Sections)
+                                                 .ThenInclude(s => s.Professor)
+                                             .FirstOrDefault(a => a.Id == Id);
+                if (ansibes == null) return BadRequest("Ansibe does not exist");
+                return View("Index", ansibes);
+            }catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
         public IActionResult CreateAnsibe()
         {
@@ -151,7 +164,7 @@ namespace AnsibeProject.Controllers
         }
 
 
-
+        */
         // REAL WORK------------------------------------
         [HttpPost]
         public async Task<IActionResult> getAnsibeBasedOnSelectedYear([FromBody] KeyValuePairModel request)
