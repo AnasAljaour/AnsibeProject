@@ -13,6 +13,19 @@ namespace AnsibeProject.Controllers.ExcelWork
     {
         private static  Dictionary<string, List<int>> myMap = new Dictionary<string, List<int>>();
         private static Dictionary<int, string> labeledSections = new Dictionary<int, string>();
+        private static Dictionary<string,int> contractMapSheet2=new Dictionary<string, int> 
+        {
+            {"ملاك",6 },
+            {"ساعة",4 },
+            {"تفرغ",5 }
+        };
+        private static Dictionary<string, int> contractMapSheet1 = new Dictionary<string, int>
+        {
+            {"ملاك",3 },
+            {"ساعة",5 },
+            {"تفرغ",4 }
+        };
+
         private static int Color=0;
 
         private static XLColor[] groupColors = {
@@ -35,7 +48,7 @@ namespace AnsibeProject.Controllers.ExcelWork
                 myMap[group.Key.CourseCode]=new List<int>{ 1,group.Count()};
             }
 
-
+            
 
 
 
@@ -160,7 +173,18 @@ namespace AnsibeProject.Controllers.ExcelWork
             {
                 worksheet.Cell(work_row, 3).Value =section.Course.TotalNumberOfHours;
                 Professor prof = section.Professor;
-                worksheet.Cell(work_row, 4).Value =(prof!=null)? prof.Contract.ContractType:"null prof";
+                if(prof!=null)
+                {
+                    // int ContractField = contractMapSheet2[prof.Contract.ContractType];
+                    try
+                    {
+                        worksheet.Cell(work_row, contractMapSheet2[prof.Contract.ContractType]).Value = "X";
+                    }catch(Exception e)
+                    {
+                        worksheet.Cell(work_row, 4).Value = "contract is unvaled";
+                    }
+                }
+               // worksheet.Cell(work_row, 4).Value =(prof!=null)? prof.Contract.ContractType:"null prof";
                 worksheet.Cell(work_row, 7).Value = (prof != null) ? prof.FullNameInArabic : "null prof";
                 worksheet.Cell(work_row, 8).Value = 0;
                 string sectionLabel= myMap[section.Course.CourseCode][0]++ + "\\" + myMap[section.Course.CourseCode][1];
@@ -344,9 +368,21 @@ namespace AnsibeProject.Controllers.ExcelWork
             {
                 
                 worksheet.Cell(work_row, 2).Value = prof.Rank.ToString();
-                worksheet.Cell(work_row, 3).Value = prof.Contract.ContractType;
+
+                /*worksheet.Cell(work_row, 3).Value = prof.Contract.ContractType;
                 worksheet.Cell(work_row, 4).Value = "-";
-                worksheet.Cell(work_row, 5).Value = "-";
+                worksheet.Cell(work_row, 5).Value = "-";*/
+               
+                    // int ContractField = contractMapSheet2[prof.Contract.ContractType];
+                    try
+                    {
+                        worksheet.Cell(work_row, contractMapSheet1[prof.Contract.ContractType]).Value = "X";
+                    }
+                    catch (Exception e)
+                    {
+                        worksheet.Cell(work_row, 3).Value = "contract is unvaled";
+                    }
+                
                 worksheet.Cell(work_row, 6).Value = prof.Speciality.ToString();
                 worksheet.Cell(work_row, 7).Value = section.Course.CourseDescription;
                 worksheet.Cell(work_row, 8).Value = section.Course.Semester;
