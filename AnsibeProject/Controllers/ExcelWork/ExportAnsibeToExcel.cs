@@ -46,7 +46,7 @@ namespace AnsibeProject.Controllers.ExcelWork
                 var worksheet2 = workbook.Worksheets.Add("Sheet2");
                 worksheet2.RightToLeft = true;
                 int current_row2 = PrepareHeaderProfessorInCourse(worksheet2, ansibeToExport.Year);
-
+                int startrow2 = current_row2;
                 var sectionGroupedUnderCourse = ansibeToExport.Sections.GroupBy(s => s.Course);
                 foreach (var group in sectionGroupedUnderCourse)
                 {
@@ -61,13 +61,16 @@ namespace AnsibeProject.Controllers.ExcelWork
 
                 }
                 worksheet2.SheetView.FreezeRows(7);
-
+                var dataRange2 = worksheet2.Range(startrow2, 1, worksheet2.RangeUsed().RowCount(), worksheet2.RangeUsed().ColumnCount());
+                dataRange2.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                dataRange2.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
 
 
 
                 var worksheet = workbook.Worksheets.Add("Sheet1");
                 worksheet.RightToLeft = true;
                 int current_row=PrepareHeaderCoursesInProfessor(worksheet,ansibeToExport.Year);
+                int startrow = current_row;
                 var sectionGroupedUnderProfessor = ansibeToExport.Sections.GroupBy(s => s.Professor);
                 foreach (var group in sectionGroupedUnderProfessor)
                 {
@@ -81,16 +84,18 @@ namespace AnsibeProject.Controllers.ExcelWork
                     
                 }
                 worksheet.SheetView.FreezeRows(5);
+                var dataRange = worksheet.Range(startrow, 1, worksheet.RangeUsed().RowCount(), worksheet.RangeUsed().ColumnCount());
+                dataRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                dataRange.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
 
 
 
 
 
 
-
-                worksheet.Columns().AdjustToContents();
-                worksheet.Column(2).Width = 18;
-                worksheet.Column(17).Width = 15;
+                // worksheet.Columns().AdjustToContents();
+                //worksheet.Column(2).Width = 18;
+                //worksheet.Column(17).Width = 15;
                 // Save the Excel file
                 //string downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
                 //workbook.SaveAs(path);
@@ -300,6 +305,27 @@ namespace AnsibeProject.Controllers.ExcelWork
             
             // Adjust column width if needed
             worksheet.Columns().AdjustToContents();
+            worksheet.Column(2).Width = 18;
+            worksheet.Column(3).Width = 10;
+            worksheet.Column(4).Width = 10;
+            worksheet.Column(5).Width = 10;
+            worksheet.Column(6).Width = 10;
+            worksheet.Column(7).Width = 10;
+            worksheet.Column(8).Width = 10;
+            worksheet.Column(9).Width = 18;
+            worksheet.Column(10).Width = 15;
+            worksheet.Column(11).Width = 10;
+            worksheet.Column(12).Width = 12;
+            worksheet.Column(13).Width = 10;
+            worksheet.Column(14).Width = 40;
+            worksheet.Column(15).Width = 10;
+            worksheet.Column(16).Width = 10;
+            worksheet.Column(17).Width = 15;
+            var headerGroup = worksheet.Range("A5:Q7");
+            headerGroup.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            headerGroup.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+            headerGroup.Style.Font.Bold = true;
+
             return 8;
         }
 
@@ -309,9 +335,9 @@ namespace AnsibeProject.Controllers.ExcelWork
             int count = group.Count();
             int final_row = row + count;
             Professor prof=group.Key;
-            var merge_range = worksheet.Range(work_row,1,row+count-1,1);
+            var merge_range = worksheet.Range(row,1,row+count-1,1);
             merge_range.Merge();
-            worksheet.Cell(row, 1).Value = prof.FirstName + prof.LastName;
+            worksheet.Cell(row, 1).Value = prof.FullNameInArabic;
            
             // add the group sections
             foreach (var section in group)
@@ -329,17 +355,21 @@ namespace AnsibeProject.Controllers.ExcelWork
                 int total_hours=0;
                 if (section.TD != null)
                 {
-                    fields += "TD + ";
+                    fields += " TD ";
+                    
                     total_hours += section.TD.Value;
                 }
                 if (section.TP != null)
                 {
-                    fields += "TP + ";
+                    fields += (fields != "") ? "+" : "";
+                    fields += " TP ";
+                    
                     total_hours += section.TP.Value;
                 }
                 if (section.CourseHours != null)
                 {
-                    fields += "C";
+                    fields += (fields != "") ? "+" : "";
+                    fields += " C ";
                     total_hours += section.CourseHours.Value;
                 }
                 worksheet.Cell(work_row, 10).Value = fields;
@@ -366,6 +396,9 @@ namespace AnsibeProject.Controllers.ExcelWork
             var boldLineRange = worksheet.Range(final_row, 1, final_row, 19);
             boldLineRange.Style.Border.TopBorder = XLBorderStyleValues.Thick;
             boldLineRange.Style.Border.TopBorderColor = XLColor.Black;
+
+            var merge_range2 = worksheet.Range(row, 19, row + count - 1, 19);
+            merge_range2.Merge();
             return work_row - row;
         }
 
@@ -418,6 +451,29 @@ namespace AnsibeProject.Controllers.ExcelWork
            
                 // Adjust column width if needed
             worksheet.Columns().AdjustToContents();
+            worksheet.Column(1).Width = 28;
+            worksheet.Column(2).Width = 18;
+            worksheet.Column(3).Width = 12;
+            worksheet.Column(4).Width = 5;
+            worksheet.Column(5).Width = 5;
+            worksheet.Column(6).Width = 12;
+            worksheet.Column(7).Width = 40;
+            worksheet.Column(8).Width = 4;
+            worksheet.Column(9).Width = 7;
+            worksheet.Column(10).Width = 14;
+            worksheet.Column(11).Width = 9;
+            worksheet.Column(12).Width = 8;
+            worksheet.Column(13).Width = 12;
+            worksheet.Column(14).Width = 21;
+            worksheet.Column(15).Width = 20;
+            worksheet.Column(16).Width = 21;
+            worksheet.Column(17).Width = 30;
+            worksheet.Column(18).Width = 8;
+            worksheet.Column(19).Width = 15;
+            var headerGroup = worksheet.Range("A5:S5");
+            headerGroup.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            headerGroup.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+            headerGroup.Style.Font.Bold = true;
             return 6;
         }
 
