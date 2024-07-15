@@ -366,7 +366,7 @@ namespace AnsibeProject.Controllers.ExcelWork
 
         private static int addGroupProfessors(IXLWorksheet worksheet, IGrouping<Professor?, Section> group, int row)
         {
-            group.OrderBy(s => s.Course.CourseCode);
+            var sorted_group =group.OrderBy(s => s.Course.CourseCode);
             int work_row = row;
             int count = group.Count();
             int final_row = row + count;
@@ -379,7 +379,7 @@ namespace AnsibeProject.Controllers.ExcelWork
             merge_range_rank.Merge();
             worksheet.Cell(work_row, 2).Value = prof.Rank.ToString();
             // add the group sections
-            foreach (var section in group)
+            foreach (var section in sorted_group)
             {
 
 
