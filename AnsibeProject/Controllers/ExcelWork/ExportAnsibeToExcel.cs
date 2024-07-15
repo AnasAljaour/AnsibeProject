@@ -205,7 +205,7 @@ namespace AnsibeProject.Controllers.ExcelWork
                 worksheet.Cell(work_row, 11).Value = (section.TP != null) ? section.TP : "";
                 worksheet.Cell(work_row, 12).Value = (section.TD != null) ? section.TD : "";
                 worksheet.Cell(work_row, 13).Value = (section.CourseHours != null) ? section.CourseHours : "";
-                worksheet.Cell(work_row, 16).Value = (prof != null) ? prof.Speciality : "null prof";
+                //worksheet.Cell(work_row, 16).Value = "-";
                 work_row++;
 
             }
