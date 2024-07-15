@@ -11,9 +11,9 @@ namespace AnsibeProject.Controllers.ExcelWork
 {
     public class ExportAnsibeToExcel
     {
-        private static  Dictionary<string, List<int>> myMap = new Dictionary<string, List<int>>();
+        private static Dictionary<string, List<int>> myMap = new Dictionary<string, List<int>>();
         private static Dictionary<int, string> labeledSections = new Dictionary<int, string>();
-        private static Dictionary<string,int> contractMapSheet2=new Dictionary<string, int> 
+        private static Dictionary<string, int> contractMapSheet2 = new Dictionary<string, int>
         {
             {"ملاك",6 },
             {"ساعة",4 },
@@ -25,8 +25,17 @@ namespace AnsibeProject.Controllers.ExcelWork
             {"ساعة",5 },
             {"تفرغ",4 }
         };
+        private static Dictionary<int, string> yearByLetters = new Dictionary<int, string>
+        {
+            {1,"الأولى" },
+            {2,"الثانية" },
+            {3,"الثالثة" },
+            {4,"الرابعة" },
+            {5,"الخامسة" }
 
-        private static int Color=0;
+        };
+
+        private static int Color = 0;
 
         private static XLColor[] groupColors = {
 
@@ -45,10 +54,10 @@ namespace AnsibeProject.Controllers.ExcelWork
 
             foreach (var group in ansibeToExport.Sections.GroupBy(s => s.Course))
             {
-                myMap[group.Key.CourseCode]=new List<int>{ 1,group.Count()};
+                myMap[group.Key.CourseCode] = new List<int> { 1, group.Count() };
             }
 
-            
+
 
 
 
@@ -56,7 +65,7 @@ namespace AnsibeProject.Controllers.ExcelWork
             using (var workbook = new XLWorkbook())
             {
 
-                var worksheet2 = workbook.Worksheets.Add("Sheet2");
+                var worksheet2 = workbook.Worksheets.Add("المواد");
                 worksheet2.RightToLeft = true;
                 int current_row2 = PrepareHeaderProfessorInCourse(worksheet2, ansibeToExport.Year);
                 int startrow2 = current_row2;
@@ -80,21 +89,22 @@ namespace AnsibeProject.Controllers.ExcelWork
 
 
 
-                var worksheet = workbook.Worksheets.Add("Sheet1");
+                var worksheet = workbook.Worksheets.Add("انصبة الأساتذة");
                 worksheet.RightToLeft = true;
-                int current_row=PrepareHeaderCoursesInProfessor(worksheet,ansibeToExport.Year);
+                int current_row = PrepareHeaderCoursesInProfessor(worksheet, ansibeToExport.Year);
                 int startrow = current_row;
                 var sectionGroupedUnderProfessor = ansibeToExport.Sections.GroupBy(s => s.Professor);
                 foreach (var group in sectionGroupedUnderProfessor)
                 {
-                    try { 
-                      current_row+=  addGroupProfessors(worksheet, group, current_row); 
+                    try
+                    {
+                        current_row += addGroupProfessors(worksheet, group, current_row);
                     }
-                    catch(Exception ex) 
+                    catch (Exception ex)
                     {
                         throw new Exception(ex.Message);
                     }
-                    
+
                 }
                 worksheet.SheetView.FreezeRows(5);
                 var dataRange = worksheet.Range(startrow, 1, worksheet.RangeUsed().RowCount(), worksheet.RangeUsed().ColumnCount());
@@ -112,7 +122,7 @@ namespace AnsibeProject.Controllers.ExcelWork
                 // Save the Excel file
                 //string downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
                 //workbook.SaveAs(path);
-                string fileName = "Ansibe"+ansibeToExport.Year + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xlsx";
+                string fileName = "Ansibe" + ansibeToExport.Year + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xlsx";
 
                 // Save the workbook to a memory stream
                 MemoryStream stream = new MemoryStream();
@@ -120,7 +130,7 @@ namespace AnsibeProject.Controllers.ExcelWork
                 stream.Position = 0; // Reset the stream position for reading
 
                 // Prepare the response to send the Excel file as a download
-               
+
                 myMap.Clear();
                 labeledSections.Clear();
                 return stream;
@@ -128,10 +138,10 @@ namespace AnsibeProject.Controllers.ExcelWork
 
 
         }
-        
 
 
-        
+
+
 
         private static int addGroupCourse(IXLWorksheet worksheet, IGrouping<Course, Section> group, int current_row)
         {
@@ -139,7 +149,7 @@ namespace AnsibeProject.Controllers.ExcelWork
             int count = group.Count();
             int final_row = current_row + count;
 
-           
+
             //عدد الساعات الشاغرة
             var merge_range1 = worksheet.Range(current_row, 1, final_row - 1, 1);
             merge_range1.Merge();
@@ -167,31 +177,32 @@ namespace AnsibeProject.Controllers.ExcelWork
             merge_range5.Merge();
             worksheet.Cell(current_row, 17).Value = group.Key.CourseCode;
 
-            
+
 
             foreach (Section section in group)
             {
-                worksheet.Cell(work_row, 3).Value =section.Course.TotalNumberOfHours;
+                worksheet.Cell(work_row, 3).Value = section.Course.TotalNumberOfHours;
                 Professor prof = section.Professor;
-                if(prof!=null)
+                if (prof != null)
                 {
                     // int ContractField = contractMapSheet2[prof.Contract.ContractType];
                     try
                     {
                         worksheet.Cell(work_row, contractMapSheet2[prof.Contract.ContractType]).Value = "X";
-                    }catch(Exception e)
+                    }
+                    catch (Exception e)
                     {
                         worksheet.Cell(work_row, 4).Value = "contract is unvaled";
                     }
                 }
-               // worksheet.Cell(work_row, 4).Value =(prof!=null)? prof.Contract.ContractType:"null prof";
+                // worksheet.Cell(work_row, 4).Value =(prof!=null)? prof.Contract.ContractType:"null prof";
                 worksheet.Cell(work_row, 7).Value = (prof != null) ? prof.FullNameInArabic : "null prof";
                 worksheet.Cell(work_row, 8).Value = 0;
-                string sectionLabel= myMap[section.Course.CourseCode][0]++ + "\\" + myMap[section.Course.CourseCode][1];
+                string sectionLabel = myMap[section.Course.CourseCode][0]++ + "\\" + myMap[section.Course.CourseCode][1];
                 worksheet.Cell(work_row, 9).Value = sectionLabel;//work in map
                 labeledSections[section.SectionId] = sectionLabel;
-                worksheet.Cell(work_row, 10).Value = section.Language.ToString() ;
-                worksheet.Cell(work_row, 11).Value = (section.TP!=null)? section.TP:"";
+                worksheet.Cell(work_row, 10).Value = section.Language.ToString();
+                worksheet.Cell(work_row, 11).Value = (section.TP != null) ? section.TP : "";
                 worksheet.Cell(work_row, 12).Value = (section.TD != null) ? section.TD : "";
                 worksheet.Cell(work_row, 13).Value = (section.CourseHours != null) ? section.CourseHours : "";
                 worksheet.Cell(work_row, 16).Value = "-";
@@ -200,21 +211,21 @@ namespace AnsibeProject.Controllers.ExcelWork
             }
 
 
-            var boldLineRange = worksheet.Range(final_row , 1, final_row , 17);
+            var boldLineRange = worksheet.Range(final_row, 1, final_row, 17);
             boldLineRange.Style.Border.TopBorder = XLBorderStyleValues.Thick;
             boldLineRange.Style.Border.TopBorderColor = XLColor.Black;
 
-            
+
             return work_row - current_row;
         }
 
-        private static int PrepareHeaderProfessorInCourse(IXLWorksheet worksheet,string year)
+        private static int PrepareHeaderProfessorInCourse(IXLWorksheet worksheet, string year)
         {
             // Set the custom headers
             worksheet.Cell(1, 1).Value = "الجامعة اللبنانية";
             worksheet.Cell(2, 1).Value = "كلية العلوم";
             worksheet.Cell(3, 1).Value = "الفرع الأول";
-            worksheet.Cell(3, 7).Value = "  جدول توزيع مواد التدريس للعام الجامعي   "+ year;
+            worksheet.Cell(3, 7).Value = "  جدول توزيع مواد التدريس للعام الجامعي   " + year;
             worksheet.Cell(4, 1).Value = "قسم الرياضيات التطبيقية";
 
             // Merge cells for the custom header
@@ -326,7 +337,7 @@ namespace AnsibeProject.Controllers.ExcelWork
             worksheet.Cell(5, 17).Value = "رمز المادة او المقرر";
 
 
-            
+
             // Adjust column width if needed
             worksheet.Columns().AdjustToContents();
             worksheet.Column(2).Width = 18;
@@ -353,53 +364,57 @@ namespace AnsibeProject.Controllers.ExcelWork
             return 8;
         }
 
-        private static int addGroupProfessors(IXLWorksheet worksheet, IGrouping<Professor?, Section> group,int row)
+        private static int addGroupProfessors(IXLWorksheet worksheet, IGrouping<Professor?, Section> group, int row)
         {
+            group.OrderBy(s => s.Course.CourseCode);
             int work_row = row;
             int count = group.Count();
             int final_row = row + count;
-            Professor prof=group.Key;
-            var merge_range = worksheet.Range(row,1,row+count-1,1);
+            Professor prof = group.Key;
+            var merge_range = worksheet.Range(row, 1, row + count - 1, 1);
             merge_range.Merge();
             worksheet.Cell(row, 1).Value = prof.FullNameInArabic;
-           
+
+            var merge_range_rank = worksheet.Range(row, 2, row + count - 1, 2);
+            merge_range_rank.Merge();
+            worksheet.Cell(work_row, 2).Value = prof.Rank.ToString();
             // add the group sections
             foreach (var section in group)
             {
-                
-                worksheet.Cell(work_row, 2).Value = prof.Rank.ToString();
+
+
 
                 /*worksheet.Cell(work_row, 3).Value = prof.Contract.ContractType;
                 worksheet.Cell(work_row, 4).Value = "-";
                 worksheet.Cell(work_row, 5).Value = "-";*/
-               
-                    // int ContractField = contractMapSheet2[prof.Contract.ContractType];
-                    try
-                    {
-                        worksheet.Cell(work_row, contractMapSheet1[prof.Contract.ContractType]).Value = "X";
-                    }
-                    catch (Exception e)
-                    {
-                        worksheet.Cell(work_row, 3).Value = "contract is unvaled";
-                    }
-                
+
+                // int ContractField = contractMapSheet2[prof.Contract.ContractType];
+                try
+                {
+                    worksheet.Cell(work_row, contractMapSheet1[prof.Contract.ContractType]).Value = "X";
+                }
+                catch (Exception e)
+                {
+                    worksheet.Cell(work_row, 3).Value = "contract is unvaled";
+                }
+
                 worksheet.Cell(work_row, 6).Value = prof.Speciality.ToString();
                 worksheet.Cell(work_row, 7).Value = section.Course.CourseDescription;
                 worksheet.Cell(work_row, 8).Value = section.Course.Semester;
                 worksheet.Cell(work_row, 9).Value = section.Course.CourseCode;
                 string fields = "";
-                int total_hours=0;
+                int total_hours = 0;
                 if (section.TD != null)
                 {
                     fields += " TD ";
-                    
+
                     total_hours += section.TD.Value;
                 }
                 if (section.TP != null)
                 {
                     fields += (fields != "") ? "+" : "";
                     fields += " TP ";
-                    
+
                     total_hours += section.TP.Value;
                 }
                 if (section.CourseHours != null)
@@ -410,7 +425,7 @@ namespace AnsibeProject.Controllers.ExcelWork
                 }
                 worksheet.Cell(work_row, 10).Value = fields;
                 worksheet.Cell(work_row, 11).Value = total_hours;
-                worksheet.Cell(work_row, 12).Value = (section.Course.Semester / 2+ section.Course.Semester%2) ;
+                worksheet.Cell(work_row, 12).Value = yearByLetters[(section.Course.Semester / 2 + section.Course.Semester % 2)];
                 worksheet.Cell(work_row, 13).Value = section.Language.ToString();
                 worksheet.Cell(work_row, 14).Value = 0;
                 worksheet.Cell(work_row, 15).Value = 0;
@@ -422,7 +437,7 @@ namespace AnsibeProject.Controllers.ExcelWork
                 work_row++;
             }
             // try to add a fuction on last cell
-            worksheet.Cell(row, 19).FormulaA1 = "=SUM(K" + row + ":K" + (work_row-1)+")";
+            worksheet.Cell(row, 19).FormulaA1 = "=SUM(K" + row + ":K" + (work_row - 1) + ")";
 
             /*var range = worksheet.Range(row , 1, work_row , 19); // Adjust columns as per your data
             range.Style.Fill.BackgroundColor = groupColors[Color];
@@ -438,13 +453,13 @@ namespace AnsibeProject.Controllers.ExcelWork
             return work_row - row;
         }
 
-        private static int PrepareHeaderCoursesInProfessor(IXLWorksheet worksheet,string year)
+        private static int PrepareHeaderCoursesInProfessor(IXLWorksheet worksheet, string year)
         {
             // Set the custom headers
             worksheet.Cell(1, 1).Value = "الجامعة اللبنانية";
             worksheet.Cell(2, 1).Value = "كلية العلوم";
             worksheet.Cell(3, 1).Value = "الفرع الأول";
-            worksheet.Cell(3, 7).Value = "جدول تحديد نصاب الأستاذ للعام الجامعي "+year;
+            worksheet.Cell(3, 7).Value = "جدول تحديد نصاب الأستاذ للعام الجامعي " + year;
             worksheet.Cell(4, 1).Value = "قسم الرياضيات التطبيقية";
 
             // Merge cells for the custom header
@@ -484,8 +499,8 @@ namespace AnsibeProject.Controllers.ExcelWork
             worksheet.Cell(5, 17).Value = "(ترابط الاختصاص مع المواد المسندة * (2";
             worksheet.Cell(5, 18).Value = "الكلية والفرع";
             worksheet.Cell(5, 19).Value = "مجموع نصاب الأستاذ";
-           
-                // Adjust column width if needed
+
+            // Adjust column width if needed
             worksheet.Columns().AdjustToContents();
             worksheet.Column(1).Width = 28;
             worksheet.Column(2).Width = 18;
@@ -515,8 +530,8 @@ namespace AnsibeProject.Controllers.ExcelWork
 
     }
 
-       
-    }
+
+}
 
 
 
