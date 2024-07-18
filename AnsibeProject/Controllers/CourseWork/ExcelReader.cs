@@ -3,14 +3,24 @@
 using AnsibeProject.Data;
 using AnsibeProject.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using OfficeOpenXml;
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 public class ExcelReader<T> where T:new()
 {
     private readonly UniversityContext _universityContext;
+    private static Dictionary<string, string> arabicToEnglish = new Dictionary<string, string>
+        {
+            {"أستاذ مساعد","AssistantProfessor" },
+            {"أستاذ معيد","AssociateProfessor"},
+            {"أستاذ","Professor" }
+
+        };
+   
     public ExcelReader(UniversityContext universityContext)
     {
         _universityContext = universityContext;
@@ -32,10 +42,24 @@ public class ExcelReader<T> where T:new()
                 {
                     var myAttribute = typeof(T).GetProperty(worksheet.Cells[1, col].Value?.ToString());
                     var cell = worksheet.Cells[row, col].Value?.ToString();
+                    
                     if (myAttribute != null)
                     {
                         if (myAttribute.PropertyType.IsEnum)
                         {
+                            Regex arabicRegex = new Regex(@"\p{IsArabic}");
+                            if (arabicRegex.IsMatch(cell))
+                            {
+
+                                if (arabicToEnglish.ContainsKey(cell))
+                                {
+                                    cell = arabicToEnglish[cell];
+                                }else
+                                {
+                                    continue;
+                                }
+
+                            }
                             try {
                                 object myEnum = Enum.Parse(myAttribute.PropertyType, cell);
                                 myAttribute.SetValue(dataObject, myEnum);

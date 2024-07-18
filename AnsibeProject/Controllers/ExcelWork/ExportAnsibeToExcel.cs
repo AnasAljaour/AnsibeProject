@@ -34,7 +34,7 @@ namespace AnsibeProject.Controllers.ExcelWork
             {5,"الخامسة" }
 
         };
-
+        
         private static int Color = 0;
 
         private static XLColor[] groupColors = {
@@ -148,19 +148,20 @@ namespace AnsibeProject.Controllers.ExcelWork
             int work_row = current_row;
             int count = group.Count();
             int final_row = current_row + count;
-
+            int[] Hourse= { 0, 0};
 
             //عدد الساعات الشاغرة
             var merge_range1 = worksheet.Range(current_row, 1, final_row - 1, 1);
             merge_range1.Merge();
-            worksheet.Cell(current_row, 1).Value = 0;
+            
 
 
 
             //عدد الساعات المؤمنة
             var merge_range2 = worksheet.Range(current_row, 2, final_row - 1, 2);
             merge_range2.Merge();
-            worksheet.Cell(current_row, 2).FormulaA1 = "=SUM(C" + current_row + ":C" + (final_row - 1) + ")";
+            //worksheet.Cell(current_row, 2).FormulaA1 = "=SUM(C" + current_row + ":C" + (final_row - 1) + ")";
+           
 
             //مادة التدريس او المقرر
             var merge_range3 = worksheet.Range(current_row, 14, final_row - 1, 14);
@@ -183,8 +184,13 @@ namespace AnsibeProject.Controllers.ExcelWork
             {
                 worksheet.Cell(work_row, 3).Value = section.Course.TotalNumberOfHours;
                 Professor prof = section.Professor;
+                int sum = 0;
+                sum+= (section.TP != null) ? section.Course.TP : 0;
+                sum += (section.TD != null) ? section.Course.TD : 0;
+                sum += (section.CourseHours != null) ? section.Course.NumberOfHours : 0;
                 if (prof != null)
                 {
+                    Hourse[1] += sum;
                     // int ContractField = contractMapSheet2[prof.Contract.ContractType];
                     try
                     {
@@ -194,6 +200,10 @@ namespace AnsibeProject.Controllers.ExcelWork
                     {
                         worksheet.Cell(work_row, 4).Value = "contract is unvaled";
                     }
+                }else
+                {
+
+                    Hourse[0] += sum;
                 }
                 // worksheet.Cell(work_row, 4).Value =(prof!=null)? prof.Contract.ContractType:"null prof";
                 worksheet.Cell(work_row, 7).Value = (prof != null) ? prof.FullNameInArabic : "null prof";
@@ -209,7 +219,8 @@ namespace AnsibeProject.Controllers.ExcelWork
                 work_row++;
 
             }
-
+            worksheet.Cell(current_row, 1).Value = Hourse[0];
+            worksheet.Cell(current_row, 2).Value = Hourse[1];
 
             var boldLineRange = worksheet.Range(final_row, 1, final_row, 17);
             boldLineRange.Style.Border.TopBorder = XLBorderStyleValues.Thick;
@@ -373,11 +384,11 @@ namespace AnsibeProject.Controllers.ExcelWork
             Professor prof = group.Key;
             var merge_range = worksheet.Range(row, 1, row + count - 1, 1);
             merge_range.Merge();
-            worksheet.Cell(row, 1).Value = prof.FullNameInArabic;
+            worksheet.Cell(row, 1).Value = (prof != null) ? prof.FullNameInArabic : "null prof";
 
             var merge_range_rank = worksheet.Range(row, 2, row + count - 1, 2);
             merge_range_rank.Merge();
-            worksheet.Cell(work_row, 2).Value = EnumHelper.GetEnumDescription(prof.Rank);
+            worksheet.Cell(work_row, 2).Value = (prof != null) ? EnumHelper.GetEnumDescription(prof.Rank) : "null prof";
             // add the group sections
             foreach (var section in sorted_group)
             {
@@ -392,13 +403,12 @@ namespace AnsibeProject.Controllers.ExcelWork
                 try
                 {
                     worksheet.Cell(work_row, contractMapSheet1[prof.Contract.ContractType]).Value = "X";
-                }
-                catch (Exception e)
+                }catch (Exception e)
                 {
                     worksheet.Cell(work_row, 3).Value = "contract is unvaled";
                 }
 
-                worksheet.Cell(work_row, 6).Value = prof.Speciality.ToString();
+                worksheet.Cell(work_row, 6).Value = (prof != null) ? prof.Speciality.ToString():"null professor";
                 worksheet.Cell(work_row, 7).Value = section.Course.CourseDescription;
                 worksheet.Cell(work_row, 8).Value = section.Course.Semester;
                 worksheet.Cell(work_row, 9).Value = section.Course.CourseCode;
