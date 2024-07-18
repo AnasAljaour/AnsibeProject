@@ -81,7 +81,7 @@
                                     @key
                                 </td>
                                 <td rowspan="@sections.Count">
-                                    @s.Professor.Rank
+                                    @EnumHelper.GetEnumDescription( s.Professor.Rank)
                                 </td>
                                 <td rowspan="@sections.Count">
                                     @s.Professor.Contract.ContractType
