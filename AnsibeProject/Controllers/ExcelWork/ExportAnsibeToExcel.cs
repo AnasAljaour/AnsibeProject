@@ -182,12 +182,13 @@ namespace AnsibeProject.Controllers.ExcelWork
 
             foreach (Section section in group)
             {
-                worksheet.Cell(work_row, 3).Value = section.Course.TotalNumberOfHours;
+                
                 Professor prof = section.Professor;
                 int sum = 0;
                 sum+= (section.TP != null) ? section.Course.TP : 0;
                 sum += (section.TD != null) ? section.Course.TD : 0;
                 sum += (section.CourseHours != null) ? section.Course.NumberOfHours : 0;
+                worksheet.Cell(work_row, 3).Value = sum;
                 if (prof != null)
                 {
                     Hourse[1] += sum;
