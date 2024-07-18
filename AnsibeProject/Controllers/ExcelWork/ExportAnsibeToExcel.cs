@@ -377,89 +377,95 @@ namespace AnsibeProject.Controllers.ExcelWork
 
         private static int addGroupProfessors(IXLWorksheet worksheet, IGrouping<Professor?, Section> group, int row)
         {
+            
             var sorted_group =group.OrderBy(s => s.Course.CourseCode);
             int work_row = row;
             int count = group.Count();
             int final_row = row + count;
             Professor prof = group.Key;
-            var merge_range = worksheet.Range(row, 1, row + count - 1, 1);
-            merge_range.Merge();
-            worksheet.Cell(row, 1).Value = (prof != null) ? prof.FullNameInArabic : "null prof";
-
-            var merge_range_rank = worksheet.Range(row, 2, row + count - 1, 2);
-            merge_range_rank.Merge();
-            worksheet.Cell(work_row, 2).Value = (prof != null) ? EnumHelper.GetEnumDescription(prof.Rank) : "null prof";
-            // add the group sections
-            foreach (var section in sorted_group)
+            if(prof!=null)
             {
+                var merge_range = worksheet.Range(row, 1, row + count - 1, 1);
+                merge_range.Merge();
+                worksheet.Cell(row, 1).Value = (prof != null) ? prof.FullNameInArabic : "null prof";
 
-
-
-                /*worksheet.Cell(work_row, 3).Value = prof.Contract.ContractType;
-                worksheet.Cell(work_row, 4).Value = "-";
-                worksheet.Cell(work_row, 5).Value = "-";*/
-
-                // int ContractField = contractMapSheet2[prof.Contract.ContractType];
-                try
+                var merge_range_rank = worksheet.Range(row, 2, row + count - 1, 2);
+                merge_range_rank.Merge();
+                worksheet.Cell(work_row, 2).Value = (prof != null) ? EnumHelper.GetEnumDescription(prof.Rank) : "null prof";
+                // add the group sections
+                foreach (var section in sorted_group)
                 {
-                    worksheet.Cell(work_row, contractMapSheet1[prof.Contract.ContractType]).Value = "X";
-                }catch (Exception e)
-                {
-                    worksheet.Cell(work_row, 3).Value = "contract is unvaled";
+
+
+
+                    /*worksheet.Cell(work_row, 3).Value = prof.Contract.ContractType;
+                    worksheet.Cell(work_row, 4).Value = "-";
+                    worksheet.Cell(work_row, 5).Value = "-";*/
+
+                    // int ContractField = contractMapSheet2[prof.Contract.ContractType];
+                    try
+                    {
+                        worksheet.Cell(work_row, contractMapSheet1[prof.Contract.ContractType]).Value = "X";
+                    }
+                    catch (Exception e)
+                    {
+                        worksheet.Cell(work_row, 3).Value = "contract is unvaled";
+                    }
+
+                    worksheet.Cell(work_row, 6).Value = (prof != null) ? prof.Speciality.ToString() : "null professor";
+                    worksheet.Cell(work_row, 7).Value = section.Course.CourseDescription;
+                    worksheet.Cell(work_row, 8).Value = section.Course.Semester;
+                    worksheet.Cell(work_row, 9).Value = section.Course.CourseCode;
+                    string fields = "";
+                    int total_hours = 0;
+                    if (section.TD != null)
+                    {
+                        fields += " TD ";
+
+                        total_hours += section.TD.Value;
+                    }
+                    if (section.TP != null)
+                    {
+                        fields += (fields != "") ? "+" : "";
+                        fields += " TP ";
+
+                        total_hours += section.TP.Value;
+                    }
+                    if (section.CourseHours != null)
+                    {
+                        fields += (fields != "") ? "+" : "";
+                        fields += " C ";
+                        total_hours += section.CourseHours.Value;
+                    }
+                    worksheet.Cell(work_row, 10).Value = fields;
+                    worksheet.Cell(work_row, 11).Value = total_hours;
+                    worksheet.Cell(work_row, 12).Value = yearByLetters[(section.Course.Semester / 2 + section.Course.Semester % 2)];
+                    worksheet.Cell(work_row, 13).Value = section.Language.ToString();
+                    worksheet.Cell(work_row, 14).Value = 0;
+                    worksheet.Cell(work_row, 15).Value = 0;
+                    worksheet.Cell(work_row, 16).Value = labeledSections[section.SectionId];
+
+                    worksheet.Cell(work_row, 17).Value = 1;
+                    worksheet.Cell(work_row, 18).Value = "العلوم 1";
+
+                    work_row++;
                 }
+                // try to add a fuction on last cell
+                worksheet.Cell(row, 19).FormulaA1 = "=SUM(K" + row + ":K" + (work_row - 1) + ")";
 
-                worksheet.Cell(work_row, 6).Value = (prof != null) ? prof.Speciality.ToString():"null professor";
-                worksheet.Cell(work_row, 7).Value = section.Course.CourseDescription;
-                worksheet.Cell(work_row, 8).Value = section.Course.Semester;
-                worksheet.Cell(work_row, 9).Value = section.Course.CourseCode;
-                string fields = "";
-                int total_hours = 0;
-                if (section.TD != null)
-                {
-                    fields += " TD ";
+                /*var range = worksheet.Range(row , 1, work_row , 19); // Adjust columns as per your data
+                range.Style.Fill.BackgroundColor = groupColors[Color];
+                Color = (Color + 1) % groupColors.Length;*/
 
-                    total_hours += section.TD.Value;
-                }
-                if (section.TP != null)
-                {
-                    fields += (fields != "") ? "+" : "";
-                    fields += " TP ";
 
-                    total_hours += section.TP.Value;
-                }
-                if (section.CourseHours != null)
-                {
-                    fields += (fields != "") ? "+" : "";
-                    fields += " C ";
-                    total_hours += section.CourseHours.Value;
-                }
-                worksheet.Cell(work_row, 10).Value = fields;
-                worksheet.Cell(work_row, 11).Value = total_hours;
-                worksheet.Cell(work_row, 12).Value = yearByLetters[(section.Course.Semester / 2 + section.Course.Semester % 2)];
-                worksheet.Cell(work_row, 13).Value = section.Language.ToString();
-                worksheet.Cell(work_row, 14).Value = 0;
-                worksheet.Cell(work_row, 15).Value = 0;
-                worksheet.Cell(work_row, 16).Value = labeledSections[section.SectionId];
+                var boldLineRange = worksheet.Range(final_row, 1, final_row, 19);
+                boldLineRange.Style.Border.TopBorder = XLBorderStyleValues.Thick;
+                boldLineRange.Style.Border.TopBorderColor = XLColor.Black;
 
-                worksheet.Cell(work_row, 17).Value = 1;
-                worksheet.Cell(work_row, 18).Value = "العلوم 1";
-
-                work_row++;
+                var merge_range2 = worksheet.Range(row, 19, row + count - 1, 19);
+                merge_range2.Merge();
             }
-            // try to add a fuction on last cell
-            worksheet.Cell(row, 19).FormulaA1 = "=SUM(K" + row + ":K" + (work_row - 1) + ")";
-
-            /*var range = worksheet.Range(row , 1, work_row , 19); // Adjust columns as per your data
-            range.Style.Fill.BackgroundColor = groupColors[Color];
-            Color = (Color + 1) % groupColors.Length;*/
-
-
-            var boldLineRange = worksheet.Range(final_row, 1, final_row, 19);
-            boldLineRange.Style.Border.TopBorder = XLBorderStyleValues.Thick;
-            boldLineRange.Style.Border.TopBorderColor = XLColor.Black;
-
-            var merge_range2 = worksheet.Range(row, 19, row + count - 1, 19);
-            merge_range2.Merge();
+            
             return work_row - row;
         }
 
