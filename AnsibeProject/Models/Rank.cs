@@ -1,17 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace AnsibeProject.Models
 {
     public enum Rank
     {
 
-        [Display(Name ="Assistant Professor")]
+        [Display(Name ="أستاذ مساعد")]
+        [Description("أستاذ مساعد")]
         AssistantProfessor,
 
 
-        [Display(Name ="Associate Professore")]
-        AssociateProfessore,
+        [Display(Name ="أستاذ معيد")]
+        [Description("أستاذ معيد")]
+        AssociateProfessor,
 
+        [Display(Name ="أستاذ")]
+        [Description("أستاذ")]
         Professor
     }
 }

@@ -377,7 +377,7 @@ namespace AnsibeProject.Controllers.ExcelWork
 
             var merge_range_rank = worksheet.Range(row, 2, row + count - 1, 2);
             merge_range_rank.Merge();
-            worksheet.Cell(work_row, 2).Value = prof.Rank.ToString();
+            worksheet.Cell(work_row, 2).Value = EnumHelper.GetEnumDescription(prof.Rank);
             // add the group sections
             foreach (var section in sorted_group)
             {
