@@ -7,8 +7,8 @@
     <h1 class="heading">our courses</h1>
     <div class="box-container">
         <div class="box">
-        <form method="post" asp-controller="Course" asp-action="ImportExcel" enctype="multipart/form-data">
-            <input type="file" accept=".xlsx, .xls" name="file" />
+            <form method="post" asp-controller="Course" asp-action="ImportExcel" enctype="multipart/form-data" onsubmit="validateForm(event)">
+            <input type="file" accept=".xlsx, .xls" name="file" id="fileInput" class="inline-btn"/>
             <button type="submit" class="inline-btn">Import from Excel</button>
         </form>
     </div>
@@ -247,6 +247,13 @@
                     Swal.fire("Deletion cancelled", "", "info");
                 }
             });
+        }
+        function validateForm(event) {
+            var fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length === 0) {
+                Swal.fire("You should select a file first", "", "info");
+                event.preventDefault();
+            }
         }
     </script>
 }
