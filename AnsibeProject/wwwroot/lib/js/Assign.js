@@ -8,7 +8,7 @@ function getAllocationBasedOnYear(selected) {
     }
     
     $.ajax({
-        url: '/AssignP/getAnsibeByYear',
+        url: '/Create/getAnsibeByYear',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(data),
@@ -127,7 +127,7 @@ function getPartialViewBasedOnSelectedId(usedId, newAnsibe) {
     
     
     $.ajax({
-        url: '/AssignP/getSectionOfTheAnsibeById',
+        url: '/Create/getSectionOfTheAnsibeById',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({ AnsibeId: usedId, NewAnsibeId: newAnsibe }),
@@ -148,7 +148,7 @@ function getPartialViewBasedOnSelectedId(usedId, newAnsibe) {
 
 function deleteSectionsFromDataBase(usedId,newAnsibe) {
     $.ajax({
-        url: '/AssignP/DeleteSectionsOfAnsibe',
+        url: '/Create/DeleteSectionsOfAnsibe',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(newAnsibe),
@@ -173,7 +173,7 @@ function swapContent() {
 
         type = (type === "CP") ? "PS" : "CP";
         $.ajax({
-            url: '/AssignP/ToggleView',
+            url: '/Create/ToggleView',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ AnsibeId: AnsibeId, Allocation: allocation, Type: type }),
@@ -307,7 +307,7 @@ function saveCreatedSections() {
             Value: document.getElementById('AnsibeId').value
         }
         $.ajax({
-            url: '/AssignP/SaveWork',
+            url: '/Create/SaveWork',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ Allocation: allocation, Type: type, AnsibeId: AnsibeId }),
@@ -326,7 +326,7 @@ function saveCreatedSections() {
     if (tempSections.length > 0) {
         let AnsibeId = document.getElementById('AnsibeId').value
         $.ajax({
-            url: '/AssignP/SaveCreatedSections',
+            url: '/Create/SaveCreatedSections',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({TempSections: tempSections, Type: type, AnsibeId: AnsibeId }),
@@ -453,7 +453,7 @@ function saveProfessorAssign() {
     var popup = document.getElementById("popup1");
     popup.classList.toggle("open-popup");
 
-    console.log(allocation);
+    
 
 }
 
@@ -519,7 +519,7 @@ function deleteAssignProfessors(button) {
     }
     else {
         $.ajax({
-            url: '/AssignP/DeleteAssignement',
+            url: '/Create/DeleteAssignement',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(sectionId),
@@ -574,7 +574,7 @@ function deleteAssignement(button) {
         subtracteHoursForProfessor(button);
         let newRow = row.cloneNode(true);
         let lastCell = newRow.cells[newRow.cells.length - 1];
-        lastCell.innerHTML = '<input type="checkbox" id="myCheckbox" name="c1[]" /><a class="clickable-icon" onclick = "deleteSectionPermenetlyInProfessorView(this,"popup")" ><i class="fas fa-trash trash-icon"></i>';
+        lastCell.innerHTML = '<input type="checkbox" id="myCheckbox" name="c1[]" /><a class="clickable-icon" onclick ="deleteSectionPermenetlyInProfessorView(this,\'popup\')" ><i class="fas fa-trash trash-icon"></i></a>';
 
         let tbody = document.getElementById("SectionId");
         tbody.appendChild(newRow);
@@ -587,7 +587,7 @@ function deleteAssignement(button) {
     }
     else {
         $.ajax({
-            url: '/AssignP/DeleteAssignement',
+            url: '/Create/DeleteAssignement',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(sectionId),
@@ -599,7 +599,7 @@ function deleteAssignement(button) {
 
                 let newRow = row.cloneNode(true);
                 let lastCell = newRow.cells[newRow.cells.length - 1];
-                lastCell.innerHTML = '<input type="checkbox" id="myCheckbox" name="c1[]" /><a class="clickable-icon" onclick = "deleteSectionPermenetlyInProfessorView(this,"popup")" ><i class="fas fa-trash trash-icon"></i>';
+                lastCell.innerHTML = '<input type="checkbox" id="myCheckbox" name="c1[]" /><a class="clickable-icon" onclick ="deleteSectionPermenetlyInProfessorView(this,"popup")" ><i class="fas fa-trash trash-icon"></i></a>';
 
                 let tbody = document.getElementById("SectionId");
                 tbody.appendChild(newRow);
@@ -662,7 +662,7 @@ function deleteSectionPermenetlyInProfessorView(button,fromWhere) {
                 });
             }
             $.ajax({
-                url: '/AssignP/DeleteSectionPermenetly',
+                url: '/Create/DeleteSectionPermenetly',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(sectionId),
@@ -693,7 +693,7 @@ function saveWork() {
         Value: document.getElementById('AnsibeId').value
     }
     $.ajax({
-        url: '/AssignP/SaveWork',
+        url: '/Create/SaveWork',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({ Allocation: allocation, Type: type, AnsibeId: AnsibeId }),
@@ -721,14 +721,18 @@ function cancel() {
 }
 let savechange = false;
 window.addEventListener('beforeunload', function (e) {
-    if (! savechange) {
+    if (!savechange) {
         var confirmationMessage = 'Are you sure you want to leave? Changes you made may not be saved.';
 
-        // Standard way to display the confirmation message in modern browsers
+
         (e || window.event).returnValue = confirmationMessage;
 
-        // For older browsers
+
         return confirmationMessage;
+    }
+    else {
+        let menu = document.getElementById('menu-btn');
+        menu.style.display = 'none';
     }
 });
 

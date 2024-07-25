@@ -176,10 +176,21 @@ namespace AnsibeProject.Controllers
             {
                 try
                 {   // call function delete 
-                    if (deleteProfessor(fileNumber)) return RedirectToAction("Index");
+                    Professor? p = _db.Professors.Include(p => p.Contract).FirstOrDefault(p => p.FileNumber == fileNumber);
+                    if (p == null) ModelState.AddModelError("", "the professor does not exist.");
                     else
                     {
-                        ModelState.AddModelError("", "Failed to delete");
+                        List<Models.Section> sections = _db.Sections.Include(p => p.Professor).Where(s => s.Professor != null && s.Professor.FileNumber == fileNumber).ToList();
+                        if (sections.Count > 0)
+                        {
+                            foreach (var section in sections)
+                            {
+                                section.Professor = null;
+                            }
+                            _db.UpdateRange(sections);
+                        }
+                        _db.Remove(p);
+                        _db.SaveChanges();
                     }
 
                 }
@@ -266,14 +277,22 @@ namespace AnsibeProject.Controllers
         }
         public bool deleteProfessor(int? fileNumber)
         {
-            Professor? professor = getProfessorByFileNumber(fileNumber);
+            try
+            {
 
-            if (professor == null) return false;
 
-            _db.Professors.Remove(professor);
-            _db.SaveChanges();
-            return true;
+                Professor? professor = getProfessorByFileNumber(fileNumber);
 
+                if (professor == null) return false;
+
+                _db.Professors.Remove(professor);
+                _db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
 
 
         }

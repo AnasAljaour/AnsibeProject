@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AnsibeProject.Controllers
 {
-    public class AssignPController : Controller
+    public class CreateController : Controller
     {
         private readonly UniversityContext _db;
         private const string SectionsSessionKey = "Sections";
-        public AssignPController(UniversityContext db)
+        public CreateController(UniversityContext db)
         {
 
             _db = db;
