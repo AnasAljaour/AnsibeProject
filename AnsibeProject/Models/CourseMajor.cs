@@ -6,6 +6,8 @@
         MIS,
         PCE,
         Statistic,
-        Informatics
+        Informatics,
+        Chimie,
+        PE
     }
 }
