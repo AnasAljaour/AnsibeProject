@@ -1,10 +1,12 @@
 ﻿document.addEventListener('DOMContentLoaded', (event) => {
     
     let button = document.querySelector('#menu-btn');
+    button.style.display = 'inline-block';
     button.addEventListener('click', hideSideBar);
     let toggle = document.getElementById('user-btn');
     toggle.style.display = 'inline-block';
     toggle.addEventListener('click', swapView);
+
 });
 function getAnsibeBySelectedYear(selected) {
     let request = {
@@ -153,5 +155,8 @@ window.addEventListener('beforeunload', function (e) {
     
         let toggle = document.getElementById('user-btn');
         toggle.style.display = 'none';
+
+    let menu = document.getElementById('menu-btn');
+    menu.style.display = 'none';
     
 });

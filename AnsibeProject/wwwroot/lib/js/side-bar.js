@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     let sideBar = document.querySelector('.side-bar');
     let button = document.querySelector('#menu-btn');
+    button.style.display = 'inline-block';
     handleResize();
     window.addEventListener('resize', handleResize);
     button.addEventListener('click', showSidebar);

@@ -170,7 +170,7 @@
                                         <button class="inline-btn" id="toggle-btn" onclick="toggleState(@professor.FileNumber,this)">Activate</button>
                                     </td>
                                     <td>
-                                        <a class="inline-delete-btn" onclick="confirmDelete('@professor.FileNumber')">delete</a>
+                                        <button class="inline-delete-btn" onclick="confirmDelete('@professor.FileNumber')">delete</button>
                                     </td>
                                 </tr>
                             }
@@ -249,7 +249,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     // If user confirms, perform the delete action
-                    window.location.href = "Professor/Delete?FileNumber=" + fileNumber;
+                    window.location.href = "/Professor/Delete?FileNumber=" + fileNumber;
                 } else {
                     // If user cancels, show an informational message
                     Swal.fire("Deletion cancelled", "", "info");
