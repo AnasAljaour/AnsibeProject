@@ -60,8 +60,9 @@ namespace AnsibeProject.Controllers.CourseWork
         }
         public void DeleteCourse(String CourseCode)
         {
-
-            _universityContext.Courses.Remove(getCourseByCode(CourseCode));
+            Models.Course courseTodelete = getCourseByCode(CourseCode);
+            _universityContext.Sections.RemoveRange(_universityContext.Sections.Where(s => s.Course == courseTodelete));
+            _universityContext.Courses.Remove(courseTodelete);
             _universityContext.SaveChanges();
         }
         /*
