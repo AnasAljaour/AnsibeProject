@@ -26,9 +26,7 @@ function showSidebar() {
     }
     else {
         saidebar[0].classList.add('active');
-        /* if (window.innerWidth > 1200 && !saidebar[1].classList.contains('active')) {
-             saidebar[1].classList.add('active');
-         }*/
+       
         s.forEach(function (element) {
             if (!element.classList.contains('courses'))
                 element.classList.add('courses');
