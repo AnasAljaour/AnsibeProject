@@ -271,8 +271,8 @@ function createSections(button, CourseCode, CourseDescription, CourseHours, TP, 
 
 
         newRow.appendChild(courseCell);
-        newRow.appendChild(TPCell);
         newRow.appendChild(TDCell);
+        newRow.appendChild(TPCell);
         newRow.appendChild(languageCell);
         newRow.appendChild(deleteButtonCell);
 
