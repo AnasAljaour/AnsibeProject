@@ -6,7 +6,7 @@
     <div class="box-container">
         <div class="box">
             <form method="post" asp-controller="Professor" asp-action="ImportExcel" enctype="multipart/form-data" onsubmit="validateForm(event)">
-                <input type="file" accept=".xlsx, .xls" name="file" id="fileInput" />
+                <input type="file" accept=".xlsx, .xls" name="file" id="fileInput" class="inline-btn" />
                 <button type="submit" asp-controller="Professor" asp-action="ImportExcel" class="inline-btn">Import from Excel</button>
         </form>
     </div>
@@ -229,11 +229,12 @@
                             }
                         }
                             else{
-                            console.error(data.errorMessage);
+
+                            Swal.fire(data.errorMessage, "", "info");
                             }
                     },
                     error: function (xhr, status, error) {
-                        cosole.error(xhr.responseJSON.errorMessage);
+                        Swal.fire(xhr.responseJSON.errorMessage,"","info");
                     }
                 })
             }
