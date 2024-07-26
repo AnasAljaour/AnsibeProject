@@ -9,6 +9,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.RefAndLookup;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Linq.Expressions;
 
 namespace AnsibeProject.Controllers
 {
@@ -71,46 +72,51 @@ namespace AnsibeProject.Controllers
         public IActionResult Edit(Professor professor)
 
         {
-            if (professor != null) // instance of profeesor is null
-            {
-                if (!professor.Contract.ContractType.IsNullOrEmpty())
-               {
-                Contract? contract = getContract(professor.Contract.ContractType);
-                    professor.Contract = contract;
-               }
-            
-                if (ModelState.IsValid)
+            try {
+                if (professor != null) // instance of profeesor is null
                 {
-                    try
+                    if (!professor.Contract.ContractType.IsNullOrEmpty())
                     {
-                        // update the database and return to index file where list of professor exist
-                        _db.Professors.Update(professor);
-                        _db.SaveChanges();
-                        return RedirectToAction(nameof(Index));
+                        Contract? contract = getContract(professor.Contract.ContractType);
+                        professor.Contract = contract;
                     }
-                    catch (Exception ex)
-                    {
-                        ModelState.AddModelError("", "failed to Edit Professor Information");
-                        ModelState.AddModelError("", ex.Message);
-                    }
-                }
-                else // Model not valid stay on the same page
-                {
-                    ViewBag.Action = "Edit";
-                    ViewBag.ContractTypes = getContractTypes();
-                    return View(professor);
-                }
-            }
-            else // Professor is null
-            {
-                ModelState.AddModelError("", "Professor instance is null");
-            }
-            // stay on the same Page
-            ViewBag.Action = "Edit";
-            ViewBag.ContractTypes = getContractTypes();
-            return View(professor);
 
-        }
+                    if (ModelState.IsValid)
+                    {
+                        try
+                        {
+                            // update the database and return to index file where list of professor exist
+                            _db.Professors.Update(professor);
+                            _db.SaveChanges();
+                            return RedirectToAction(nameof(Index));
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("", "failed to Edit Professor Information");
+                            ModelState.AddModelError("", ex.Message);
+                        }
+                    }
+                    else // Model not valid stay on the same page
+                    {
+                        ViewBag.Action = "Edit";
+                        ViewBag.ContractTypes = getContractTypes();
+                        return View(professor);
+                    }
+                }
+                else // Professor is null
+                {
+                    ModelState.AddModelError("", "Professor instance is null");
+                }
+                // stay on the same Page
+                ViewBag.Action = "Edit";
+                ViewBag.ContractTypes = getContractTypes();
+                return View(professor);
+
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            }
 
 
 
@@ -120,51 +126,57 @@ namespace AnsibeProject.Controllers
         // go to form to enter the details about the new professor
         public IActionResult Add()
         {
-            ViewBag.Action = "Add";
-            ViewBag.ContractTypes = getContractTypes();
-            return View();
+            try
+            {
+                ViewBag.Action = "Add";
+                ViewBag.ContractTypes = getContractTypes();
+                return View();
+            }catch(Exception ex) { return BadRequest(ex.Message); }
         }
 
         [HttpPost]
         public IActionResult Add(Professor professor)
         {
-            if (professor != null) // professor is not null
+            try
             {
-                if (!professor.Contract.ContractType.IsNullOrEmpty())
+                if (professor != null) // professor is not null
                 {
-                    Contract? contract = getContract(professor.Contract.ContractType);
-                    professor.Contract = contract;
-                }
-                if (ModelState.IsValid) // unvalide attributes were entered
-                {
-                    try
-                    {   // add the new professor to database and redirect to Index page
-                        _db.Professors.Add(professor);
-                        _db.SaveChanges();
-                        return RedirectToAction(nameof(Index));
-                    }
-                    catch (Exception ex)
+                    if (!professor.Contract.ContractType.IsNullOrEmpty())
                     {
-                        ModelState.AddModelError("", "failed to add Professor");
-                        ModelState.AddModelError("", ex.Message);
+                        Contract? contract = getContract(professor.Contract.ContractType);
+                        professor.Contract = contract;
+                    }
+                    if (ModelState.IsValid) // unvalide attributes were entered
+                    {
+                        try
+                        {   // add the new professor to database and redirect to Index page
+                            _db.Professors.Add(professor);
+                            _db.SaveChanges();
+                            return RedirectToAction(nameof(Index));
+                        }
+                        catch (Exception ex)
+                        {
+                            ModelState.AddModelError("", "failed to add Professor");
+                            ModelState.AddModelError("", ex.Message);
 
+                        }
+                    }
+                    else // Model is not valid
+                    {
+                        ViewBag.Action = "Add";
+                        ViewBag.ContractTypes = getContractTypes();
+                        return View(professor);
                     }
                 }
-                else // Model is not valid
+                else // professore instance is null
                 {
-                    ViewBag.Action = "Add";
-                    ViewBag.ContractTypes = getContractTypes();
-                    return View(professor);
+                    ModelState.AddModelError("", "Professore instance is null");
                 }
-            }
-            else // professore instance is null
-            {
-                ModelState.AddModelError("", "Professore instance is null");
-            }
-            // go to form 
-            ViewBag.Action = "Add";
-            ViewBag.ContractTypes = getContractTypes();
-            return View("Add", professor);
+                // go to form 
+                ViewBag.Action = "Add";
+                ViewBag.ContractTypes = getContractTypes();
+                return View("Add", professor);
+            }catch(Exception ex) { return BadRequest(ex.Message); }
         }
 
 
@@ -172,71 +184,75 @@ namespace AnsibeProject.Controllers
 
         public IActionResult Delete(int? fileNumber)
         {
-            if (fileNumber != null)
+            try
             {
-                try
-                {   // call function delete 
-                    Professor? p = _db.Professors.Include(p => p.Contract).FirstOrDefault(p => p.FileNumber == fileNumber);
-                    if (p == null) ModelState.AddModelError("", "the professor does not exist.");
-                    else
-                    {
-                        List<Models.Section> sections = _db.Sections.Include(p => p.Professor).Where(s => s.Professor != null && s.Professor.FileNumber == fileNumber).ToList();
-                        if (sections.Count > 0)
-                        {
-                            foreach (var section in sections)
-                            {
-                                section.Professor = null;
-                            }
-                            _db.UpdateRange(sections);
-                        }
-                        _db.Remove(p);
-                        _db.SaveChanges();
-                    }
-
-                }
-                // if any problem accoures
-                catch (Exception ex)
+                if (fileNumber != null)
                 {
-                    ModelState.AddModelError("", "An error accoures while deleting the Professor");
-                    ModelState.AddModelError("", ex.Message);
-                }
-            }
-            // file number is null
-            else
-            {
-                ModelState.AddModelError("", "File number is null");
-            }
+                    try
+                    {   // call function delete 
+                        Professor? p = _db.Professors.Include(p => p.Contract).FirstOrDefault(p => p.FileNumber == fileNumber);
+                        if (p == null) ModelState.AddModelError("", "the professor does not exist.");
+                        else
+                        {
+                            List<Models.Section> sections = _db.Sections.Include(p => p.Professor).Where(s => s.Professor != null && s.Professor.FileNumber == fileNumber).ToList();
+                            if (sections.Count > 0)
+                            {
+                                foreach (var section in sections)
+                                {
+                                    section.Professor = null;
+                                }
+                                _db.UpdateRange(sections);
+                            }
+                            _db.Remove(p);
+                            _db.SaveChanges();
+                        }
 
-            return View("Index", GetProfessors());
+                    }
+                    // if any problem accoures
+                    catch (Exception ex)
+                    {
+                        return BadRequest(ex.Message);
+                    }
+                }
+                // file number is null
+                else
+                {
+                    return BadRequest("File number is null");
+                }
+
+                return View("Index", GetProfessors());
+            }catch(Exception ex) { return BadRequest(ex.Message); }
         }
         [HttpPost]
         public async Task<JsonResult> ChangeProfessorState(int FileNumber)
         {
-            try
-            {
-                Professor professor = await _db.Professors.SingleOrDefaultAsync(c => c.FileNumber == FileNumber);
-                if (professor == null) throw new Exception();
-                professor.ActiveState = (professor.ActiveState == ActiveState.Active) ? ActiveState.NotActive : ActiveState.Active;
-                _db.Professors.Update(professor);
-                await _db.SaveChangesAsync();
-                var additionalData = new
+            
+                try
                 {
-                    success = true,
-                    target = professor.ActiveState.ToString()
-                };
-                return Json(additionalData);
-                
-            }
-            catch
-            {
-                var additionalData = new
-                {
-                    success = false,
-                    errorMessage = "Server Failed to Change the state of Professor"
+                    Professor professor = await _db.Professors.SingleOrDefaultAsync(c => c.FileNumber == FileNumber);
+                    if (professor == null) throw new Exception();
+                    professor.ActiveState = (professor.ActiveState == ActiveState.Active) ? ActiveState.NotActive : ActiveState.Active;
+                    _db.Professors.Update(professor);
+                    await _db.SaveChangesAsync();
+                    var additionalData = new
+                    {
+                        success = true,
+                        target = professor.ActiveState.ToString()
+                    };
+                    return Json(additionalData);
 
-                };
-                return Json(additionalData);
-            }
+                }
+                catch
+                {
+                    var additionalData = new
+                    {
+                        success = false,
+                        errorMessage = "Server Failed to Change the state of Professor"
+
+                    };
+                    return Json(additionalData);
+                }
+            
 
         } 
 
@@ -244,35 +260,41 @@ namespace AnsibeProject.Controllers
         // get a copy from all professor from database
         public List<Professor> GetProfessors()
         {
-            List<Professor> temp = new List<Professor>();
-            foreach(var p in _db.Professors.Include(p => p.Contract).ToList())
+            try
             {
-                Professor tempProfessor = new Professor();
-                tempProfessor.FileNumber = p.FileNumber;
-                tempProfessor.FirstName = p.FirstName;
-                tempProfessor.LastName = p.LastName;
-                tempProfessor.MiddleName = p.MiddleName;
-                tempProfessor.PhoneNumber = p.PhoneNumber;
-                tempProfessor.DateOfBirth = p.DateOfBirth;
-                tempProfessor.Contract = p.Contract;
-                tempProfessor.Speciality = p.Speciality;
-                tempProfessor.FullNameInArabic = p.FullNameInArabic;
-                tempProfessor.Email = p.Email;
-                tempProfessor.ActiveState = p.ActiveState;
-                tempProfessor.Rank = p.Rank;
+                List<Professor> temp = new List<Professor>();
+                foreach (var p in _db.Professors.Include(p => p.Contract).ToList())
+                {
+                    Professor tempProfessor = new Professor();
+                    tempProfessor.FileNumber = p.FileNumber;
+                    tempProfessor.FirstName = p.FirstName;
+                    tempProfessor.LastName = p.LastName;
+                    tempProfessor.MiddleName = p.MiddleName;
+                    tempProfessor.PhoneNumber = p.PhoneNumber;
+                    tempProfessor.DateOfBirth = p.DateOfBirth;
+                    tempProfessor.Contract = p.Contract;
+                    tempProfessor.Speciality = p.Speciality;
+                    tempProfessor.FullNameInArabic = p.FullNameInArabic;
+                    tempProfessor.Email = p.Email;
+                    tempProfessor.ActiveState = p.ActiveState;
+                    tempProfessor.Rank = p.Rank;
 
-                temp.Add(tempProfessor);
-            }
-            return temp;
+                    temp.Add(tempProfessor);
+                }
+                return temp;
+            }catch(Exception ex) { return new List<Professor>(); }
         }
 
         public Professor? getProfessorByFileNumber(int? fileNumber)
         {
-            if (fileNumber == null) return null;
-            Professor? professor = _db.Professors.Include(p => p.Contract) 
-                       .FirstOrDefault(p => p.FileNumber == fileNumber);
-                
-            return professor;
+            try
+            {
+                if (fileNumber == null) return null;
+                Professor? professor = _db.Professors.Include(p => p.Contract)
+                           .FirstOrDefault(p => p.FileNumber == fileNumber);
+
+                return professor;
+            }catch(Exception ex) { return null; }
 
         }
         public bool deleteProfessor(int? fileNumber)
@@ -299,53 +321,62 @@ namespace AnsibeProject.Controllers
 
         public List<string> getContractTypes()
         {
-            return _db.Contracts.Select(c => c.ContractType).ToList();
+            try
+            {
+                return _db.Contracts.Select(c => c.ContractType).ToList();
+            }catch (Exception ex) { return new List<string>(); }
         }
 
         public Contract? getContract(string ContractType)
         {
-            return _db.Contracts.SingleOrDefault(c => c.ContractType == ContractType);
+            try
+            {
+                return _db.Contracts.SingleOrDefault(c => c.ContractType == ContractType);
+            }catch(Exception ex) { return null; }
         }
         public IActionResult ImportExcel(IFormFile file)
         {
-            List<Professor> dataList;
-            if (file != null && file.Length > 0)
+            try
             {
-                using (var stream = file.OpenReadStream())
+                List<Professor> dataList;
+                if (file != null && file.Length > 0)
                 {
-                    var excelReader = new ExcelReader<Professor>(_db);
-                    dataList = excelReader.ReadDataFromExcel(stream);
-                    foreach (var c in dataList)
+                    using (var stream = file.OpenReadStream())
                     {
-                        // Manual validation
-                        var validationContext = new ValidationContext(c);
-                        var validationResults = new List<ValidationResult>();
-
-                        if (Validator.TryValidateObject(c, validationContext, validationResults, true))
+                        var excelReader = new ExcelReader<Professor>(_db);
+                        dataList = excelReader.ReadDataFromExcel(stream);
+                        foreach (var c in dataList)
                         {
-                            try
+                            // Manual validation
+                            var validationContext = new ValidationContext(c);
+                            var validationResults = new List<ValidationResult>();
+
+                            if (Validator.TryValidateObject(c, validationContext, validationResults, true))
                             {
-                                _db.Professors.Update(c);
-                                _db.SaveChanges();
-                            }
-                            catch (Exception ex)
-                            {
-                                _db.Professors.Add(c);
-                                _db.SaveChanges();
+                                try
+                                {
+                                    _db.Professors.Update(c);
+                                    _db.SaveChanges();
+                                }
+                                catch (Exception ex)
+                                {
+                                    _db.Professors.Add(c);
+                                    _db.SaveChanges();
+                                }
                             }
                         }
+
                     }
-
                 }
-            }
-            else
-            {
-                // Handle invalid file
-                throw new Exception("Error while importing excel data...");
-            }
+                else
+                {
+                    // Handle invalid file
+                    throw new Exception("Error while importing excel data...");
+                }
 
 
-            return View("Index", GetProfessors());
+                return View("Index", GetProfessors());
+            }catch(Exception ex) { return BadRequest(ex.Message); }
         }
     }
 }
