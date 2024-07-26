@@ -52,11 +52,11 @@
             <input type="hidden" id="AnsibeId" value="@ViewBag.AnsibeId" />
 
             <div id="holder">
-                 @await Html.PartialAsync("ProfessorSections");
+                @await Html.PartialAsync("ProfessorSections");
             </div>
-            
+
         </div>
-        
+
     </div>
 </section>
 
@@ -68,11 +68,13 @@
 
         <div class="popup" id="popup">
             <form class="box">
-                <h1>Courses</h1>
-                <button type="button" onclick="saveCreatedSections()" class="inline-btn">SAVE</button>
-                <button type="button" onclick="cancelCreation()" class="inline-btn">Cancel</button>
+                <div class="fixed-header">
+                    <h1>Courses</h1>
+                    <button type="button" onclick="saveCreatedSections()" class="inline-btn">SAVE</button>
+                    <button type="button" onclick="cancelCreation()" class="inline-btn">Cancel</button>
+                </div>
                 <table class="table Active-datatable">
-                    <thead>
+                    <thead class="fixed">
                     <th>Course Code</th>
                     <th>Course Description</th>
                     <th>Course Hour</th>
@@ -101,7 +103,7 @@
 
                                         </td>
                                         <td>
-                                            <input type="checkbox" name="c[]" @(course.NumberOfHours == 0 ?"disabled":"") />
+                                            <input type="checkbox" name="c[]" @(course.NumberOfHours == 0 ? "disabled" : "") />
                                         </td>
                                         <td>
                                             <input type="checkbox" name="c[]" @(course.TD == 0 ? "disabled" : "") />
@@ -136,7 +138,7 @@
                                         </td>
 
                                     </tr>
-                       
+
 
 
                                 }
