@@ -55,16 +55,7 @@ function success(response) {
         row.append(buttonCell);
 
 
-       /* let editButton = document.createElement("Button");
-        editButton.textContent = "Edit";
-        editButton.addEventListener("click", function () {
-
-        });
-        editButton.classList.toggle("inline-btn");
-
-        let EditbuttonCell = document.createElement('td');
-        EditbuttonCell.appendChild(editButton);
-        row.append(EditbuttonCell);*/
+       
 
         tbody.appendChild(row);
     }
