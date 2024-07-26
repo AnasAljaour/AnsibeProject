@@ -6,7 +6,7 @@ function getAllocationBasedOnYear(selected) {
         Key: document.getElementById('AnsibeId').value,
         Value: selected.value
     }
-    
+
     $.ajax({
         url: '/Create/getAnsibeByYear',
         type: 'POST',
@@ -24,7 +24,7 @@ function getAllocationBasedOnYear(selected) {
 }
 
 function success(response) {
-    
+
     let tbody = document.getElementById('Ansibe-tbody');
     tbody.innerHTML = '';
 
@@ -105,8 +105,8 @@ function showAllocation(button) {
     }).then((result) => {
         if (result.isConfirmed) {
             //delete from database and then get the new view based on selected Ansibe ID
-            deleteSectionsFromDataBase(usedId,newAnsibe)
-            
+            deleteSectionsFromDataBase(usedId, newAnsibe)
+
 
         } else {
             // If user cancels, show an informational message
@@ -118,14 +118,14 @@ function showAllocation(button) {
 
 
 
-    
+
 
 
 }
 
 function getPartialViewBasedOnSelectedId(usedId, newAnsibe) {
-    
-    
+
+
     $.ajax({
         url: '/Create/getSectionOfTheAnsibeById',
         type: 'POST',
@@ -136,8 +136,8 @@ function getPartialViewBasedOnSelectedId(usedId, newAnsibe) {
 
             document.getElementById('holder').innerHTML = response;
             showSidebar()
-            type="CP"
-            
+            type = "CP"
+
         },
         error: function (xhr, status, error) {
             failed(xhr, status, error);
@@ -146,7 +146,7 @@ function getPartialViewBasedOnSelectedId(usedId, newAnsibe) {
     });
 }
 
-function deleteSectionsFromDataBase(usedId,newAnsibe) {
+function deleteSectionsFromDataBase(usedId, newAnsibe) {
     $.ajax({
         url: '/Create/DeleteSectionsOfAnsibe',
         type: 'POST',
@@ -158,7 +158,7 @@ function deleteSectionsFromDataBase(usedId,newAnsibe) {
         },
         error: function (xhr, status, error) {
             failed(xhr, status, error);
-            
+
 
         }
     });
@@ -221,7 +221,7 @@ function createSections(button, CourseCode, CourseDescription, CourseHours, TP, 
 
     let row = button.closest("tr");
     let checkboxes = row.querySelectorAll('input[type="checkbox"]');
-   
+
     let option = row.querySelector('select');
     var selectedText = option.options[option.selectedIndex].textContent;
 
@@ -294,6 +294,10 @@ function cancelCreation() {
     popup.classList.toggle('open-popup');
     tempSections = [];
 
+    let checkboxes = popup.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function (checkbox) {
+        checkbox.checked = false;
+    });
     let tbodyElements = popup.querySelectorAll('tbody[id^="tbody-"]');
     tbodyElements.forEach(function (tbody) {
         tbody.innerHTML = '';
@@ -329,12 +333,12 @@ function saveCreatedSections() {
             url: '/Create/SaveCreatedSections',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({TempSections: tempSections, Type: type, AnsibeId: AnsibeId }),
+            data: JSON.stringify({ TempSections: tempSections, Type: type, AnsibeId: AnsibeId }),
             dataType: 'html',
             success: function (response) {
 
                 document.getElementById('holder').innerHTML = response;
-                
+
             },
             error: function (xhr, status, error) {
                 failed(xhr, status, error);
@@ -381,11 +385,7 @@ function AssignProfessorInCourse(button) {
 
     TdBtn.textContent = firstCell.nextElementSibling.textContent;
 
-    /*var section = sections.find(s => s.SectionId === sectionID.parseInt);
-   
-    if (section) 
-        section.professor = { fileNumber: parseInt(firstCell.textContent.trim()) };
-    */
+
     var professoreId = parseInt(firstCell.textContent.trim());
     addCourse(professoreId, sectionID)
 
@@ -453,7 +453,7 @@ function saveProfessorAssign() {
     var popup = document.getElementById("popup1");
     popup.classList.toggle("open-popup");
 
-    
+
 
 }
 
@@ -500,7 +500,7 @@ function deleteAssignProfessors(button) {
     var firstrowID = row.querySelector('input[type="hidden"]')
     var sectionId = firstrowID.value;
     let model = allocation.find(m => m.Key == sectionId);
-   
+
     if (model) {
         allocation = allocation.filter(function (element) {
             return element.Key !== sectionId;
@@ -544,7 +544,7 @@ function deleteAssignProfessors(button) {
         assignButton.appendChild(b);
         console.log(allocation);
     }
-   
+
 }
 
 function confirmDeleteAssignement(button) {
@@ -613,7 +613,7 @@ function deleteAssignement(button) {
             }
         });
     }
-    
+
 }
 
 function subtracteHoursForProfessor(button) {
@@ -642,7 +642,7 @@ function subtracteHoursForProfessor(button) {
     totalHoursElement.textContent = totalHours;
 }
 
-function deleteSectionPermenetlyInProfessorView(button,fromWhere) {
+function deleteSectionPermenetlyInProfessorView(button, fromWhere) {
     Swal.fire({
         title: "Are you sure you want to delete this ?",
         text: "This action cannot be undone.",
@@ -677,15 +677,15 @@ function deleteSectionPermenetlyInProfessorView(button,fromWhere) {
 
                 }
             });
-            
+
         } else {
             // If user cancels, show an informational message
             Swal.fire("Deletion cancelled", "", "info");
         }
     });
 
-    
-    
+
+
 }
 function saveWork() {
     let AnsibeId = {
@@ -740,22 +740,22 @@ function deleteUnCreatedSection(button) {
     let row = button.closest('tr');
     let coursecode = button.closest('table').closest('tr').cells[0].textContent;
     let index = tempSections.findIndex(function (model) {
-       
+
         if (coursecode.trim() !== model.Course.CourseCode) return false;
 
-        
+
         if ((row.cells[0].textContent.trim() !== '') && (model.CourseHours == null)) return false;
 
-        
+
         if ((row.cells[1].textContent.trim() !== '') && (model.TP == null)) return false;
 
-        
+
         if ((row.cells[2].textContent.trim() !== '') && (model.TD == null)) return false;
 
-       
-        let lang = (row.cells[3].textContent.trim() === 'E') ? 0 : (row.cells[3].textContent.trim() === 'F')?1 : 2;
-        
-        if ( lang !== model.Language) return false;
+
+        let lang = (row.cells[3].textContent.trim() === 'E') ? 0 : (row.cells[3].textContent.trim() === 'F') ? 1 : 2;
+
+        if (lang !== model.Language) return false;
 
         return true;
     });

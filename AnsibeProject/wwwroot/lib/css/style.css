@@ -12,7 +12,7 @@
 }
 
 
-.popup {   
+.popup {
     width: 80%;
     background: var(--white);
     border-radius: 6px;
@@ -26,29 +26,29 @@
     transition: transform 0.4s, top 0.4s;
 }
 
-.open-popup {   
+.open-popup {
     visibility: visible;
-    position: center;
     transform: translate(-50%,-50%) scale(1);
-    min-width: fit-content;
+    max-width: max-content;
     z-index: 5;
     overflow-y: auto;
     max-height: 70vh;
+    box-shadow: 0 0 0 100vw rgba(0,0,0,.8);
 }
 
-label {   
+label {
     color: var(--black);
 }
 
-div.dt-container select.dt-input {   
+div.dt-container select.dt-input {
     color: var(--black);
 }
 
-div.dt-container div.dt-layout-row {   
+div.dt-container div.dt-layout-row {
     color: var(--black);
 }
 
-div.dt-container .dt-paging .dt-paging-button.disabled, div.dt-container .dt-paging .dt-paging-button.disabled:hover, div.dt-container .dt-paging .dt-paging-button.disabled:active {   
+div.dt-container .dt-paging .dt-paging-button.disabled, div.dt-container .dt-paging .dt-paging-button.disabled:hover, div.dt-container .dt-paging .dt-paging-button.disabled:active {
     color: var(--black) !important;
 }
 
@@ -101,7 +101,11 @@ body {
         padding-left: 0;
     }
 
-.unactive {   
+h1, h2 {
+    margin-top: 0.5rem;
+}
+
+.unactive {
     --white: #cfcfcf;
     --light-color: #aaa;
     --light-bg: #333;
@@ -109,13 +113,13 @@ body {
     --black: #222;
 }
 
-section {   
+section {
     padding: 0.5rem;
     margin: 0 auto;
     max-width: 1400px;
 }
 
-.heading {     
+.heading {
     font-size: 2.5rem;
     color: var(--black);
     margin-bottom: 2.5rem;
@@ -124,9 +128,9 @@ section {
     text-transform: capitalize;
 }
 
-.inline-btn,   
-.inline-delete-btn,   
-.btn,   
+.inline-btn,
+.inline-delete-btn,
+.btn,
 .delete-btn {
     border-radius: .5rem;
     color: #fff;
@@ -139,44 +143,44 @@ section {
     margin-top: 1rem;
 }
 
-.h1-class {   
+.h1-class {
     font-size: 25px;
     color: var(--black);
 }
 
-.btn,   
-.delete-btn{
+.btn,
+.delete-btn {
     display: block;
     width: 100%;
 }
 
-.inline-btn,   
-.inline-delete-btn    {
+.inline-btn,
+.inline-delete-btn {
     display: inline-block;
 }
 
-.btn,   
-.inline-btn    {
+.btn,
+.inline-btn {
     background-color: var(--main-color);
 }
 
 
-.delete-btn,   
-.inline-delete-btn    {
+.delete-btn,
+.inline-delete-btn {
     background-color: var(--red);
 }
 
     .inline-btn:hover,
     .inline-delete-btn:hover,
-    .btn:hover,   
-    .delete-btn:hover{
+    .btn:hover,
+    .delete-btn:hover {
         background-color: var(--black);
         color: var(--white);
     }
 
 
 
-.header {   
+.header {
     position: sticky;
     top: 0;
     left: 0;
@@ -186,7 +190,7 @@ section {
     border-bottom: var(--border);
 }
 
-    .header .flex {   
+    .header .flex {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -195,16 +199,16 @@ section {
         font-size: 2rem;
     }
 
-        .header .flex span {   
+        .header .flex span {
             padding-left: 0.5rem;
         }
 
-        .header .flex .logo {   
+        .header .flex .logo {
             font-size: 2.5rem;
             color: var(--black);
         }
 
-        .header .flex .icons div {   
+        .header .flex .icons div {
             font-size: 2rem;
             color: var(--black);
             background-color: var(--light-bg);
@@ -217,12 +221,12 @@ section {
             margin-left: .7rem;
         }
 
-            .header .flex .icons div:hover {   
+            .header .flex .icons div:hover {
                 background-color: var(--black);
                 color: var(--white);
             }
 
-.side-bar {   
+.side-bar {
     position: fixed;
     left: 0;
     width: 30rem;
@@ -243,29 +247,30 @@ section {
         font-size: 2rem;
         background-color: var(--white);
     }
+
         .side-bar .navbar a {
             display: block;
             margin: 2rem .5rem;
         }
 
 
-        .side-bar .navbar a i {
-            margin-right: 1.5rem;
-            color: var(--main-color);
-            transition: .2s linear;
-        }
-
-        .side-bar .navbar a span {
-            color: var(--light-color);
-        }
-
-        .side-bar .navbar a:hover {
-            background-color: var(--light-bg);
-        }
-
-            .side-bar .navbar a:hover i {
-                margin-right: 2.5rem;
+            .side-bar .navbar a i {
+                margin-right: 1.5rem;
+                color: var(--main-color);
+                transition: .2s linear;
             }
+
+            .side-bar .navbar a span {
+                color: var(--light-color);
+            }
+
+            .side-bar .navbar a:hover {
+                background-color: var(--light-bg);
+            }
+
+                .side-bar .navbar a:hover i {
+                    margin-right: 2.5rem;
+                }
 
     .side-bar.active {
         left: -60rem;
@@ -291,7 +296,7 @@ section {
         }
 }
 
-.Assign .box-container {   
+.Assign .box-container {
     display: grid;
     grid-auto-rows: auto auto;
     gap: 1.5rem;
@@ -300,7 +305,7 @@ section {
     width: 100%;
 }
 
-    .Assign .box-container .box {   
+    .Assign .box-container .box {
         border-radius: .5rem;
         background-color: var(--white);
         padding: 1rem;
@@ -311,14 +316,14 @@ section {
         min-width: 1000px;
     }
 
-        .Assign .box-container .box h3 {   
+        .Assign .box-container .box h3 {
             font-size: 2rem;
             font-weight: bold;
             margin: 0.5rem;
             color: var(--black);
         }
 
-.courses .box-container {   
+.courses .box-container {
     display: grid;
     grid-auto-rows: auto auto;
     gap: 1.5rem;
@@ -327,7 +332,7 @@ section {
 }
 
 
-    .courses .box-container .box {   
+    .courses .box-container .box {
         border-radius: .5rem;
         background-color: var(--white);
         padding: 1rem;
@@ -357,14 +362,14 @@ section {
 
 
 
-.form-container {     
+.form-container {
     min-height: calc(100vh - 20rem);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-    .form-container form {   
+    .form-container form {
         background-color: var(--white);
         border-radius: .5rem;
         padding: 2rem;
@@ -378,18 +383,18 @@ section {
             text-align: center;
         }
 
-        .form-container form label {   
+        .form-container form label {
             font-size: 1.7rem;
             color: var(--light-color);
             padding-top: 1rem;
         }
 
-            .form-container form label span {   
+            .form-container form label span {
                 color: var(--red);
                 font-size: 1rem;
             }
 
-        .form-container form .box {   
+        .form-container form .box {
             font-size: 1.8rem;
             color: var(--black);
             border-radius: .5rem;
@@ -399,7 +404,7 @@ section {
             margin: 1rem 0;
         }
 
-        .form-container form .specialbox {   
+        .form-container form .specialbox {
             font-size: 1.8rem;
             color: var(--black);
             border-radius: .5rem;
@@ -409,7 +414,7 @@ section {
             margin: 1rem;
         }
 
-    .form-container .special {   
+    .form-container .special {
         display: flex;
         justify-content: center;
     }
@@ -420,7 +425,7 @@ a {
 }
 
 .table th,
-.table td {  
+.table td {
     text-align: center !important;
     vertical-align: central !important;
     font-size: 1.3rem !important;
@@ -428,7 +433,7 @@ a {
     color: var(--black);
 }
 
-.dropdown {   
+.dropdown {
     font-size: 1.8rem;
     color: var(--black);
     border-radius: .5rem;
@@ -441,34 +446,34 @@ a {
 
 
 
-.clickable-icon {   
+.clickable-icon {
     background-color: transparent;
     margin-left: 15%;
 }
 
-    .clickable-icon:hover {   
+    .clickable-icon:hover {
         color: #c82333;
     }
 
 
-.trash-icon {   
+.trash-icon {
     color: var(--red);
     font-size: 150%;
     cursor: pointer;
 }
 
-    .trash-icon:hover {   
+    .trash-icon:hover {
         transform: scale(1.2);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         color: var(--black);
     }
 
-.customizedB {   
+.customizedB {
     background-color: black;
 }
 
 
-    
+
 
 
 
@@ -504,7 +509,7 @@ a {
 }
 
 .home-h1 {
-    color:white;
+    color: white;
     font-size: 5rem;
     margin: 0;
     padding: 0;
@@ -515,7 +520,8 @@ a {
     font-size: 0.8rem;
     text-wrap: balance;
 }
-.thick-border {   
+
+.thick-border {
     border-top: 3px solid var(--black) !important;
 }
 
@@ -523,8 +529,8 @@ a {
     font-weight: bold !important;
     text-align: center !important;
     background-color: #f2f2f2 !important;
-   
 }
+
 #Course-table th,
 #Course-table td,
 #Professor-Ansibe th,
@@ -532,10 +538,17 @@ a {
     text-align: center;
     vertical-align: middle;
     border: 1px solid var(--black) !important;
-   
 }
-.fixed-header {   
+
+.fixed-header {
+    background-color: var(--white);
     position: sticky;
     top: 0;
     z-index: 1;
+}
+
+.fixed {
+    position: sticky;
+    top: 80px;
+    z-index: 2;
 }
