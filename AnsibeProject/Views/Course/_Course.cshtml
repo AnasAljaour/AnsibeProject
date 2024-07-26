@@ -7,7 +7,7 @@
 
     <form method="post" asp-controller="Course" asp-action="@action">
         <h3>@action</h3>
-        <div class="text-danger" asp-validation-summary="All"></div>
+        
 
         <label asp-for="CourseCode">Course Code &nbsp;&nbsp;</label><label><span asp-validation-for="CourseCode"></span></label>
         @if (action == "Edit")
