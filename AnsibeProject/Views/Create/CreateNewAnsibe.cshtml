@@ -101,27 +101,30 @@
 
                                         </td>
                                         <td>
-                                            <input type="checkbox" name="c[]" />
+                                            <input type="checkbox" name="c[]" @(course.NumberOfHours == 0 ?"disabled":"") />
                                         </td>
                                         <td>
-                                            <input type="checkbox" name="c[]" />
+                                            <input type="checkbox" name="c[]" @(course.TD == 0 ? "disabled" : "") />
                                         </td>
                                         <td>
-                                            <input type="checkbox" name="c[]" />
+                                            <input type="checkbox" name="c[]" @(course.TP == 0 ? "disabled" : "") />
                                         </td>
                                         <td>
                                             <select asp-items="Html.GetEnumSelectList<AnsibeProject.Models.Language>()">
                                             </select>
                                         </td>
                                         <td>
-                                            <button class="inline-btn" onclick="createSections(this,'@course.CourseCode','@course.CourseDescription', '@course.NumberOfHours','@course.TP','@course.TD')" type="button">Add</button>
+                                            @{
+                                                var str = course.CourseDescription.Replace("\'", "\\'");
+                                            }
+                                            <button class="inline-btn" onclick="createSections(this,'@course.CourseCode','@str', '@course.NumberOfHours' ,'@course.TP','@course.TD')" type="button">Add</button>
                                         </td>
                                         <td>
                                             <table class="table">
                                                 <thead>
                                                 <th>course</th>
-                                                <th>TP</th>
                                                 <th>TD</th>
+                                                <th>TP</th>
                                                 <th>Language</th>
                                                 <th></th>
 
