@@ -8,25 +8,25 @@
     Dictionary<string, List<Section>> professorSections = new Dictionary<string, List<Section>>();
     List<Section> nullSections = new List<Section>();
 
-    if(Model != null)
-    foreach (var section in Model)
-    {
-        if (section.Professor != null)
+    if (Model != null)
+        foreach (var section in Model)
         {
-            var professorName = section.Professor.FirstName + " " + section.Professor.LastName;
-
-            if (!professorSections.ContainsKey(professorName))
+            if (section.Professor != null)
             {
-                professorSections[professorName] = new List<Section>();
-            }
-            professorSections[professorName].Add(section);
+                var professorName = section.Professor.FirstName + " " + section.Professor.LastName;
 
+                if (!professorSections.ContainsKey(professorName))
+                {
+                    professorSections[professorName] = new List<Section>();
+                }
+                professorSections[professorName].Add(section);
+
+            }
+            else
+            {
+                nullSections.Add(section);
+            }
         }
-        else
-        {
-            nullSections.Add(section);
-        }
-    }
 
 }
 
@@ -74,7 +74,7 @@
 
 
 
-                                <table class="table Active-datatable">
+                                <table class="table">
                                     <thead>
                                     <th></th>
                                     <th>Course Code</th>
@@ -83,7 +83,7 @@
                                     <th>TD</th>
                                     <th>TP</th>
                                     <th>Language</th>
-                                    
+
 
                                     </thead>
 
@@ -134,10 +134,10 @@
                                                     <td>
                                                         <button class="inline-delete-btn" onclick="confirmDeleteAssignement(this)">Remove</button>
                                                     </td>
-                                                 
+
                                                 </tr>
                                             }
-                                            
+
 
                                         }
 
@@ -164,75 +164,74 @@
     </div>
 
     <div class="popup" id="popup1">
-
+        <div class="fixed-header">
         <h2>Assign Professor</h2>
         <h1 class="heading">Sections</h1>
-        <div class="box-container">
-            <div class="box">
-                <button type="button" onclick="saveProfessorAssign()" class="inline-btn">SAVE</button>
-                <button type="button" onclick="cancelAssignProfessorSection()" class="inline-btn">Cancel</button>
-                <table class="table table-striped Active-datatable">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th data-searchable="true">Course Code</th>
-                            <th data-searchable="true">Course Description</th>
-                            <th data-searchable="true">Course Hours</th>
-
-                            <th data-searchable="true">TD</th>
-                            <th data-searchable="true">TP</th>
-
-                            <th data-searchable="true">Language</th>
-
-
-                        </tr>
-                    </thead>
-                    <tbody id="SectionId">
-
-
-                        @foreach (var s in nullSections)
-                        {
-
-
-
-                            <tr>
-
-                                <td>
-                                    <input type="hidden" value="@s.SectionId" />
-                                </td>
-                                <td>
-                                    @s.Course.CourseCode
-                                </td>
-                                <td>@s.Course.CourseDescription</td>
-                                <td>
-                                    @s.CourseHours
-                                </td>
-                                <td>
-                                    @s.TD
-                                </td>
-
-                                <td>
-                                    @s.TP
-                                </td>
-
-                                <td>
-                                    @s.Language
-                                </td>
-                                <td>
-                                    <input type="checkbox" id="myCheckbox" name="c1[]" />
-                                    <a class="clickable-icon" onclick="deleteSectionPermenetlyInProfessorView(this,'popup')">
-                                        <i class="fas fa-trash trash-icon"></i>
-                                </td>
-
-                            </tr>
-
-                        }
-
-
-                    </tbody>
-                </table>
-
-            </div>
+        
+        <button type="button" onclick="saveProfessorAssign()" class="inline-btn">SAVE</button>
+        <button type="button" onclick="cancelAssignProfessorSection()" class="inline-btn">Cancel</button>
         </div>
+        <table class="table table-striped Active-datatable">
+            <thead class="fixed">
+                <tr>
+                    <th></th>
+                    <th data-searchable="true">Course Code</th>
+                    <th data-searchable="true">Course Description</th>
+                    <th data-searchable="true">Course Hours</th>
+
+                    <th data-searchable="true">TD</th>
+                    <th data-searchable="true">TP</th>
+
+                    <th data-searchable="true">Language</th>
+
+
+                </tr>
+            </thead>
+            <tbody id="SectionId">
+
+
+                @foreach (var s in nullSections)
+                {
+
+
+
+                    <tr>
+
+                        <td>
+                            <input type="hidden" value="@s.SectionId" />
+                        </td>
+                        <td>
+                            @s.Course.CourseCode
+                        </td>
+                        <td>@s.Course.CourseDescription</td>
+                        <td>
+                            @s.CourseHours
+                        </td>
+                        <td>
+                            @s.TD
+                        </td>
+
+                        <td>
+                            @s.TP
+                        </td>
+
+                        <td>
+                            @s.Language
+                        </td>
+                        <td>
+                            <input type="checkbox" id="myCheckbox" name="c1[]" />
+                            <a class="clickable-icon" onclick="deleteSectionPermenetlyInProfessorView(this,'popup')">
+                                <i class="fas fa-trash trash-icon"></i>
+                        </td>
+
+                    </tr>
+
+                }
+
+
+            </tbody>
+        </table>
+
     </div>
+
 </section>
