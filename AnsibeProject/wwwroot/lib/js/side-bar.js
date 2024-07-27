@@ -20,16 +20,16 @@ function showSidebar() {
             saidebar[1].classList.add('active');
 
         s.forEach(function (element) {
-            if (element.classList.contains('courses'))
-                element.classList.remove('courses');;
+            if (element.classList.contains('create'))
+                element.classList.remove('create');;
         });
     }
     else {
         saidebar[0].classList.add('active');
-       
+
         s.forEach(function (element) {
-            if (!element.classList.contains('courses'))
-                element.classList.add('courses');
+            if (!element.classList.contains('create'))
+                element.classList.add('create');
         });
     }
 
@@ -63,8 +63,8 @@ function handleResize() {
         }
 
         s.forEach(function (element) {
-            if (element.classList.contains('courses'))
-                element.classList.remove('courses');
+            if (element.classList.contains('create'))
+                element.classList.remove('create');
         });
 
     }

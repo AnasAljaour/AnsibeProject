@@ -29,7 +29,7 @@
 .open-popup {
     visibility: visible;
     transform: translate(-50%,-50%) scale(1);
-    max-width: max-content;
+    min-width: 1000px;
     z-index: 5;
     overflow-y: auto;
     max-height: 70vh;
@@ -103,6 +103,7 @@ body {
 
 h1, h2 {
     margin-top: 0.5rem;
+    color: var(--black);
 }
 
 .unactive {
@@ -322,6 +323,26 @@ section {
             margin: 0.5rem;
             color: var(--black);
         }
+
+.create .box-container {
+    display: grid;
+    grid-auto-rows: auto auto;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+    .create .box-container .box {
+        border-radius: .5rem;
+        background-color: var(--white);
+        padding: 1rem;
+        border: 1px solid var(--main-color);
+        overflow: hidden;
+        text-align: center;
+        font-size: 1.3rem;
+        min-width: 1000px;
+    }
 
 .courses .box-container {
     display: grid;
@@ -549,6 +570,6 @@ a {
 
 .fixed {
     position: sticky;
-    top: 80px;
+    top: 75px;
     z-index: 2;
 }
