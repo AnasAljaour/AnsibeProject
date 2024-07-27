@@ -51,6 +51,9 @@ div.dt-container div.dt-layout-row {
 div.dt-container .dt-paging .dt-paging-button.disabled, div.dt-container .dt-paging .dt-paging-button.disabled:hover, div.dt-container .dt-paging .dt-paging-button.disabled:active {
     color: var(--black) !important;
 }
+div.dt-container select.dt-input{
+    background-color:var(--white) !important;
+}
 
 * {
     font-family: 'Nunito', sans-serif;
