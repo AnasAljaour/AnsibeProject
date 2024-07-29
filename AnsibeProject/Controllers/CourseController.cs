@@ -19,7 +19,14 @@ namespace AnsibeProject.Controllers
         }
         public IActionResult Index()
         {
-            return View(courses.getAllCourses());
+            try
+            {
+                return View(courses.getAllCourses());
+            }catch(Exception e)
+            {
+                return BadRequest("ERROR !!! \n " + e.Message);
+
+            }
         }
         public IActionResult Edit(string CourseCode)
         {
@@ -194,7 +201,14 @@ namespace AnsibeProject.Controllers
             List<Course> dataList;
             if (file != null && file.Length>0)
             {
-                courses.ImportExcel(file);
+                try
+                {
+                    courses.ImportExcel(file);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("An error while Processing the data Error msg \n "+ex.Message);
+                }
             }
             else
             {
