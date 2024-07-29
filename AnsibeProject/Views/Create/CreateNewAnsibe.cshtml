@@ -73,7 +73,7 @@
                     <button type="button" onclick="saveCreatedSections()" class="inline-btn">SAVE</button>
                     <button type="button" onclick="cancelCreation()" class="inline-btn">Cancel</button>
                 </div>
-                <table class="table Active-datatable">
+                <table class="table Active-datatable data-table" id="section-table">
                     <thead class="fixed">
                     <th>Course Code</th>
                     <th>Course Description</th>
@@ -156,4 +156,14 @@
 @section Scripts {
     <script src="~/lib/js/Assign.js"></script>
     <script src="~/lib/js/side-bar.js"></script>
+    <script>
+        $('#section-table').DataTable({
+            pageLength: 100, // Set the number of entries per page to 100
+            language: {
+                emptyTable: "", // Customize the text for when the table is empty
+                zeroRecords: "" // Customize the text for when no records match the filter
+            }
+        });
+
+    </script>
 } 
